@@ -10,8 +10,11 @@
   },
   "dependencies": {
     "@netlify/plugin-nextjs": "^5.9.0",
-    "next": "^15.0.0",
+    "next": "^15.1.0",
+    "next-netlify-starter": "file:",
+    "openai": "^4.76.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-icons": "^5.4.0"
   }
 }
