@@ -17,15 +17,15 @@
 .product-list {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
+  gap: 0rem;
 }
 
 .product-item {
   padding: 1rem;
   box-sizing: border-box;
   text-align: left;
-  border: 1px solid #dee2e6;
-  border-radius: 12px;
+  border: .5px solid #dee2e6;
+  text-align: center;
 }
 
 .product-item:hover {
@@ -86,7 +86,7 @@
 .product-info .product-description {
     
     margin-bottom: 1rem;
-    max-width: 400px;
+    max-width: 520px;
 }
 
 .product-info .product-price {

@@ -78,13 +78,11 @@
 
     .product-list{
         grid-template-columns:repeat(2, 1fr);
-        gap: .5rem;
     }
 
     .product-item{
         padding: .75rem .5rem;
         min-width: 160px;
-        border-radius: 6px;
     }
 
     .product-item img{
@@ -179,6 +177,23 @@
         font-size: 1rem;
         margin-bottom: 2rem;
     }
+
+
+
+    .legal{
+        padding: 1rem 1.5rem;
+    }
+
+    .legal h1{
+        font-size: 2rem;
+    }
+
+    .legal h2{
+        font-size:1.25rem;
+    }
+
+
+
 
     footer{
         flex-direction: column;

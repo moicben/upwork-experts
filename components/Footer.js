@@ -22,9 +22,9 @@ const Footer = ({ shopName, footerText }) => {
           <h4>Informations</h4>
           <ul>
             <li><a href="/conditions-generales">Conditions Générales</a></li>
-            <li><a href="/confidentialite">Politique de Confidentialité</a></li>
+            <li><a href="/politique-de-confidentialite">Politique de Confidentialité</a></li>
             <li><a href="/mentions-legales">Mentions Légales</a></li>
-            <li><a href="/sitemap.xml">Sitemap</a></li>
+            <li><a target='_blank' href="/sitemap.xml">Sitemap</a></li>
           </ul>
         </div>
         <div class="footer-column">

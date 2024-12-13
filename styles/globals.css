@@ -371,6 +371,24 @@ button {
 }
 
 
+
+
+.legal,
+.legal *{
+  flex-direction: column;
+}
+
+.legal{
+  max-width: 720px;
+  padding: 4rem 0 8rem 0;
+}
+
+.legal h1{
+  font-size: 3rem;
+}
+
+
+
 footer {
   display: flex;
   justify-content: space-between;
@@ -438,3 +456,5 @@ footer {
   border-radius: 5px;
   cursor: pointer;
 }
+
+

@@ -124,7 +124,7 @@ async function main() {
     const lines = homepageContent.split('\n').map(line => line.trim()).filter(line => line);
     site.sourceParent = data.parent;
     site.sourceCategory = data.category;
-    site.slug = site.sourceCategory.toLowerCase().replace(/de/,'').replace(/la/,'').replace(/le/,'').replace(/l/,'').replace(/ /g, '-').replace(/é/g, 'e').replace(/[^\w-]+/g, '')
+    site.slug = site.sourceCategory.toLowerCase().replace(/de/,'').replace(/la/,'').replace(/le/,'').replace(/l/,'').replace(/ /g, '-').replace(/é/g, 'e').replace(/[^\w-]+/g, '').replace(/---+/g, '-').replace(/--+/g, '-');
     site.shopName = lines[0];
     site.heroTitle = lines[1];
     site.heroDescription = lines[2];

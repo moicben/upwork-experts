@@ -4,19 +4,8 @@ const NETLIFY_API_TOKEN = 'nfp_a5XErPtzsBUdRcZ1BFSiqPkxPk4h6L18babb';
 const NETLIFY_TEAM_ID = 'YOUR_NETLIFY_TEAM_ID';
 
 const siteIds = [
-  '10.univers-lapin.shop',
-  '6.univers-lapin.shop',
-  '1.expert-francais.shop',
-  '10.expert-francais.shop',
-  '2.expert-francais.shop',
-  '3.expert-francais.shop',
-  '4.expert-francais.shop',
-  '6.expert-francais.shop',
-  '5.expert-francais.shop',
-  'apprentissage---proprete.expert-francais.shop',
-  'test2.expert-francais.shop',
-  'test.expert-francais.shop',
-  'univers-lapin.shop',
+  'test5.expert-francais.shop',
+  'expert-francais',
   // Ajoutez autant de site IDs que nécessaire
 ];
 
