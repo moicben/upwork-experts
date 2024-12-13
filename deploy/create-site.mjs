@@ -2,6 +2,7 @@ import { NetlifyAPI } from 'netlify';
 import { execSync } from 'child_process';
 import path from 'path';
 import dotenv from 'dotenv';
+import content from '../content.json' assert { type: 'json' };
 
 dotenv.config();
 
@@ -9,7 +10,8 @@ const NETLIFY_API_TOKEN = 'nfp_a5XErPtzsBUdRcZ1BFSiqPkxPk4h6L18babb';
 const DOMAIN = 'expert-francais.shop';
 
 const subdomains = [
-    'test'
+    content.sites[0].slug,
+    "test2",
     // Ajoutez autant de sous-domaines que nécessaire
 ];
 

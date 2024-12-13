@@ -71,6 +71,26 @@ async function generateHomepageContent(data) {
     return response.choices[0].message.content.trim();
 }
 
+// Fonction pour régénérer les mots clés en utilisant l'API OpenAI
+async function regenerateKeywords(section) {
+    const prompt = `
+    Génère 2 nouveaux mots clés en rapport avec la section suivante : ${section}. \n
+    Les mots clés doivent être uniques et pertinents pour la section. \n
+    Réponds uniquement avec les mots clés, rien d'autre.
+    `;
+
+    const response = await openai.chat.completions.create({
+        model: 'gpt-4o',
+        messages: [
+            { role: 'system', content: 'Tu es un assistant français specialisé e-commerce.' },
+            { role: 'user', content: prompt }
+        ],
+        max_tokens: 50
+    });
+
+    return response.choices[0].message.content.trim();
+}
+
 // Fonction pour rechercher une image sur Pexels
 async function searchImage(keywords) {
     const query = keywords;
@@ -104,6 +124,7 @@ async function main() {
     const lines = homepageContent.split('\n').map(line => line.trim()).filter(line => line);
     site.sourceParent = data.parent;
     site.sourceCategory = data.category;
+    site.slug = site.sourceCategory.toLowerCase().replace(/de/,'').replace(/la/,'').replace(/le/,'').replace(/l/,'').replace(/ /g, '-').replace(/é/g, 'e').replace(/[^\w-]+/g, '')
     site.shopName = lines[0];
     site.heroTitle = lines[1];
     site.heroDescription = lines[2];
@@ -127,8 +148,12 @@ async function main() {
     site.heroImageUrl = await searchImage(site.heroImageKeywords);
     site.aboutImageUrl = await searchImage(site.aboutImageKeywords);
 
-    // Linker les produits
-    //site.products = [];
+    // Vérifier si les URLs des images sont identiques et régénérer si nécessaire
+    while (site.heroImageUrl === site.aboutImageUrl) {
+        console.log('Les URLs des images sont identiques, régénération des mots clés...');
+        site.aboutImageKeywords = await regenerateKeywords('About Section');
+        site.aboutImageUrl = await searchImage(site.aboutImageKeywords);
+    }
 
     // Écrire les modifications dans content.json
     fs.writeFileSync('../content.json', JSON.stringify(content, null, 2), 'utf8');

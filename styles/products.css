@@ -21,7 +21,7 @@
 }
 
 .product-item {
-  padding: 1rem 1.5rem 2rem 1.5rem;
+  padding: 1rem;
   box-sizing: border-box;
   text-align: left;
   border: 1px solid #dee2e6;
@@ -41,9 +41,10 @@
 .product-item h3 {
   margin: 0.5rem 0.5rem 0;
   font-weight: 300;
-  height: 60px;
+  height: 45px;
   color: #333;
   overflow: hidden;
+  font-size: 1rem;
 }
 
 .product-item p {
