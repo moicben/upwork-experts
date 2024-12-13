@@ -145,7 +145,7 @@ async function main() {
     site.footerText = lines[17];
 
     // Rechercher les images sur Pexels
-    site.heroImageUrl = await searchImage(site.heroImageKeywords);
+    site.heroImageUrl = await searchImage(lines[0]);
     site.aboutImageUrl = await searchImage(site.aboutImageKeywords);
 
     // Vérifier si les URLs des images sont identiques et régénérer si nécessaire

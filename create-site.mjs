@@ -67,7 +67,7 @@ function delay(ms) {
 async function createSites() {
     for (const subdomain of subdomains) {
         await createSite(subdomain);
-        await delay(10000); // Ajoute un délai de 10 secondes entre les requêtes
+        await delay(1000); // Ajoute un délai de 1 seconde entre les requêtes
     }
 }
 
