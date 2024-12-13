@@ -1,10 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+
 html,
 body {
   background-color: #fff;
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
     Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  overflow-x: hidden;
 }
 
 * {
@@ -18,11 +22,18 @@ ul {
   margin: 0;
 }
 
+textarea,input{
+  resize: none;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
+    Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
 main {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
 
 .content {
@@ -36,11 +47,38 @@ code {
   font-family: Menlo, Monaco, Lucida Console, Courier New, monospace;
 }
 
+a {
+  text-decoration: none;
+  color: #000;
+}
+
+button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+
+
+
+
+
+
 .container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.wrapper{
+  max-width: 1440px;
+  margin: auto;
 }
 
 .sub {
@@ -50,6 +88,8 @@ code {
   background-color: #f8f9fa;
   text-transform: uppercase;
   font-size: 0.85rem;
+  color: #333;
+
 }
 
 .header {
@@ -57,10 +97,23 @@ code {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 1.5rem 2rem;
+  max-width: calc(1280px + 8rem);
+  padding: 0.5rem 4rem;
   background-color: #fff;
   border-bottom: 1px solid #dee2e6;
+  position: relative;
 }
+
+.nav{
+  margin-left: -5rem;
+}
+
+.burger-icon {
+  display: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
 
 .header h1 {
   margin: 0;
@@ -85,28 +138,66 @@ code {
   color: #333;
 }
 
+.burger-icon {
+  display: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+
+
+
+
+
+
+
 .hero {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 120px);
-  background-size: cover;
-  background-position: center;
+  height: calc(100vh - 240px);
+  position: relative;
   color: white;
   text-align: center;
   padding: 0 16rem;
+  background-color: transparent;
+  overflow: hidden;
+  width: 100%;
+}
+
+.hero .filter{
   background-color: black;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 2;
+  opacity: 0.5;
+}
+
+.hero img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  z-index: 1;
 }
 
 .hero h2 {
+  margin-top: -2rem;
   font-size: 3rem;
   margin-bottom: 1rem;
+  z-index: 3;
 }
 
 .hero p {
   font-size: 1.5rem;
   margin-bottom: 2rem;
+  z-index: 3;
+  max-width: 660px;
+}
+.hero a{
+  z-index: 3;
 }
 
 .hero button {
@@ -119,10 +210,12 @@ code {
   cursor: pointer;
 }
 
+
+
 .intro {
   width: 100%;
   text-align: center;
-  padding: 2rem 12rem 4rem 12rem;
+  padding: 3rem 12rem 5rem 12rem;
   background-color: #f8f9fa;
 }
 
@@ -133,26 +226,20 @@ code {
 
 .intro p {
   font-size: 1.25rem;
-}
+  max-width: 880px;
+  margin: auto;
 
-.products{
-  padding: 4rem;
-  width: 100%;
-  text-align: center;
-}
-
-.products h2{
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
 }
 
 
-.about {
+
+.about .wrapper{
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 2rem 4rem 5rem 4rem;
 }
+
 
 .about-content {
   flex: 1;
@@ -175,25 +262,29 @@ code {
 .about-image img {
   width: 100%;
   height: auto;
+  border-radius: 12px;
 }
 
 .testimonials {
+  background-color: #f8f9fa;
   width: 100%;
+}
+
+.testimonials .wrapper {
   display: flex;
   justify-content: space-between;
-  padding: 3rem 4rem 4rem 4rem;
-  background-color: #f8f9fa;
+  padding: 2rem 4rem 4rem 4rem;
   flex-direction: column;
 }
 
 .testimonials h2 {
   font-size: 2.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   width: 100%;
   text-align: center;
 }
 
-.testimonials > div{
+.testimonials-content{
   display: flex;
   justify-content: space-between;
 }
@@ -221,7 +312,7 @@ code {
   color: #666;
 }
 
-.contact {
+.contact .wrapper {
   display: flex;
   justify-content: space-between;
   padding: 5rem 4rem 6rem 4rem;
@@ -230,6 +321,7 @@ code {
 .contact-content {
   flex: 1;
   padding-right: 4rem;
+  align-items: center;
 }
 
 .contact-content h2 {
@@ -264,9 +356,13 @@ code {
   border-radius: 5px;
 }
 
+.contact-form textarea {
+  height: 100px;
+}
+
 .contact-form button {
   padding: 1rem 2rem;
-  font-size: 1.25rem;
+  font-size: 1rem;
   background-color: #0070f3;
   color: white;
   border: none;
@@ -279,7 +375,7 @@ footer {
   display: flex;
   justify-content: space-between;
   padding: 2rem 4rem;
-  background-color: #f8f9fa;
+  background-color: #f1f2f3;
   width: 100%;
 }
 

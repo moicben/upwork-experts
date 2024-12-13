@@ -1,7 +1,16 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 const fs = require('fs');
-const openai = require('openai');
+const OpenAI = require('openai');
+const { createClient } = require('pexels');
+require('dotenv').config();
+
+// Configurez votre clé API OpenAI
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY
+});
+
+const client = createClient('TjDN5QoTIHZDUnsn72QTd8AUZZOa8ctXqmGdfiqU7dM2OoSwLdAchoa5');
 
 // Fonction pour extraire des données spécifiques d'une URL
 async function extractData(url) {
@@ -29,33 +38,52 @@ async function generateHomepageContent(data) {
     - Shop Name : Nom de la boutique en 2 mots clés \n
     - Hero Section : Titre accrocheur de quelques mots \n
     - Hero Section : Description de 2 phrases courtes pour la Hero Section \n
-    - Hero Image : 3 mots clés pour décrire l'image de fond de la Hero Section \n
-    - Intro Section : Titre accrocheur de quelques mots \n
-    - Intro Section : Paragraphe de 3 phrases pour la Intro Section \n
-    - About Section : Titre accrocheur de quelques mots \n
+    - Hero Image : 2 mots en rapport avec les produits de la boutique. \n
+    - Intro Section : Titre accrocheur pour introduire la boutique \n
+    - Intro Section : Paragraphe d'introduction de la boutique attraytant de 4 phrases \n
+    - About Section : Titre accrocheur d'une phrase très courte \n
     - About Section : Paragraphe de 4 phrases pour la About Section \n
-    - About Image : 3 mots clés pour décrire l'image de la About Section \n
+    - About Image : 2 mots en rapport avec la boutique.\n
     - Testimonial Autor 1 : Prénom et nom de famille français singulier  \n
-    - Testimonial Content 1 : Commentaire de 3 phrases d'un client \n
+    - Testimonial Content 1 : Commentaire long de 3 phrases d'un client \n
     - Testimonial Autor 2 : Prénom et nom de famille français singulier  \n
-    - Testimonial Content 2 : Commentaire de 3 phrases d'un client \n
+    - Testimonial Content 2 : Commentaire long de 3 phrases d'un client \n
     - Testimonial Autor 3 : Prénom et nom de famille français singulier  \n
-    - Testimonial Content 3 : Commentaire de 3 phrases d'un client \n
-    - Contact Title : Titre accrocheur pour la section Contact \n
+    - Testimonial Content 3 : Commentaire long de 3 phrases d'un client \n
+    - Contact Title : Titre accrocheur d'une phrase très courte \n
     - Contact Description : Paragraphe de 2 phrases pour la section Contact \n
     - Footer Text : Texte de 2 phrases pour le footer \n
+    \n
+    Rédige uniquement les éléments de contenu demandés, rien d'autres \n
+    N'inclus pas les indications ou le nom des sections dans ta rédaction \n
+    Voici les éléments de contenu rédigés : \n
     `;
 
     const response = await openai.chat.completions.create({
         model: 'gpt-4o',
         messages: [
-            { role: 'system', content: 'You are a helpful assistant.' },
+            { role: 'system', content: 'Tu es un assistant français specialisé en rédaction de site e-commerce singulier et attrayant. ' },
             { role: 'user', content: prompt }
         ],
         max_tokens: 1000
     });
 
     return response.choices[0].message.content.trim();
+}
+
+// Fonction pour rechercher une image sur Pexels
+async function searchImage(keywords) {
+    const query = keywords;
+    const response = await client.photos.search({
+        query, per_page: 1,
+        orientation: 'landscape',
+        per_page: 1,
+    });
+
+    if (response.photos.length > 0) {
+        return response.photos[0].src.large;
+    }
+    return '';
 }
 
 // Fonction principale
@@ -67,34 +95,43 @@ async function main() {
     // Extraire les données de l'URL
     const data = await extractData(site.source);
 
-    console.log('Processing website:', data);
+    console.log('Processing website:', site);
 
     // Générer le contenu de la page d'accueil
     const homepageContent = await generateHomepageContent(data);
 
     // Parser le contenu généré et mettre à jour content.json
     const lines = homepageContent.split('\n').map(line => line.trim()).filter(line => line);
-    site.shopName = lines[0].replace('Shop Name : ', '');
-    site.heroTitle = lines[1].replace('Hero Section : ', '');
-    site.heroDescription = lines[2].replace('Hero Section : ', '');
-    site.heroImage = lines[3].replace('Hero Image : ', '');
-    site.introTitle = lines[4].replace('Intro Section : ', '');
-    site.introDescription = lines[5].replace('Intro Section : ', '');
-    site.aboutTitle = lines[6].replace('About Section : ', '');
-    site.aboutDescription = lines[7].replace('About Section : ', '');
-    site.aboutImage = lines[8].replace('About Image : ', '');
-    site.testimonial1 = lines[9].replace('Testimonial Autor 1 : ', '');
-    site.author1 = lines[10].replace('Testimonial Content 1 : ', '');
-    site.testimonial2 = lines[11].replace('Testimonial Autor 2 : ', '');
-    site.author2 = lines[12].replace('Testimonial Content 2 : ', '');
-    site.testimonial3 = lines[13].replace('Testimonial Autor 3 : ', '');
-    site.author3 = lines[14].replace('Testimonial Content 3 : ', '');
-    site.contactTitle = lines[15].replace('Contact Title : ', '');
-    site.contactDescription = lines[16].replace('Contact Description : ', '');
-    site.footerText = lines[17].replace('Footer Text : ', '');
+    site.sourceParent = data.parent;
+    site.sourceCategory = data.category;
+    site.shopName = lines[0];
+    site.heroTitle = lines[1];
+    site.heroDescription = lines[2];
+    site.heroImageKeywords = lines[3];
+    site.introTitle = lines[4];
+    site.introDescription = lines[5];
+    site.aboutTitle = lines[6];
+    site.aboutDescription = lines[7];
+    site.aboutImageKeywords = lines[8];
+    site.testimonial1 = lines[9];
+    site.author1 = lines[10];
+    site.testimonial2 = lines[11];
+    site.author2 = lines[12];
+    site.testimonial3 = lines[13];
+    site.author3 = lines[14];
+    site.contactTitle = lines[15];
+    site.contactDescription = lines[16];
+    site.footerText = lines[17];
+
+    // Rechercher les images sur Pexels
+    site.heroImageUrl = await searchImage(site.heroImageKeywords);
+    site.aboutImageUrl = await searchImage(site.aboutImageKeywords);
+
+    // Linker les produits
+    //site.products = [];
 
     // Écrire les modifications dans content.json
-    fs.writeFileSync('content.json', JSON.stringify(content, null, 2), 'utf8');
+    fs.writeFileSync('../content.json', JSON.stringify(content, null, 2), 'utf8');
 }
 
 main();

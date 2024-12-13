@@ -1,137 +1,80 @@
-import Head from 'next/head'
+import Head from 'next/head';
 import React from 'react';
 import { FaShoppingCart } from 'react-icons/fa';
 
-import content from '../content.json'
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import Products from '../components/Products'; // Importer le composant Products
+import Testimonials from '@components/Testimonials';
+import About from '@components/About';
+
+import content from '../content.json';
+import productsData from '../products.json';
+
+
+// Limite l'affichage au premier site
+const site = content.sites[0]; 
+// Import + Filtrer les produits par site
+const products = productsData.products.filter(product => product.siteId === site.id); 
+
 
 export default function Home() {
-  const site = content.sites[0]; // Limite l'affichage au premier site
-
+  
   return (
-    <div className="container">
-      <Head className="header">
-        <title>Next.js Starter!</title>
+    <div key={site.id} className="container">
+      <Head>
+        <title>{site.sourceCategory} - {site.shopName}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       
-      <main key={site.id}>
-        <section className="sub">
-          Livraison gratuite en 48h | Produit Made in France | 10% de promotion : WELCOME10
-        </section>
-        <header className="header">
-            <h2>{site.shopName}</h2>
-          <nav className="nav">
-            <ul>
-              <li><a href="/">Home</a></li>
-              <li><a href="/shop">Shop</a></li>
-              <li><a href="/about">About</a></li>
-              <li><a href="/contact">Contact</a></li>
-            </ul>
-          </nav>
-          <div className="cart-icon">
-            <FaShoppingCart />
-          </div>
-        </header>
+      <main>
+        <Header shopName={site.shopName} />
         
-        <section className="hero" style={{ backgroundImage: `url('/path/to/your/image.jpg')` }}>
-          <h2>{site.heroTitle}</h2>
-          <p>{site.heroDescription}</p>
-          <button>Shop Now</button>
+        <section className="hero">
+            <h2>{site.heroTitle}</h2>
+            <p>{site.heroDescription}</p>
+            <a href="/boutique"><button>Découvrir les produits</button></a>
+            <div className='filter'></div>
+            <img src={site.heroImageUrl} alt={site.sourceCategory} />
         </section>
         
         <section className="intro">
-          <h2>{site.introTitle}</h2>
-          <p>{site.introDescription}</p>
+          <div className='wrapper'>
+            <h2>{site.introTitle}</h2>
+            <p>{site.introDescription}</p>
+          </div>
         </section>
 
-        <section className="products">
-          <h2>Tous nos produits</h2>
-          
-        </section>
+        <Products title={`Tous les produits ${site.shopName}`} products={products} />
         
-        <section className="about">
-          <div className="about-content">
-            <h2>{site.aboutTitle}</h2>
-            <p>{site.aboutDescription}</p>
-          </div>
-          <div className="about-image">
-            <img src="/path/to/your/image.jpg" alt="About Us" />
-          </div>
-        </section>
+        <About site={site}/>
         
-        <section className="testimonials">
-          <h2>Nos clients témoignent !</h2>
-          <div>
-            <blockquote className="testimonial">
-              <p>{site.testimonial1}</p>
-              <p>{site.author1}</p>
-            </blockquote>
-            <blockquote className="testimonial">
-              <p>{site.testimonial2}</p>
-              <p>{site.author2}</p>
-            </blockquote>
-            <blockquote className="testimonial">
-              <p>{site.testimonial3}</p>
-              <p>{site.author3}</p>
-            </blockquote>
-          </div>
-        </section>
+        <Testimonials site={site}/>
         
-        <section className="contact">
-          <div className="contact-content">
-            <h2>{site.contactTitle}</h2>
-            <p>{site.contactDescription}</p>
-          </div>
-          <div className="contact-form">
-            <form>
-              <label htmlFor="name">Name</label>
-              <input type="text" id="name" name="name" required />
-              
-              <label htmlFor="email">Email</label>
-              <input type="email" id="email" name="email" required />
-              
-              <label htmlFor="message">Message</label>
-              <textarea id="message" name="message" required></textarea>
-              
-              <button type="submit">Send</button>
-            </form>
+        <section className="contact" id='contact'>
+          <div className='wrapper'>
+            <div className="contact-content">
+              <h2>{site.contactTitle}</h2>
+              <p>{site.contactDescription}</p>
+            </div>
+            <div className="contact-form">
+              <form>
+                <label htmlFor="name">Nom complet</label>
+                <input placeholder="Paul Dupont" type="text" id="name" name="name" required />
+                
+                <label htmlFor="email">Email</label>
+                <input placeholder='exemple@gmail.com' type="email" id="email" name="email" required />
+                
+                <label htmlFor="message">Votre demande</label>
+                <textarea placeholder="Écrivez votre demande ici..." id="message" name="message" required></textarea>
+                
+                <button type="submit">Envoyer</button>
+              </form>
+            </div>
           </div>
         </section>
       </main>
-
-      <footer>
-        <div class="footer-column">
-          <h4>{site.shopName}</h4>
-          <p>{site.footerText}</p>
-        </div>
-        <div class="footer-column">
-          <h4>Navigation</h4>
-          <ul>
-            <li><a href="/">Accueil</a></li>
-            <li><a href="/shop">Boutique</a></li>
-            <li><a href="/about">À propos</a></li>
-            <li><a href="/contact">Contact</a></li>
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h4>Informations</h4>
-          <ul>
-            <li><a href="/conditions-generales">Conditions Générales</a></li>
-            <li><a href="/confidentialite">Politique de Confidentialité</a></li>
-            <li><a href="/mentions-legales">Mentions Légales</a></li>
-            <li><a href="/sitemap.xml">Sitemap</a></li>
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h4>Newsletter</h4>
-          <form action="mailto:benedikt.strokin@gmail.com"> 
-            <label for="email">Inscrivez-vous pour des nouvelles et des offres exclusives :</label>
-            <input type="email" id="email" name="email" placeholder="Votre email" required />
-            <button type="submit">S'inscrire</button>
-          </form>
-        </div>
-      </footer>
-       
+      <Footer shopName={site.shopName} footerText={site.footerText} />
     </div>
-  )
+  );
 }

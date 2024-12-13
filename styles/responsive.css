@@ -1,0 +1,196 @@
+@media (max-width: 1024px) {
+    .sub{
+        font-size: .75rem;
+    }
+    
+    .header{
+        padding: 0.25rem 2rem;
+    }
+
+    .header .nav ul{
+        display: none;
+        width: 100%;
+        position: absolute;
+        left: 0;
+        top: 80px;
+        background-color: white;
+        z-index: 100;
+        flex-direction: column;
+    }
+
+    .cart-icon{
+        position: absolute;
+        right: 80px;
+      }
+
+    .nav ul {
+
+    }
+
+    .nav ul li {
+        margin: 2rem 0;
+        text-align: center;
+    }
+
+    .burger-icon {
+        display: block;
+        margin-top: 8px;
+    }
+
+    .cart-icon{
+        margin-top: 8px;
+    }
+    
+
+
+
+    .hero{
+        padding: 0 2rem;
+    }
+
+    .hero h2,
+    .intro h2,
+    .products h2,
+    .about h2{
+        font-size: 2rem;
+    }
+
+    .hero h2{
+        margin-bottom: 0;
+    }
+
+    .hero p{
+        font-size: 1.25rem;
+    }
+
+    .hero button{
+        font-size: 1.1rem;
+    }
+
+    .intro,
+    .products .wrapper{
+        padding:0.65rem 1.5rem 3rem 1.5rem;	
+    }
+
+    .intro p{
+        font-size: 1rem;
+    }
+
+    .product-list{
+        grid-template-columns:repeat(2, 1fr);
+        gap: .5rem;
+    }
+
+    .product-item{
+        padding: .75rem .5rem;
+        min-width: 160px;
+        border-radius: 6px;
+    }
+
+    .product-item img{
+        height:140px;
+        min-width: 140px;
+    }
+
+    .product-item h3{
+        font-size: 1rem;
+        height:66px;
+    }
+
+    .pagination span{
+        font-size: .75rem;
+        width: 45px;
+    }
+
+    .pagination button{
+        background-color: black;
+        width: 110px;
+        font-size: .85rem;
+      }
+
+    .product-detail .wrapper{
+        padding: 2rem 1.5rem 0 1.5rem;
+    }
+
+    .product-columns{
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .product-info h1{
+        font-size: 1.5rem;
+        margin-top: 0;
+    }
+
+
+
+
+
+
+
+
+
+    .about .wrapper{
+        padding: 1rem 1.5rem 2rem 1.5rem;
+        flex-direction: column-reverse;
+    }
+
+    .about-content{
+        padding: 0;
+    }
+
+    .about p{
+        font-size: 1rem;
+    }
+
+    .testimonials .wrapper{
+        padding: 2rem 1.5rem 1.5rem 1.5rem;
+    }
+
+    .testimonials h2{
+        margin-top: 0;
+        font-size: 2rem;
+        text-align: left;
+    }
+    .testimonials-content{
+        flex-direction: column;
+    }
+
+    .testimonial{
+        margin: 0;
+        margin-bottom: .25rem;
+    }
+
+    .contact .wrapper{
+        flex-direction: column;
+        padding: 2rem 1.5rem 2.5rem 1.5rem;
+    }
+
+    .contact-content{
+        padding: 0%;
+    }
+
+    .contact h2{
+        margin-top: 0;
+        font-size: 2rem;
+    }
+
+    .contact p{
+        font-size: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    footer{
+        flex-direction: column;
+        padding: 2.5rem 1.5rem;
+    }
+    
+    .footer-column{
+            margin: 0 0 1.5rem 0;
+    }
+
+    footer h4{
+        margin-top: 0;
+    }
+    
+  }
