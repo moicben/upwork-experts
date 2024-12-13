@@ -2,16 +2,16 @@ import { NetlifyAPI } from 'netlify';
 import { execSync } from 'child_process';
 import path from 'path';
 import dotenv from 'dotenv';
-import content from '../content.json' assert { type: 'json' };
+import content from './content.json' assert { type: 'json' };
 
 dotenv.config();
 
-const NETLIFY_API_TOKEN = 'nfp_a5XErPtzsBUdRcZ1BFSiqPkxPk4h6L18babb';
+const NETLIFY_API_TOKEN = process.env.NETLIFY_API_TOKEN;
 const DOMAIN = 'expert-francais.shop';
 
 const subdomains = [
     content.sites[0].slug,
-    "test2",
+    "test4",
     // Ajoutez autant de sous-domaines que nécessaire
 ];
 
@@ -51,7 +51,7 @@ function buildProject() {
 
 async function deploySite(siteId, siteName) {
     try {
-        const outDir = path.resolve('./out'); // Répertoire de sortie après la construction
+        const outDir = path.resolve('.next'); // Répertoire de sortie après la construction
         // Utiliser netlify-cli pour déployer le répertoire de sortie
         execSync(`netlify deploy --prod --dir=${outDir} --site=${siteId}`, { stdio: 'inherit' });
         console.log(`Site deployed: https://${siteName}.netlify.app`);
