@@ -109,7 +109,7 @@ async function searchImage(keywords) {
 // Fonction principale
 async function main() {
     // Lire le fichier content.json
-    const content = JSON.parse(fs.readFileSync('../content.json', 'utf8'));
+    const content = JSON.parse(fs.readFileSync('./content.json', 'utf8'));
     const site = content.sites[0]; // Limite l'affichage au premier site
 
     // Extraire les données de l'URL
@@ -156,7 +156,7 @@ async function main() {
     }
 
     // Écrire les modifications dans content.json
-    fs.writeFileSync('../content.json', JSON.stringify(content, null, 2), 'utf8');
+    fs.writeFileSync('./content.json', JSON.stringify(content, null, 2), 'utf8');
 }
 
 main();

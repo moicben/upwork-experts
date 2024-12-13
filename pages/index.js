@@ -33,7 +33,7 @@ export default function Home() {
         <section className="hero">
             <h2>{site.heroTitle}</h2>
             <p>{site.heroDescription}</p>
-            <a href="/boutique"><button>Découvrir les produits</button></a>
+            <a href="/boutique"><button>Découvrir nos produits</button></a>
             <div className='filter'></div>
             <img src={site.heroImageUrl} alt={site.sourceCategory} />
         </section>

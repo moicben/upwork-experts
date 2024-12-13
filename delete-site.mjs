@@ -4,8 +4,7 @@ const NETLIFY_API_TOKEN = 'nfp_a5XErPtzsBUdRcZ1BFSiqPkxPk4h6L18babb';
 const NETLIFY_TEAM_ID = 'YOUR_NETLIFY_TEAM_ID';
 
 const siteIds = [
-  'test5.expert-francais.shop',
-  'expert-francais',
+  'apprentissage-proprete.expert-francais.shop',
   // Ajoutez autant de site IDs que nécessaire
 ];
 

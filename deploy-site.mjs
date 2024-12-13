@@ -10,23 +10,33 @@ const NETLIFY_API_TOKEN = process.env.NETLIFY_API_TOKEN;
 const DOMAIN = 'expert-francais.shop';
 
 const subdomains = [
-    //content.sites[0].slug,
     content.sites[0].slug,
     // Ajoutez autant de sous-domaines que nécessaire
 ];
 
 const api = new NetlifyAPI(NETLIFY_API_TOKEN);
 
-async function createSite(subdomain) {
+async function createOrUpdateSite(subdomain) {
     try {
-        const site = await api.createSite({
-            body: {
-                name: `${subdomain}.${DOMAIN}`,
-                custom_domain: `${subdomain}.${DOMAIN}`
-            }
-        });
+        const siteUrl = `https://${subdomain}.${DOMAIN}`;
+        let site;
 
-        console.log(`Site created: ${site.url}`);
+        // Vérifier si le site existe déjà
+        const sites = await api.listSites();
+        site = sites.find(s => s.ssl_url === siteUrl || s.url === siteUrl);
+
+        if (site) {
+            console.log(`Site already exists: ${site.ssl_url || site.url}`);
+        } else {
+            // Créer un nouveau site s'il n'existe pas
+            site = await api.createSite({
+                body: {
+                    name: `${subdomain}.${DOMAIN}`,
+                    custom_domain: `${subdomain}.${DOMAIN}`
+                }
+            });
+            console.log(`Site created: ${site.ssl_url || site.url}`);
+        }
 
         // Générer le sitemap
         generateSitemap();
@@ -34,10 +44,10 @@ async function createSite(subdomain) {
         // Construire le projet Next.js
         buildProject();
 
-        // Déployer le répertoire actuel sur le site créé
+        // Déployer le répertoire actuel sur le site créé ou existant
         await deploySite(site.id, site.name);
     } catch (error) {
-        console.error(`Error creating site for ${subdomain}:`, error.message);
+        console.error(`Error creating or updating site for ${subdomain}:`, error.message);
     }
 }
 
@@ -78,11 +88,11 @@ function delay(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function createSites() {
+async function createOrUpdateSites() {
     for (const subdomain of subdomains) {
-        await createSite(subdomain);
+        await createOrUpdateSite(subdomain);
         await delay(1000); // Ajoute un délai de 1 seconde entre les requêtes
     }
 }
 
-createSites();
+createOrUpdateSites();
