@@ -1,11 +1,14 @@
 import { NetlifyAPI } from 'netlify';
 import { execSync } from 'child_process';
 import path from 'path';
+import { resolve, join } from 'path';
 import dotenv from 'dotenv';
 import content from './content.json' assert { type: 'json' };
 import { google } from 'googleapis';
 import fs from 'fs';
+import { createWriteStream, writeFileSync } from 'fs';
 import { fileURLToPath } from 'url';
+import { SitemapStream } from 'sitemap';
 
 dotenv.config();
 
@@ -13,11 +16,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const NETLIFY_API_TOKEN = process.env.NETLIFY_API_TOKEN;
-const DOMAIN = 'expert-francais.shop';
+const DOMAIN = process.env.DOMAIN;
 const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI, GOOGLE_REFRESH_TOKEN_WEBMASTER, GOOGLE_REFRESH_TOKEN_VERIFICATION, GOOGLE_SCOPE } = process.env;
 
 const subdomains = [
-    content.sites[0].slug,
+  content.sites[0].slug,
+    
     // Ajoutez autant de sous-domaines que nécessaire
 ];
 
@@ -49,6 +53,7 @@ const siteVerification = google.siteVerification({
   version: 'v1',
   auth: oauth2ClientVerification
 });
+
 
 async function askVerifyToken(siteUrl) {
   try {
@@ -121,7 +126,7 @@ async function submitSitemap(siteUrl, sitemapUrl) {
     }
 }
 
-async function addSite (site, siteUrl, sitemapUrl) {
+async function addSite(site, siteUrl, sitemapUrl) {
   try {
     console.log(`Adding site to Google Search Console: ${siteUrl}`);
     // Ajouter le site à Google Search Console
@@ -131,20 +136,23 @@ async function addSite (site, siteUrl, sitemapUrl) {
     // Demander le jeton de vérification du site
     await askVerifyToken(siteUrl);
 
-     // Générer le sitemap
-     await generateSitemap();
+    // Lire les produits pour le site
+    console.log(`Products for site ${site.slug}:`, products);
 
-     // Générez le fichier robots.txt
+    // Générer le sitemap
+    await generateSitemap();
+
+    // Générez le fichier robots.txt
     await generateRobotsTxt();
 
-     // Construire le projet Next.js
-     await buildProject();
- 
-     // Déployer le répertoire actuel sur le site créé ou déjà existant
-     await deploySite(site.id, site.name);
- 
-     // Attendre que le déploiement soit terminé
-     await waitForDeployment(site.id);
+    // Construire le projet Next.js
+    await buildProject();
+
+    // Déployer le répertoire actuel sur le site créé ou déjà existant
+    await deploySite(site.id, site.name);
+
+    // Attendre que le déploiement soit terminé
+    await waitForDeployment(site.id);
 
     // Vérifier la propriété du site via le jeton publié
     await verifySite(siteUrl);
@@ -158,14 +166,13 @@ async function addSite (site, siteUrl, sitemapUrl) {
   }
 }
 
-async function updateSite(site, siteUrl, sitemapUrl) {
+async function updateSite(subdomain, siteUrl) {
   try {
-
     // Générer le sitemap
-    await generateSitemap();
+    await generateSitemap(subdomain);
 
     // Générez le fichier robots.txt
-    await generateRobotsTxt();
+    await generateRobotsTxt(subdomain);
 
     // Construire le projet Next.js
     console.log('Building project...');
@@ -196,7 +203,7 @@ async function createOrUpdateSite(subdomain) {
     if (site) {
         console.log(`Site already exists: ${site.ssl_url || site.url}`);
 
-        await updateSite(site, siteUrl, `${siteUrl}/sitemap.xml`);
+        await updateSite(subdomain, siteUrl);
 
     } else {
 
@@ -218,25 +225,66 @@ async function createOrUpdateSite(subdomain) {
   }
 }
 
-async function generateSitemap() {
+async function generateSitemap(subdomain) {
   try {
-    // Exécuter la commande pour générer le sitemap
-    execSync('npm run generate-sitemap', { stdio: 'inherit' });
-    console.log('Sitemap generated successfully');
-  } catch (error) {
-    console.error('Error generating sitemap:', error.message);
-    process.exit(1);
+    const sitemap = new SitemapStream({ hostname: `https://${subdomain}.${DOMAIN}` });
+    const productsData = JSON.parse(fs.readFileSync(`./products/${subdomain}.json`, 'utf8'));
+
+
+    // Add static pages
+    sitemap.write({ url: '/', changefreq: 'daily', priority: 1.0 });
+    sitemap.write({ url: '/boutique', changefreq: 'weekly', priority: 0.8 });
+    sitemap.write({ url: '/mentions-legales', changefreq: 'monthly', priority: 0.5 });
+    sitemap.write({ url: '/politique-de-confidentialite', changefreq: 'monthly', priority: 0.5 });
+    sitemap.write({ url: '/conditions-generales', changefreq: 'monthly', priority: 0.5 });
+
+
+    // Vérification et conversion de l'objet en tableau
+    const products = Array.isArray(productsData.products)
+     ? productsData.products
+     : Object.values(productsData.products);
+
+      if (!Array.isArray(products)) {
+          console.error("Erreur : 'products' n'est pas convertible en tableau.");
+          return;
+      }
+
+    //console.log(`Products for site ${subdomain}:`, products);
+
+    // Add dynamic product pages
+    products.forEach(product => {
+      sitemap.write({ url: `/produits/${product.slug}`, changefreq: 'weekly', priority: 0.7 });
+    });
+
+    sitemap.end();
+
+    const sitemapPath = resolve('public/sitemap.xml');
+    const writeStream = createWriteStream(sitemapPath);
+
+    sitemap.pipe(writeStream).on('finish', () => {
+      console.log('Sitemap generated at', sitemapPath);
+    }).on('error', (err) => {
+      console.error('Error generating sitemap:', err);
+    });
   }
+  catch (error) {
+    console.error('Error generating sitemap:', error.message);
+  }
+  
 }
 
-async function generateRobotsTxt() {
+async function generateRobotsTxt(subdomain) {
   try {
-    // Exécuter la commande pour générer le sitemap
-    execSync('npm run generate-robots', { stdio: 'inherit' });
-    console.log('Robots.txt generated successfully');
+    const robotsTxt = `User-agent: *
+    Allow: /
+    Sitemap: https://${subdomain}.expert-francais.shop/sitemap.xml`;
+    
+    const robotsPath = resolve('public/robots.txt');
+    writeFileSync(robotsPath, robotsTxt);
+    console.log('Robots.txt generated at', robotsPath);
+
   } catch (error) {
     console.error('Error generating robots.txt:', error.message);
-    process.exit(1);
   }
 }
 

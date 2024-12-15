@@ -32,7 +32,7 @@ export default function Boutique() {
   return (
     <div key={site.id} className="container">
       <Head>
-        <title>Tous les produits : {site.sourceCategory} - {site.shopName}</title>
+        <title>{"Tous les produits : " + site.sourceCategory + site.shopName}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       

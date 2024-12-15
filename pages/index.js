@@ -18,7 +18,7 @@ const Home = ({ site, products }) => {
   return (
     <div key={site.id} className="container">
       <Head>
-        <title>{site.shopName} - {site.keyword} - {site.heroTitle}</title>
+        <title>{site.shopName + " - " + site.keyword + " - " + site.heroTitle}</title>
         <meta name="description" content={site.heroDescription} />
         <link rel="icon" href="/favicon.ico" />
       </Head>

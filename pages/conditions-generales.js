@@ -9,7 +9,6 @@ import About from '@components/About';
 import Testimonials from '@components/Testimonials';
 
 import content from '../content.json';
-import productsData from '../products.json';
 
 
 // Limite l'affichage au premier site
