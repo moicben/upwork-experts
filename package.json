@@ -7,14 +7,18 @@
     "build": "next build",
     "start": "next start",
     "export": "next build && next export",
-    "generate-sitemap": "node generate-sitemap.mjs"
+    "generate-sitemap": "node generate-sitemap.mjs",
+    "generate-robots": "node generate-robots.mjs"
   },
   "dependencies": {
     "@netlify/plugin-nextjs": "^5.9.0",
-    "@next/font": "^14.2.15",
+    "next/font": "^14.2.15",
+    "fs": "^0.0.1-security",
+    "googleapis": "^144.0.0",
     "next": "^15.1.0",
     "next-netlify-starter": "file:",
     "openai": "^4.76.1",
+    "path": "^0.12.7",
     "pexels": "^1.4.0",
     "puppeteer": "^23.10.4",
     "react": "^18.2.0",

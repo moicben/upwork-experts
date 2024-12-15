@@ -1,9 +1,11 @@
 import Head from 'next/head';
 import content from '../../content.json';
-import productsData from '../../products.json';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Products from '../../components/Products';
+import fs from 'fs';
+import path from 'path';
+
 
 export default function ProductDetail({ product, site, products }) {
   if (!product) {
@@ -13,7 +15,7 @@ export default function ProductDetail({ product, site, products }) {
   return (
     <div className="container">
       <Head>
-        <title>{product.name} - {site.shopName}</title>
+        <title>{product.productTitle} - {site.shopName}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       
@@ -24,14 +26,15 @@ export default function ProductDetail({ product, site, products }) {
           <div className='wrapper'>
             <div className="product-columns">
               <div className="product-image">
-                <img src={product.imageUrl} alt={product.name} />
+                <img src={product.productImage} alt={product.productTitle} />
+                <img src={product.productImage2} alt={product.productTitle + "2"} />
+                <img src={product.productImage3} alt={product.productTitle + "3"} />
               </div>
               <div className="product-info">
-                <h1>{product.name}</h1>
-                <p className="product-price">{product.price}</p>
+                <h1>{product.productTitle}</h1>
+                <p className="product-price">{product.productPrice}</p>
                 <button>Ajouter au panier</button>
                 <div className="product-content">
-                  <h3>À propos du produit</h3>
                   <div className="product-description" dangerouslySetInnerHTML={{ __html: product.description }} />
                 </div>
               </div>
@@ -46,17 +49,54 @@ export default function ProductDetail({ product, site, products }) {
 }
 
 export async function getStaticPaths() {
-  const paths = productsData.products.map(product => ({
-    params: { slug: product.slug },
-  }));
+  const paths = content.sites.flatMap(site => {
+    try {
+      const filePath = path.join(process.cwd(), 'products', `${site.slug}.json`);
+      const fileContent = fs.readFileSync(filePath, 'utf8');
+      if (!fileContent) {
+        console.warn(`File ${filePath} is empty. Skipping.`);
+        return [];
+      }
+      const productsData = JSON.parse(fileContent);
+      return productsData.products.map(product => ({
+        params: { slug: product.slug },
+      }));
+    } catch (error) {
+      console.error(`Error loading products for site ${site.slug}:`, error);
+      return [];
+    }
+  });
 
   return { paths, fallback: false };
 }
 
 export async function getStaticProps({ params }) {
-  const product = productsData.products.find(p => p.slug === params.slug);
-  const site = content.sites.find(s => s.id === product.siteId);
-  const products = productsData.products.filter(p => p.siteId === site.id);
+  const isLocalhost = process.env.NODE_ENV === 'development';
+  let product = null;
+  let site = null;
+  let products = [];
+
+  const sitesToCheck = isLocalhost ? [content.sites[0]] : content.sites;
+
+  for (const s of sitesToCheck) {
+    try {
+      const filePath = path.join(process.cwd(), 'products', `${s.slug}.json`);
+      const fileContent = fs.readFileSync(filePath, 'utf8');
+      if (!fileContent) {
+        console.warn(`File ${filePath} is empty. Skipping.`);
+        continue;
+      }
+      const productsData = JSON.parse(fileContent);
+      product = productsData.products.find(p => p.slug === params.slug);
+      if (product) {
+        site = s;
+        products = productsData.products.filter(p => p.siteId === site.id);
+        break;
+      }
+    } catch (error) {
+      console.error(`Error loading products for site ${s.slug}:`, error);
+    }
+  }
 
   return {
     props: {

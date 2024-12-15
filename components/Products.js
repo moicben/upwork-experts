@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import content from '../content.json';
 
-const Products = ({title, products }) => {
+const Products = ({ title, products }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
 
@@ -18,10 +17,6 @@ const Products = ({title, products }) => {
     setCurrentPage(pageNumber);
   };
 
-  // Limite l'affichage au premier site
-  const site = content.sites[0]; 
-
-
   return (
     <section className="products">
       <div className='wrapper'>
@@ -29,9 +24,9 @@ const Products = ({title, products }) => {
         <div className="product-list">
           {currentProducts.map(product => (
             <a href={`/produits/${product.slug}`} key={product.id} className="product-item">
-              <img src={product.imageUrl} alt={product.name} />
-              <h3>{product.name}</h3>
-              <p>{product.price}</p>
+              <img src={product.productImage} alt={product.productTitle} />
+              <h3>{product.productTitle}</h3>
+              <p>{product.productPrice}</p>
             </a>
           ))}
         </div>

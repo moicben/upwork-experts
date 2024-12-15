@@ -101,7 +101,6 @@
     }
 
     .pagination button{
-        background-color: black;
         width: 110px;
         font-size: .85rem;
       }
@@ -112,12 +111,16 @@
 
     .product-columns{
         flex-direction: column;
-        gap: 0;
+        gap: 2rem;
     }
 
     .product-info h1{
         font-size: 1.5rem;
         margin-top: 0;
+    }
+
+    .product-image img:nth-child(3){
+        display: none;
     }
 
 

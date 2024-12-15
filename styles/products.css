@@ -64,7 +64,7 @@
 
 .product-columns {
   display: flex;
-  gap: 2rem;
+  gap: 4rem;
 }
 
 .product-image {
@@ -73,6 +73,13 @@
 
 .product-image img{
     width: 100%;
+    max-height: 544px;
+    object-fit: contain;
+}
+
+.product-image img:nth-child(2),
+  .product-image img:nth-child(3){
+    margin-top: 4rem;
 }
 
 .product-info {
@@ -80,13 +87,41 @@
 }
 
 .product-info h1{
-    font-size: 2rem;
+    font-size: 1.75rem;
 }
 
 .product-info .product-description {
     
     margin-bottom: 1rem;
     max-width: 520px;
+}
+
+.product-description ul,
+.product-description ol{
+  display: block;
+  list-style: decimal;
+}
+
+.product-description li{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: .5rem;
+}
+
+.product-description td {
+  border: solid 1px grey;
+  margin: 0;
+  padding: 4px 8px;
+  font-size: .95rem;
+}
+
+.product-description h3{
+  margin-top:2rem;
+}
+
+.product-description h4{
+  margin-bottom: -.5rem;
+  font-weight: 600;
 }
 
 .product-info .product-price {
@@ -118,7 +153,7 @@
 }
 
 .pagination span{
-  width: 52px;
+  width: 55px;
 }
 
 .pagination button{

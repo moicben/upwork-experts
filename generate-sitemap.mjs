@@ -3,7 +3,7 @@ import { createWriteStream } from 'fs';
 import { resolve } from 'path';
 
 import content from './content.json' assert { type: 'json' };
-import productsData from './products.json' assert { type: 'json' };
+import productsData from './products/old.json' assert { type: 'json' };
 
 // Limite l'affichage au premier site
 const site = content.sites[0]; 
@@ -35,4 +35,4 @@ async function generateSitemap() {
   });
 }
 
-generateSitemap();
+await generateSitemap();

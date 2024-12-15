@@ -15,7 +15,7 @@ body {
   box-sizing: border-box;
 }
 
-ul {
+ul, ol {
   display: flex;
   list-style-type: none;
   padding: 0;
@@ -61,6 +61,13 @@ button {
   border-radius: 5px;
   cursor: pointer;
   font-weight: 500;
+}
+
+table {
+  border-collapse: collapse;
+}
+td {
+  margin: 0; /* Optionnel, mais s'assure qu'il n'y a pas de marge */
 }
 
 
