@@ -6,7 +6,6 @@ import Products from '../../components/Products';
 import fs from 'fs';
 import path from 'path';
 
-
 export default function ProductDetail({ product, site, products }) {
   if (!product) {
     return <p>Produit non trouvé</p>;
@@ -52,6 +51,10 @@ export async function getStaticPaths() {
   const paths = content.sites.flatMap(site => {
     try {
       const filePath = path.join(process.cwd(), 'products', `${site.slug}.json`);
+      if (!fs.existsSync(filePath)) {
+        //console.warn(`File ${filePath} does not exist. Skipping site ${site.slug}.`);
+        return [];
+      }
       const fileContent = fs.readFileSync(filePath, 'utf8');
       if (!fileContent) {
         console.warn(`File ${filePath} is empty. Skipping.`);
@@ -81,6 +84,10 @@ export async function getStaticProps({ params }) {
   for (const s of sitesToCheck) {
     try {
       const filePath = path.join(process.cwd(), 'products', `${s.slug}.json`);
+      if (!fs.existsSync(filePath)) {
+        //console.warn(`File ${filePath} does not exist. Skipping site ${s.slug}.`);
+        continue;
+      }
       const fileContent = fs.readFileSync(filePath, 'utf8');
       if (!fileContent) {
         console.warn(`File ${filePath} is empty. Skipping.`);

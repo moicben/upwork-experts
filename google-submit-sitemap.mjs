@@ -54,8 +54,8 @@ async function submitSitemap(siteUrl, sitemapUrl) {
   }
 }
 
-const siteUrl = "https://apprentissage-proprete.expert-francais.shop/";
-const sitemapUrl = "https://apprentissage-proprete.expert-francais.shop/sitemap.xml";
+const siteUrl = "https://radiateur-electrique.expert-francais.shop/";
+const sitemapUrl = "https://radiateur-electrique.expert-francais.shop/sitemap.xml";
 
 // Envoyer le sitemap à Google Search Console
 await submitSitemap(siteUrl, sitemapUrl);

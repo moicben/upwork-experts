@@ -11,9 +11,6 @@ import About from '@components/About';
 import content from '../content.json';
   
 const Home = ({ site, products }) => {
-  if (!site) {
-    return <p>Site non trouvé</p>;
-  }
 
   return (
     <div key={site.id} className="container">
@@ -85,7 +82,7 @@ const Home = ({ site, products }) => {
         const filePath = path.join(process.cwd(), 'products', `${siteSlug}.json`);
         const fileContent = fs.readFileSync(filePath, 'utf8');
         if (!fileContent) {
-          console.warn(`File ${filePath} is empty. Skipping.`);
+          //console.warn(`File ${filePath} is empty. Skipping.`);
           return [];
         }
         const productsData = JSON.parse(fileContent);
@@ -98,7 +95,7 @@ const Home = ({ site, products }) => {
 
     // Déterminer le site à afficher
     const isLocalhost = process.env.NODE_ENV === 'development';
-    const site = isLocalhost ? content.sites[0] : content.sites.find(site => site.slug === process.env.NEXT_PUBLIC_SITE_SLUG);
+    const site = isLocalhost ? content.sites[6] : content.sites.find(site => site.slug === process.env.NEXT_PUBLIC_SITE_SLUG);
     if (!site) {
       console.error('Site not found');
       return {

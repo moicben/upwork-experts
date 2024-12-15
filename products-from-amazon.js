@@ -124,7 +124,7 @@ async function main() {
     const content = JSON.parse(fs.readFileSync('./content.json', 'utf8'));
 
     for (const site of content.sites) {
-        const slug = site.keyword.toLowerCase().replace(/ /g, '-').replace(/é/g, 'e').replace(/è/g, 'e').replace(/ê/g, 'e').replace(/à/g, 'e').replace(/[^\w-]+/g, '');
+        const slug = site.keyword.toLowerCase().replace(/ de/,'').replace(/ la/,'').replace(/ le/,'').replace(/l /,'').replace(/ /g, '-').replace(/é/g, 'e').replace(/ /g, '-').replace(/é/g, 'e').replace(/è/g, 'e').replace(/ê/g, 'e').replace(/à/g, '').replace(/[^\w-]+/g, '').replace(/---+/g, '-').replace(/--+/g, '-');
         const productsFilePath = path.join('./products', `${slug}.json`);
 
         // Vérifier si le fichier existe déjà
@@ -132,7 +132,6 @@ async function main() {
             //console.log(`${productsFilePath} existe déjà. Passer à la boutique suivante.`);
             continue; // Passer à la boutique suivante
         }
-        fs.writeFileSync(productsFilePath, "");
 
         // Vérifier si la source est définie
         if (!site.source) {
@@ -146,6 +145,7 @@ async function main() {
         //console.log(`${site.keyword} - ${products.length} produits extraits`);
 
         let productsData = { products: [] };
+        fs.writeFileSync(productsFilePath, "");
 
         for (const [index, product] of products.entries()) {
             console.log(`${site.keyword} - ${index + 1}/${products.length} `);

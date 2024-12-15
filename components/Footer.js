@@ -5,11 +5,11 @@ const Footer = ({ shopName, footerText }) => {
   return (
     <>
       <footer>
-        <div class="footer-column">
+        <div className="footer-column">
         <a href="/"><h4>{shopName}</h4></a>
           <p>{footerText}</p>
         </div>
-        <div class="footer-column">
+        <div className="footer-column">
           <h4>Navigation</h4>
           <ul>
             <li><a href="/">Accueil</a></li>
@@ -18,7 +18,7 @@ const Footer = ({ shopName, footerText }) => {
             <li><a href="/contact">Contact</a></li>
           </ul>
         </div>
-        <div class="footer-column">
+        <div className="footer-column">
           <h4>Informations</h4>
           <ul>
             <li><a href="/conditions-generales">Conditions Générales</a></li>
@@ -27,7 +27,7 @@ const Footer = ({ shopName, footerText }) => {
             <li><a target='_blank' href="/sitemap.xml">Sitemap</a></li>
           </ul>
         </div>
-        <div class="footer-column">
+        <div className="footer-column">
           <h4>Newsletter</h4>
           <form action="mailto:benedikt.strokin@gmail.com"> 
             <label for="email">Inscrivez-vous pour des nouvelles et des offres exclusives :</label>

@@ -17,7 +17,7 @@ function launchMultipleExecutions(scriptPath, numberOfExecutions) {
             child.on('exit', (code) => {
                 console.log(`Child ${i} exited with code ${code}`);
             });
-        }, i * 7000); // Différer chaque lancement de 10 secondes
+        }, i * 20000); // Différer chaque lancement de 10 secondes
     }
 }
 

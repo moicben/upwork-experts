@@ -33,4 +33,4 @@ async function getCrawlStats(siteUrl) {
   }
 }
 
-getCrawlStats('https://apprentissage-proprete.expert-francais.shop/');
+getCrawlStats('https://test.expert-francais.shop/');

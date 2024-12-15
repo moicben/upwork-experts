@@ -57,7 +57,7 @@
     {
       "id": 5,
       "keyword": "Isolation fenêtres",
-      "slug": "isolation-fentres",
+      "slug": "isolation-fenetres",
       "shopName": "Fenêtres Isolées",
       "heroTitle": "Chaleur et Sérénité",
       "heroDescription": "Offrez à votre maison le confort qu'elle mérite grâce à notre sélection de fenêtres isolantes. Fabriqué en France, chaque produit est pensé pour allier performance énergétique et élégance.",
@@ -189,7 +189,7 @@
     {
       "id": 43,
       "keyword": "Tensiomètre bras",
-      "slug": "tensiomtre-bras",
+      "slug": "tensiometre-bras",
       "source": "https://www.amazon.fr/s?k=tensiomtre+bras&__mk_fr_FR=ÅMÅŽÕÑ",
       "shopName": "Tensiomètre Essentiel",
       "heroTitle": "Votre Bien-Être Sous Contrôle",
@@ -215,7 +215,7 @@
     {
       "id": 44,
       "keyword": "Thermomètre connecté",
-      "slug": "thermomtre-connecte",
+      "slug": "thermometre-connecte",
       "source": "https://www.amazon.fr/s?k=thermomtre+connecte&__mk_fr_FR=ÅMÅŽÕÑ",
       "shopName": "Thermo Connect",
       "heroTitle": "Innovation Thermale",
@@ -241,7 +241,7 @@
     {
       "id": 45,
       "keyword": "Glucomètre portable",
-      "slug": "glucomtre-portable",
+      "slug": "glucometre-portable",
       "source": "https://www.amazon.fr/s?k=glucomtre+portable&__mk_fr_FR=ÅMÅŽÕÑ",
       "shopName": "Glycémie Précise",
       "heroTitle": "Votre santé, notre priorité",
@@ -683,7 +683,7 @@
     {
       "id": 62,
       "keyword": "Livres grands caractères",
-      "slug": "livres-grands-caractres",
+      "slug": "livres-grands-caracteres",
       "source": "https://www.amazon.fr/s?k=livres+grands+caractres&__mk_fr_FR=ÅMÅŽÕÑ",
       "shopName": "ClairLettre",
       "heroTitle": "Lisez Distinctement",
@@ -813,7 +813,7 @@
     {
       "id": 67,
       "keyword": "Système goutte-à-goutte",
-      "slug": "systme-goutte-goutte",
+      "slug": "systeme-goutte-goutte",
       "source": "https://www.amazon.fr/s?k=systme+goutte+goutte&__mk_fr_FR=ÅMÅŽÕÑ",
       "shopName": "Sève Verte",
       "heroTitle": "L'irrigation à la française",
@@ -1021,7 +1021,7 @@
     {
       "id": 75,
       "keyword": "Litière autonettoyante",
-      "slug": "litire-autonettoyante",
+      "slug": "litiere-autonettoyante",
       "source": "https://www.amazon.fr/s?k=litire+autonettoyante&__mk_fr_FR=ÅMÅŽÕÑ",
       "shopName": "Éclat Animalier",
       "heroTitle": "Litières Futuristes",
@@ -1411,7 +1411,7 @@
     {
       "id": 90,
       "keyword": "Sous-vêtements thermiques",
-      "slug": "sous-vtements-thermiques",
+      "slug": "sous-vetements-thermiques",
       "source": "https://www.amazon.fr/s?k=sous+vtements+thermiques&__mk_fr_FR=ÅMÅŽÕÑ",
       "shopName": "Chaleur Douce",
       "heroTitle": "Confort Élégant, Made in France",

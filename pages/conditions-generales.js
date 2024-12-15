@@ -13,8 +13,6 @@ import content from '../content.json';
 
 // Limite l'affichage au premier site
 const site = content.sites[0]; 
-// Import + Filtrer les produits par site
-const products = productsData.products.filter(product => product.siteId === site.id); 
 
 
 export default function Mentions() {

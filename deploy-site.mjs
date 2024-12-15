@@ -19,15 +19,16 @@ const NETLIFY_API_TOKEN = process.env.NETLIFY_API_TOKEN;
 const DOMAIN = process.env.DOMAIN;
 const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI, GOOGLE_REFRESH_TOKEN_WEBMASTER, GOOGLE_REFRESH_TOKEN_VERIFICATION, GOOGLE_SCOPE } = process.env;
 
-const subdomains = [
-  content.sites[0].slug,
+// const subdomains = [
+//   content.sites[1].slug,
     
-    // Ajoutez autant de sous-domaines que nécessaire
-];
+//     // Ajoutez autant de sous-domaines que nécessaire
+// ];
+const subdomains = content.sites.map(site => site.slug);
 
 const api = new NetlifyAPI(NETLIFY_API_TOKEN);
 
-console.log('Initializing OAuth2 client...');
+//console.log('Initializing OAuth2 client...');
 const oauth2ClientWebmaster = new google.auth.OAuth2(
   GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET,
@@ -54,6 +55,9 @@ const siteVerification = google.siteVerification({
   auth: oauth2ClientVerification
 });
 
+async function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 async function askVerifyToken(siteUrl) {
   try {
@@ -110,15 +114,15 @@ async function verifySite(siteUrl) {
     }
 }
 
-async function submitSitemap(siteUrl, sitemapUrl) {
+async function submitSitemap(siteUrl) {
     try {
-        console.log(`Submitting sitemap: ${sitemapUrl}`);
+        console.log(`Submitting sitemap: ${siteUrl}`);
         // Envoyer le sitemap à Google Search Console
         await webmasters.sitemaps.submit({
           siteUrl,
-          feedpath: sitemapUrl
+          feedpath: `${siteUrl}/sitemap.xml` 
         });
-        console.log(`Sitemap submitted: ${sitemapUrl}`);
+        console.log(`Sitemap submitted: ${siteUrl}`);
     }
     catch (error) {
         console.error('Error submitting sitemap:', error.message);
@@ -126,7 +130,7 @@ async function submitSitemap(siteUrl, sitemapUrl) {
     }
 }
 
-async function addSite(site, siteUrl, sitemapUrl) {
+async function addSite(subdomain, siteUrl) {
   try {
     console.log(`Adding site to Google Search Console: ${siteUrl}`);
     // Ajouter le site à Google Search Console
@@ -136,29 +140,25 @@ async function addSite(site, siteUrl, sitemapUrl) {
     // Demander le jeton de vérification du site
     await askVerifyToken(siteUrl);
 
-    // Lire les produits pour le site
-    console.log(`Products for site ${site.slug}:`, products);
-
     // Générer le sitemap
-    await generateSitemap();
+    await generateSitemap(subdomain);
 
     // Générez le fichier robots.txt
-    await generateRobotsTxt();
+    await generateRobotsTxt(subdomain);
 
     // Construire le projet Next.js
     await buildProject();
 
     // Déployer le répertoire actuel sur le site créé ou déjà existant
-    await deploySite(site.id, site.name);
+    await deploySite(subdomain);
 
-    // Attendre que le déploiement soit terminé
-    await waitForDeployment(site.id);
+    await delay(20000); // Attendre 10 secondes avant de vérifier la propriété du site
 
     // Vérifier la propriété du site via le jeton publié
     await verifySite(siteUrl);
 
     // Envoyer le sitemap à Google Search Console
-    await submitSitemap(siteUrl, sitemapUrl);
+    await submitSitemap(siteUrl);
 
   } catch (error) {
     console.error('Error adding site ', error.message);
@@ -169,21 +169,20 @@ async function addSite(site, siteUrl, sitemapUrl) {
 async function updateSite(subdomain, siteUrl) {
   try {
     // Générer le sitemap
-    await generateSitemap(subdomain);
+    //await generateSitemap(subdomain);
 
     // Générez le fichier robots.txt
-    await generateRobotsTxt(subdomain);
+    await generateRobotsTxt(subdomain); 
 
     // Construire le projet Next.js
-    console.log('Building project...');
     await buildProject();
 
     // Déployer le répertoire actuel sur le site créé ou déjà existant
-    await deploySite(site.id, site.name);
+    await deploySite(subdomain);
 
     console.log(`Sending sitemap to Google Search Console: ${siteUrl}`);
     // Envoyer le sitemap à Google Search Console
-    await submitSitemap(siteUrl, sitemapUrl);
+    await submitSitemap(siteUrl);
 
   } catch (error) {
     console.error('Error updating site ', error.message);
@@ -193,31 +192,35 @@ async function updateSite(subdomain, siteUrl) {
 
 async function createOrUpdateSite(subdomain) {
   try {
+
     const siteUrl = `https://${subdomain}.${DOMAIN}`;
     let site;
+
+    // Vérifier si le fichier de produits existe sinon passer
+    const productsFilePath = path.join(__dirname, 'products', `${subdomain}.json`);
+    if (!fs.existsSync(productsFilePath)) {
+      return;
+    }
 
     // Vérifier si le site existe déjà
     const sites = await api.listSites();
     site = sites.find(s => s.ssl_url === siteUrl || s.url === siteUrl);
 
     if (site) {
-        console.log(`Site already exists: ${site.ssl_url || site.url}`);
-
-        await updateSite(subdomain, siteUrl);
-
+      console.log(`Site already exists: ${site.ssl_url || site.url}`);
+      await updateSite(subdomain, siteUrl);
     } else {
+      // Créer le nouveau site sur Netlify
+      site = await api.createSite({
+        body: {
+          name: `${subdomain}.${DOMAIN}`,
+          custom_domain: `${subdomain}.${DOMAIN}`
+        }
+      });
+      console.log(`Site created: ${site.ssl_url || site.url}`);
 
-        // Créer le nouveau site sur Netlify
-        site = await api.createSite({
-            body: {
-                name: `${subdomain}.${DOMAIN}`,
-                custom_domain: `${subdomain}.${DOMAIN}`
-            }
-        });
-        console.log(`Site created: ${site.ssl_url || site.url}`);
-
-        // Lancer la création du site
-        await addSite(site, siteUrl, `${siteUrl}/sitemap.xml`);
+      // Lancer la création du site
+      await addSite(subdomain, siteUrl);
     }
 
   } catch (error) {
@@ -288,7 +291,7 @@ async function generateRobotsTxt(subdomain) {
   }
 }
 
-function buildProject() {
+async function buildProject() {
   try {
     // Exécuter la commande de construction Next.js
     execSync('npm run build', { stdio: 'inherit' });
@@ -299,45 +302,22 @@ function buildProject() {
   }
 }
 
-async function deploySite(siteId, siteName) {
+async function deploySite(subdomain) {
   try {
     const outDir = path.resolve('./out'); // Répertoire de sortie après la construction
     // Utiliser netlify-cli pour déployer le répertoire de sortie
-    execSync(`netlify deploy --prod --dir=${outDir} --site=${siteId}`, { stdio: 'inherit' });
-    console.log(`Site deployed: https://${siteName}.netlify.app`);
+    execSync(`netlify deploy --prod --dir=${outDir} --site=${subdomain}.${DOMAIN}`, { stdio: 'inherit' });
+    console.log(`Site deployed: https://${subdomain}.netlify.app`);
   } catch (error) {
     console.error(`Error deploying site:`, error.message);
   }
 }
 
-async function waitForDeployment(siteId) {
-  try {
-    console.log(`Waiting for deployment to complete for site ID: ${siteId}`);
-    let deploymentCompleted = false;
-    while (!deploymentCompleted) {
-      const deploys = await api.listSiteDeploys({ site_id: siteId });
-      const latestDeploy = deploys[0];
-      if (latestDeploy.state === 'ready') {
-        deploymentCompleted = true;
-        console.log(`Deployment completed for site ID: ${siteId}`);
-      } else {
-        console.log(`Deployment not yet completed for site ID: ${siteId}. Waiting...`);
-        await delay(10000); // Attendre 10 secondes avant de vérifier à nouveau
-      }
-    }
-  } catch (error) {
-    console.error(`Error waiting for deployment to complete:`, error.message);
-  }
-}
 
-function delay(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
 
 async function createOrUpdateSites() {
   for (const subdomain of subdomains) {
     await createOrUpdateSite(subdomain);
-    await delay(5000); // Ajoute un délai de 5 seconde entre les requêtes
   }
 }
 
