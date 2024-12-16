@@ -21,7 +21,7 @@ async function generateHomepageContent(keyword) {
     Insiste sur la qualité Made in France et la pertinence de la boutique pour des acheteurs français. \n
     Voici la série d'éléments de contenu à rédiger : \n
     - Shop Name : Nom de la boutique en 2 mots clés \n
-    - Hero Section : Titre accrocheur de quelques mots \n
+    - Hero Section : Titre accrocheur de quelques mots commençant par ${keyword} (6 ou 7 mots)\n
     - Hero Section : Description de 2 phrases courtes pour la Hero Section \n
     - Hero Image : 2 mots en rapport avec les produits de la boutique. \n
     - Intro Section : Titre accrocheur pour introduire la boutique \n
@@ -38,9 +38,13 @@ async function generateHomepageContent(keyword) {
     - Contact Title : Titre accrocheur d'une phrase très courte \n
     - Contact Description : Paragraphe de 2 phrases pour la section Contact \n
     - Footer Text : Texte de 2 phrases pour le footer \n
+    - Couleur de fond foncé pour les boutons : Code héxadécimal \n
+    - Description des produits : Court paragraphe SEO pour introduire les produits \n
     \n
     Rédige uniquement les éléments de contenu demandés, rien d'autres \n
-    N'inclus pas les indications ou le nom des sections dans ta rédaction \n
+    N'inclus aucunes indications dans ta rédaction \n
+    N'inclus aucunes balises HTML ou CSS \n
+    N'inclus pas le nom des éléments de contenu \n
     Voici les éléments de contenu rédigés : \n
     `;
 
@@ -81,7 +85,7 @@ async function searchImage(keywords) {
     const query = keywords;
     const response = await client.photos.search({
         query, per_page: 1,
-        orientation: 'landscape',
+        //orientation: 'landscape',
         per_page: 1,
     });
 
@@ -97,7 +101,7 @@ async function main() {
     const content = JSON.parse(fs.readFileSync('./content.json', 'utf8'));
 
     for (const site of content.sites) {
-        if (site.keyword && !site.shopName) {
+        if (site.keyword) {
 
             console.log('Processing website:', site);
 
@@ -106,6 +110,7 @@ async function main() {
 
             // Parser le contenu généré et mettre à jour content.json
             const lines = homepageContent.split('\n').map(line => line.trim()).filter(line => line);
+            site.keywordPlurial = site.keyword.replace(/ /g, 's ') + 's';
             site.slug = site.keyword.toLowerCase().replace(/ de/,'').replace(/ la/,'').replace(/ le/,'').replace(/l /,'').replace(/ /g, '-').replace(/é/g, 'e').replace(/ /g, '-').replace(/é/g, 'e').replace(/è/g, 'e').replace(/ê/g, 'e').replace(/à/g, '').replace(/[^\w-]+/g, '').replace(/---+/g, '-').replace(/--+/g, '-');
             site.source = `https://www.amazon.fr/s?k=${(site.slug).replace(/-/g, '+')}&__mk_fr_FR=ÅMÅŽÕÑ` 
             site.shopName = lines[0];
@@ -126,9 +131,11 @@ async function main() {
             site.contactTitle = lines[15];
             site.contactDescription = lines[16];
             site.footerText = lines[17];
+            site.buttonColor = lines[18];
+            site.productsDescription = lines[19];
 
             // Rechercher les images sur Pexels
-            site.heroImageUrl = await searchImage(lines[0]);
+            site.heroImageUrl = await searchImage(site.keyword);
             site.aboutImageUrl = await searchImage(site.aboutImageKeywords);
 
             // Vérifier si les URLs des images sont identiques et régénérer si nécessaire

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Products = ({ title, products }) => {
+const Products = ({ title, products, description }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
 
@@ -20,7 +20,8 @@ const Products = ({ title, products }) => {
   return (
     <section className="products">
       <div className='wrapper'>
-        <h2>{title}</h2>
+        <h1>{title}</h1>
+        <h4>{description}</h4>
         <div className="product-list">
           {currentProducts.map(product => (
             <a href={`/produits/${product.slug}`} key={product.id} className="product-item">

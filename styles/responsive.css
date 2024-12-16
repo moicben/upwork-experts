@@ -1,54 +1,10 @@
 @media (max-width: 1024px) {
-    .sub{
-        font-size: .75rem;
-    }
     
-    .header{
-        padding: 0.25rem 2rem;
-    }
-
-    .header .nav ul{
-        display: none;
-        width: 100%;
-        position: absolute;
-        left: 0;
-        top: 80px;
-        background-color: white;
-        z-index: 100;
-        flex-direction: column;
-    }
-
-    .cart-icon{
-        position: absolute;
-        right: 80px;
-      }
-
-    .nav ul {
-
-    }
-
-    .nav ul li {
-        margin: 2rem 0;
-        text-align: center;
-    }
-
-    .burger-icon {
-        display: block;
-        margin-top: 8px;
-    }
-
-    .cart-icon{
-        margin-top: 8px;
-    }
-    
-
-
-
     .hero{
         padding: 0 2rem;
     }
 
-    .hero h2,
+    .hero h1,
     .intro h2,
     .products h2,
     .about h2{

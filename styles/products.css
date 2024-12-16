@@ -8,9 +8,16 @@
   text-align: center;
 }
 
-.products h2{
+.products h1{
   font-size: 2.5rem;
   margin-bottom: 2rem;
+}
+
+.products h4{
+  font-size: 1.25rem;
+  font-weight: 400;
+  max-width: 860px;
+  margin:2rem auto 3rem auto;
 }
 
 
@@ -21,7 +28,7 @@
 }
 
 .product-item {
-  padding: 1rem;
+  padding: 2rem;
   box-sizing: border-box;
   text-align: left;
   border: .5px solid #dee2e6;
@@ -52,96 +59,7 @@
   font-weight: 600;
 }
 
-/*PRODUCT PAGE*/
-/*PRODUCT PAGE*/
-/*PRODUCT PAGE*/
 
-.product-detail .wrapper{
-  padding: 4rem 4rem 0 4rem;
-  max-width: 1280px;
-}
-
-
-.product-columns {
-  display: flex;
-  gap: 4rem;
-}
-
-.product-image {
-  flex: 1;
-}
-
-.product-image img{
-    width: 100%;
-    max-height: 544px;
-    object-fit: contain;
-}
-
-.product-image img:nth-child(2),
-  .product-image img:nth-child(3){
-    margin-top: 4rem;
-}
-
-.product-info {
-  flex: 1;
-}
-
-.product-info h1{
-    font-size: 1.75rem;
-}
-
-.product-info .product-description {
-    
-    margin-bottom: 1rem;
-    max-width: 520px;
-}
-
-.product-description ul,
-.product-description ol{
-  display: block;
-  list-style: decimal;
-}
-
-.product-description li{
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: .5rem;
-}
-
-.product-description td {
-  border: solid 1px grey;
-  margin: 0;
-  padding: 4px 8px;
-  font-size: .95rem;
-}
-
-.product-description h3{
-  margin-top:2rem;
-}
-
-.product-description h4{
-  margin-bottom: -.5rem;
-  font-weight: 600;
-}
-
-.product-info .product-price {
-    margin-top: 0rem;
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-}
-
-.product-content, .product-features {
-  margin-top: 2rem;
-}
-
-.product-content h2, .product-features h2 {
-  margin-bottom: 1rem;
-}
-
-.product-content p, .product-features p {
-  margin-bottom: 1rem;
-}
 
 
 .pagination {
@@ -152,13 +70,13 @@
   align-items: center;
 }
 
-.pagination span{
+.pagination span {
   width: 55px;
 }
 
-.pagination button{
+.pagination button {
   background-color: white;
   color: black;
   border: 1px solid black;
-  width: 120px;
+  width: 130px;
 }

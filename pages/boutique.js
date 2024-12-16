@@ -9,36 +9,19 @@ import About from '@components/About';
 import Testimonials from '@components/Testimonials';
 
 import content from '../content.json';
+import productsData from '../products.json';
 
-// Fonction pour obtenir les produits d'un site donné
-const getProductsForSite = (siteSlug) => {
-  try {
-    const productsData = require(`../products/${siteSlug}.json`);
-    return productsData.products;
-  } catch (error) {
-    console.error(`Error loading products for site ${siteSlug}:`, error);
-    return [];
-  }
-};
-
-// Déterminer le site à afficher
-const isLocalhost = typeof window !== 'undefined' && window.location.hostname === 'localhost';
-const site = isLocalhost ? content.sites[0] : content.sites.find(site => site.slug === process.env.NEXT_PUBLIC_SITE_SLUG);
-
-// Importer les produits pour le site déterminé
-const products = getProductsForSite(site.slug);
-
-export default function Boutique() {
+const Boutique = ({ site, products }) => {
   return (
     <div key={site.id} className="container">
       <Head>
-        <title>{"Tous les produits : " + site.sourceCategory + site.shopName}</title>
+        <title>{"Tous nos " + site.keyword + site.shopName}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       
       <main>
         <Header shopName={site.shopName} />
-        <Products title={`Tous les produits ${site.shopName}`} products={products} />
+        <Products title={`${site.keyword} - Tous nos produits`} products={products} description={site.productsDescription} />
         <About site={site} />
         <Testimonials site={site} />
       </main>
@@ -46,3 +29,19 @@ export default function Boutique() {
     </div>
   );
 }
+
+
+export async function getStaticProps() {
+  const content = await import('../content.json');
+  const productsData = await import('../products.json');
+
+  return {
+    props: {
+      site: content.sites[0],
+      products: productsData.products,
+    },
+  };
+}
+
+
+export default Boutique;

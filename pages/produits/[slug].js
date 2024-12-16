@@ -1,46 +1,110 @@
+import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import content from '../../content.json';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Products from '../../components/Products';
-import fs from 'fs';
-import path from 'path';
+import productsData from '../../products.json';
 
 export default function ProductDetail({ product, site, products }) {
-  if (!product) {
-    return <p>Produit non trouvé</p>;
+  const [cartCount, setCartCount] = useState(0);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [quantity, setQuantity] = useState(1);
+  const images = [product.productImage, product.productImage2, product.productImage3, product.productImage4, product.productImage5];
+
+  useEffect(() => {
+    const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+    setCartCount(storedCart.length);
+  }, []);
+
+  if (!product || !site) {
+    return <div>Produit ou site non trouvé</div>;
   }
+
+  const handleAddToCart = () => {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const productWithQuantity = { ...product, quantity };
+    cart.push(productWithQuantity);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    setCartCount(cart.length);
+    // Ouvrir le drawer du panier
+    document.querySelector('.cart-container').click();
+  };
+
+  const handleImageClick = (index) => {
+    setSelectedImageIndex(index);
+  };
+
+  const handleNextClick = () => {
+    setSelectedImageIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
+  };
 
   return (
     <div className="container">
       <Head>
         <title>{product.productTitle} - {site.shopName}</title>
         <link rel="icon" href="/favicon.ico" />
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        />
       </Head>
       
       <main>
-        <Header shopName={site.shopName} />
+        <Header shopName={site.shopName} cartCount={cartCount} />
         
-        <section className="product-detail">
-          <div className='wrapper'>
+        <section className="product-hero">
             <div className="product-columns">
               <div className="product-image">
-                <img src={product.productImage} alt={product.productTitle} />
-                <img src={product.productImage2} alt={product.productTitle + "2"} />
-                <img src={product.productImage3} alt={product.productTitle + "3"} />
+                <div className="thumbnail-container">
+                  {images.map((image, index) => (
+                    <img
+                      key={index}
+                      src={image}
+                      alt={`${product.productTitle} ${index + 1}`}
+                      onClick={() => handleImageClick(index)}
+                      className={`thumbnail ${selectedImageIndex === index ? 'selected' : ''}`}
+                    />
+                  ))}
+                  <button onClick={handleNextClick} className="arrow next">
+                    <i className="fas fa-chevron-down"></i>
+                  </button>
+                </div>
+                <img src={images[selectedImageIndex]} alt={product.productTitle} className="large-image" />
               </div>
               <div className="product-info">
                 <h1>{product.productTitle}</h1>
                 <p className="product-price">{product.productPrice}</p>
-                <button>Ajouter au panier</button>
-                <div className="product-content">
-                  <div className="product-description" dangerouslySetInnerHTML={{ __html: product.description }} />
-                </div>
+                <article className="purchase-row">
+                  <div className="quantity-selector">
+                    <button onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}>-</button>
+                    <span>{quantity}</span>
+                    <button onClick={() => setQuantity(quantity + 1)}>+</button>
+                  </div>
+                  <button onClick={handleAddToCart}>Ajouter au panier</button>
+                </article>
+                <ul className='product-features'>
+                  <li>
+                    <span><i className="fas fa-lock"></i>Paiement Sécurisé</span><img src='/card-badges.png' alt={"paiement " + site.keyword} />
+                  </li>
+                  <li>
+                    <span><i className="fas fa-check"></i>En stock, expédié sous 24/48h</span>
+                  </li>
+                  <li>
+                    <span><i className="fas fa-truck"></i>Livraison Suivie OFFERTE</span>
+                  </li>
+                </ul>
               </div>
-            </div>
           </div>
         </section>
-        <Products title={`Produits similaires`} products={products} />
+  
+        <section className="product-description">
+          <div className="wrapper">
+            <div className="product-content" dangerouslySetInnerHTML={{ __html: product.description }} />
+          </div>
+        </section>
+  
+        <Products title={`Vous pourriez également aimer :`} products={products} />
       </main>
       <Footer shopName={site.shopName} footerText={site.footerText} />
     </div>
@@ -48,67 +112,22 @@ export default function ProductDetail({ product, site, products }) {
 }
 
 export async function getStaticPaths() {
-  const paths = content.sites.flatMap(site => {
-    try {
-      const filePath = path.join(process.cwd(), 'products', `${site.slug}.json`);
-      if (!fs.existsSync(filePath)) {
-        //console.warn(`File ${filePath} does not exist. Skipping site ${site.slug}.`);
-        return [];
-      }
-      const fileContent = fs.readFileSync(filePath, 'utf8');
-      if (!fileContent) {
-        console.warn(`File ${filePath} is empty. Skipping.`);
-        return [];
-      }
-      const productsData = JSON.parse(fileContent);
-      return productsData.products.map(product => ({
-        params: { slug: product.slug },
-      }));
-    } catch (error) {
-      console.error(`Error loading products for site ${site.slug}:`, error);
-      return [];
-    }
-  });
+  const paths = productsData.products.map(product => ({
+    params: { slug: product.slug },
+  }));
 
   return { paths, fallback: false };
 }
 
 export async function getStaticProps({ params }) {
-  const isLocalhost = process.env.NODE_ENV === 'development';
-  let product = null;
-  let site = null;
-  let products = [];
-
-  const sitesToCheck = isLocalhost ? [content.sites[0]] : content.sites;
-
-  for (const s of sitesToCheck) {
-    try {
-      const filePath = path.join(process.cwd(), 'products', `${s.slug}.json`);
-      if (!fs.existsSync(filePath)) {
-        //console.warn(`File ${filePath} does not exist. Skipping site ${s.slug}.`);
-        continue;
-      }
-      const fileContent = fs.readFileSync(filePath, 'utf8');
-      if (!fileContent) {
-        console.warn(`File ${filePath} is empty. Skipping.`);
-        continue;
-      }
-      const productsData = JSON.parse(fileContent);
-      product = productsData.products.find(p => p.slug === params.slug);
-      if (product) {
-        site = s;
-        products = productsData.products.filter(p => p.siteId === site.id);
-        break;
-      }
-    } catch (error) {
-      console.error(`Error loading products for site ${s.slug}:`, error);
-    }
-  }
+  const product = productsData.products.find(p => p.slug === params.slug);
+  const site = content.sites[0];
+  const products = productsData.products.filter(p => p.siteId === site.id);
 
   return {
     props: {
-      product,
-      site,
+      product: product || null,
+      site: site || null,
       products,
     },
   };

@@ -1,0 +1,162 @@
+
+
+.features{
+    border-top: solid 1px #ccc;
+    width: 100%;
+}
+
+.features .wrapper{
+    display: flex;
+    justify-content: space-between;
+    padding: 3rem;
+
+}
+
+.feature-item{
+    display: flex;
+    align-items: center;
+    color: #333;
+    margin:0 1rem;
+}
+
+.feature-item svg{
+    width: 48px;
+    margin-top: -.25rem;
+}
+
+.feature-item img{
+    width: 42px;
+}
+
+.feature-item svg,
+.feature-item img{
+    margin-right: 1.25rem;
+}
+
+.feature-item p{
+    font-size: 1rem;
+    margin-right: 2rem;
+    font-weight: 500;
+}
+
+
+
+
+
+footer {
+    background-color: #000c1a;
+    width: 100%;
+ }
+
+ footer .wrapper{
+    padding: 3rem 3rem 2rem 3rem;
+ }
+
+footer article{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+  
+  .footer-column {
+    flex: 1;
+    margin: 0 1rem;
+  }
+
+
+  footer > div > article > div:nth-child(1){
+    flex: 1.25 1;
+    margin-right: 2.5rem;
+  }
+
+  footer > div > article > div:nth-child(2){
+    flex: .5 1;
+  }
+
+  footer > div > article > div:nth-child(3){
+    flex: .75 1;
+  }
+
+  footer > div > article > div:nth-child(4){
+    flex: 1 1;
+  }
+  
+  .footer-column h4 {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    color: #fff;
+  }
+  
+  .footer-column p {
+    font-size: 1rem;
+    color: #aaa;
+  }
+  
+  .footer-column ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    flex-direction: column;
+  }
+  
+  .footer-column ul li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .footer-column ul li a {
+    text-decoration: none;
+    color: #AAA;
+    font-size: 1rem;
+  }
+  
+  .footer-column form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .footer-column form label {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    color: #aaa;
+  }
+  
+  .footer-column form input {
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .footer-column form button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    background-color: #0070f3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+
+
+
+  .sub-footer{
+    border-top:solid 1px #292c41;
+    padding: 2rem 0 .5rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2.5rem 1rem 0rem 1rem;
+  }
+
+  .sub-footer *{
+    font-size: .9rem;
+    color: #292c41;
+    margin: 0;
+  }
+  
+  .sub-footer img{
+    width: 300px;
+  }

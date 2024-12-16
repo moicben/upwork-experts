@@ -28,14 +28,9 @@ async function loadCookies(page) {
 
 // Fonction pour extraire les produits
 async function extractProducts(page, url) {
-    //console.log(`Extracting products from ${url}...`);
     await page.goto(url, { waitUntil: 'networkidle2' });
     const products = [];
-
-    // let hasNextPage = true;
-    // while (hasNextPage) {
     await autoScroll(page);
-
     const content = await page.content();
     const $ = cheerio.load(content);
 
@@ -55,33 +50,27 @@ async function extractProducts(page, url) {
         }
     });
 
-    //hasNextPage = await clickPagination(page);
-    //}
-
-    //console.log(`Extracted ${products.length} products.`);
     return products;
 }
 
 // Extraction de la description et des images supplémentaires
 async function extractProductDetails(page, productUrl) {
     try {
-        //console.log(`Extracting details from ${productUrl}...`);
         await page.goto(`https://amazon.fr${productUrl}`, { waitUntil: 'networkidle2' });
-
-        // Délais de 2 secondes
         await delay(2000);
-
         const content = await page.content();
         const $ = cheerio.load(content);
 
         const description = $('#feature-bullets').text().trim().replace(/› Voir plus de détails|À propos de cet article|›/g, '').replace(/ +/g, ' ').replace(/:/g, ':<br>').replace(/\./g, '.<br>');
         const productImage2 = $('span#a-autoid-3-announce img').attr('src')?.trim();
         const productImage3 = $('span#a-autoid-4-announce img').attr('src')?.trim();
+        const productImage4 = $('span#a-autoid-5-announce img').attr('src')?.trim();
+        const productImage5 = $('span#a-autoid-6-announce img').attr('src')?.trim();
 
-        return { description, productImage2, productImage3 };
+        return { description, productImage2, productImage3, productImage4, productImage5 };
     } catch (error) {
         console.error(`Error extracting product details from ${productUrl}:`, error.message);
-        return { description: null, images: [] }; // Retourner null en cas d'erreur
+        return { description: null, images: [] };
     }
 }
 
@@ -103,7 +92,6 @@ async function autoScroll(page) {
 
 // Génération de contenu OpenAI
 async function generateContent(prompt) {
-    //console.log('Generating content with OpenAI...');
     const response = await openai.chat.completions.create({
         model: 'gpt-3.5-turbo',
         messages: [{ role: 'user', content: prompt }],
@@ -114,44 +102,32 @@ async function generateContent(prompt) {
 
 // Fonction principale
 async function main() {
-    //console.log('Starting main function...');
     const browser = await createBrowser();
     const page = await browser.newPage();
-    
-    // Charger les cookies
     await loadCookies(page);
 
     const content = JSON.parse(fs.readFileSync('./content.json', 'utf8'));
+    let productsData = JSON.parse(fs.readFileSync('./products.json', 'utf8'));
+
+    // Vider le tableau des produits existants
+    productsData.products = [];
 
     for (const site of content.sites) {
         const slug = site.keyword.toLowerCase().replace(/ de/,'').replace(/ la/,'').replace(/ le/,'').replace(/l /,'').replace(/ /g, '-').replace(/é/g, 'e').replace(/ /g, '-').replace(/é/g, 'e').replace(/è/g, 'e').replace(/ê/g, 'e').replace(/à/g, '').replace(/[^\w-]+/g, '').replace(/---+/g, '-').replace(/--+/g, '-');
-        const productsFilePath = path.join('./products', `${slug}.json`);
 
-        // Vérifier si le fichier existe déjà
-        if (fs.existsSync(productsFilePath)) {
-            //console.log(`${productsFilePath} existe déjà. Passer à la boutique suivante.`);
-            continue; // Passer à la boutique suivante
-        }
-
-        // Vérifier si la source est définie
         if (!site.source) {
             console.log(`La source pour ${site.keyword} n'est pas définie. Passer à la boutique suivante.`);
-            continue; // Passer à la boutique suivante
+            continue;
         }
 
         console.log(`-------- Processing site: ${site.keyword} --------`);
 
         const products = await extractProducts(page, site.source);
-        //console.log(`${site.keyword} - ${products.length} produits extraits`);
-
-        let productsData = { products: [] };
-        fs.writeFileSync(productsFilePath, "");
 
         for (const [index, product] of products.entries()) {
             console.log(`${site.keyword} - ${index + 1}/${products.length} `);
 
-            // Extraire les détails du produit
-            let { description, productImage2, productImage3 } = await extractProductDetails(page, product.productSource);
+            let { description, productImage2, productImage3, productImage4, productImage5 } = await extractProductDetails(page, product.productSource);
              
             product.productTitle = await generateContent(`
                 Simplifie le titre suivant en respectant les critères :\n
@@ -174,7 +150,6 @@ async function main() {
                 Voici le slug du produit mis à jour : \n
             `);
 
-
             description = await generateContent(`
                 Pour le titre suivant : ${product.productTitle}, \n
                 et sa description Amazon : ${description} \n \n
@@ -195,8 +170,6 @@ async function main() {
                 Réponds, uniquement avec la section détails rédigée rien d'autres !\n
                 Voici les détails du produit rédigé au format HTML : \n
                 \n\n
-            
-            
             `);
             
             const existingProductIndex = productsData.products.findIndex(p => p.slug === productSlug);
@@ -204,21 +177,23 @@ async function main() {
             if (existingProductIndex === -1) {
                 if (description) {
                     productsData.products.push({
-                        id: productsData.products.length + 1, // Générer un nouvel ID
-                        siteId: site.id, // Utiliser l'ID du site actuel
+                        id: productsData.products.length + 1,
+                        siteId: site.id,
                         ...product,
                         slug: productSlug,
                         description,
                         productImage2: productImage2 ? productImage2.split('.').slice(0, -2).join('.') + '.' + productImage2.split('.').slice(-1) : null,
-                        productImage3: productImage3 ? productImage3.split('.').slice(0, -2).join('.') + '.' + productImage3.split('.').slice(-1) : null
+                        productImage3: productImage3 ? productImage3.split('.').slice(0, -2).join('.') + '.' + productImage3.split('.').slice(-1) : null,
+                        productImage4: productImage4 ? productImage4.split('.').slice(0, -2).join('.') + '.' + productImage4.split('.').slice(-1) : null,
+                        productImage5: productImage5 ? productImage5.split('.').slice(0, -2).join('.') + '.' + productImage5.split('.').slice(-1) : null
+                   
                     });
                 } else {
                     console.warn(`${site.keyword} - ${index + 1}/Extraction error.`);
                 }
             }
 
-            fs.writeFileSync(productsFilePath, JSON.stringify(productsData, null, 2));
-            //console.log(`Mise à jour de ${productsFilePath} terminée.`);
+            fs.writeFileSync('./products.json', JSON.stringify(productsData, null, 2));
         }
     }
 

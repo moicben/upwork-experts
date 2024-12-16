@@ -5,13 +5,13 @@ import { FaShoppingCart } from 'react-icons/fa';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Products from '../components/Products'; 
-import Testimonials from '@components/Testimonials';
-import About from '@components/About';
+import Testimonials from '../components/Testimonials';
+import About from '../components/About';
 
 import content from '../content.json';
-  
-const Home = ({ site, products }) => {
+import productsData from '../products.json';
 
+const Home = ({ site, products }) => {
   return (
     <div key={site.id} className="container">
       <Head>
@@ -24,9 +24,9 @@ const Home = ({ site, products }) => {
         <Header shopName={site.shopName} />
         
         <section className="hero">
-            <h2>{site.heroTitle}</h2>
+            <h1>{site.heroTitle}</h1>
             <p>{site.heroDescription}</p>
-            <a href="/boutique"><button>Découvrir nos produits</button></a>
+            <a href="/boutique"><button>{site.keywordPlurial}</button></a>
             <div className='filter'></div>
             <img src={site.heroImageUrl} alt={site.sourceCategory} />
         </section>
@@ -38,7 +38,7 @@ const Home = ({ site, products }) => {
           </div>
         </section>
 
-        <Products title={`Tous les produits ${site.shopName}`} products={products} />
+        <Products title={`Tous les ${site.keywordPlurial} `} products={products} />
         
         <About site={site}/>
         
@@ -72,44 +72,14 @@ const Home = ({ site, products }) => {
   );
 }
 
-  export async function getStaticProps() {
-    const fs = require('fs');
-    const path = require('path');
-
-    // Fonction pour obtenir les produits d'un site donné
-    const getProductsForSite = (siteSlug) => {
-      try {
-        const filePath = path.join(process.cwd(), 'products', `${siteSlug}.json`);
-        const fileContent = fs.readFileSync(filePath, 'utf8');
-        if (!fileContent) {
-          //console.warn(`File ${filePath} is empty. Skipping.`);
-          return [];
-        }
-        const productsData = JSON.parse(fileContent);
-        return productsData.products;
-      } catch (error) {
-        console.error(`Error loading products for site ${siteSlug}:`, error);
-        return [];
-      }
-    };
-
-    // Déterminer le site à afficher
-    const isLocalhost = process.env.NODE_ENV === 'development';
-    const site = isLocalhost ? content.sites[6] : content.sites.find(site => site.slug === process.env.NEXT_PUBLIC_SITE_SLUG);
-    if (!site) {
-      console.error('Site not found');
-      return {
-        notFound: true,
-      };
-    }
-
-  // Importer les produits pour le site déterminé
-  const products = getProductsForSite(site.slug);
+export async function getStaticProps() {
+  const content = await import('../content.json');
+  const productsData = await import('../products.json');
 
   return {
     props: {
-      site,
-      products,
+      site: content.sites[0],
+      products: productsData.products,
     },
   };
 }
