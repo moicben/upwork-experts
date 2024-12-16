@@ -20,12 +20,12 @@ export default function Mentions() {
   return (
     <div key={site.id} className="container">
       <Head>
-        <title>Tous les produits : {site.sourceCategory} - {site.shopName}</title>
+        <title>{`Conditions Générales - ${site.shopName}` }</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       
       <main>
-        <Header shopName={site.shopName} />
+        <Header shopName={site.shopName} keywordPlurial={site.keywordPlurial} />
         
         <section className='legal'>
           <h1>Conditions Générales de Vente</h1>

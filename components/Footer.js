@@ -34,6 +34,11 @@ const Footer = ({ shopName, footerText}) => {
             <div className="footer-column">
               <a href="/"><h4>{shopName}</h4></a>
               <p>{footerText}</p>
+              <div className="legal-container">
+                <a href="/conditions-generales">Conditions Générales</a>
+                <a href="/politique-de-confidentialite">Politique des données</a>
+                <a href="/mentions-legales">Mentions Légales</a>
+              </div>
             </div>
             <div className="footer-column">
               <h4>Navigation</h4>
@@ -47,9 +52,9 @@ const Footer = ({ shopName, footerText}) => {
             <div className="footer-column">
               <h4>Informations</h4>
               <ul>
-                <li><a href="/conditions-generales">Conditions Générales</a></li>
-                <li><a href="/politique-de-confidentialite">Politique de Confidentialité</a></li>
-                <li><a href="/mentions-legales">Mentions Légales</a></li>
+                <li><a href="/politique-des-retours">Politique des retours</a></li>
+                <li><a href="/suivre-mon-colis">Suivre mon colis</a></li>
+                <li><a href="/faq">FAQs</a></li>
                 <li><a target='_blank' href="/sitemap.xml">Sitemap</a></li>
               </ul>
             </div>

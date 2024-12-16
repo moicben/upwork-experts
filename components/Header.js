@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FaShoppingCart, FaBars, FaTimes, FaRegTrashAlt } from 'react-icons/fa';
 
-const Header = ({ shopName, cartCount, onAddToCart }) => {
+const Header = ({ shopName, cartCount, onAddToCart, keywordPlurial }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cart, setCart] = useState([]);
@@ -70,7 +70,7 @@ const Header = ({ shopName, cartCount, onAddToCart }) => {
   return (
     <>
       <section className="sub">
-        Livraison gratuite en 48h | Produit Made in France | CODE PROMO 10% : WELCOME10
+        Commencez 2025 en beauté : -15% sur tous nos {keywordPlurial} avec le code : "YEAR15" !
       </section>
       <header className="header">
           <a className="logo-header" href="/"><img src='/favicon.ico'/><h2>{shopName}</h2></a>

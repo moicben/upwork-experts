@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaShoppingCart } from 'react-icons/fa';
 
 import Header from '../components/Header';
@@ -12,6 +12,13 @@ import content from '../content.json';
 import productsData from '../products.json';
 
 const Boutique = ({ site, products }) => {
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+    setCartCount(storedCart.length);
+  }, []);
+
   return (
     <div key={site.id} className="container">
       <Head>
@@ -20,7 +27,7 @@ const Boutique = ({ site, products }) => {
       </Head>
       
       <main>
-        <Header shopName={site.shopName} />
+        <Header shopName={site.shopName} cartCount={cartCount} keywordPlurial={site.keywordPlurial} />
         <Products title={`${site.keyword} - Tous nos produits`} products={products} description={site.productsDescription} />
         <About site={site} />
         <Testimonials site={site} />
@@ -29,7 +36,6 @@ const Boutique = ({ site, products }) => {
     </div>
   );
 }
-
 
 export async function getStaticProps() {
   const content = await import('../content.json');
@@ -42,6 +48,5 @@ export async function getStaticProps() {
     },
   };
 }
-
 
 export default Boutique;

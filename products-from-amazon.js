@@ -29,8 +29,12 @@ async function loadCookies(page) {
 // Fonction pour extraire les produits
 async function extractProducts(page, url) {
     await page.goto(url, { waitUntil: 'networkidle2' });
+
     const products = [];
-    await autoScroll(page);
+    //await autoScroll(page);
+    await page.evaluate(() => {window.scrollBy(0, 14000);});
+    await delay(1000);
+
     const content = await page.content();
     const $ = cheerio.load(content);
 
@@ -58,8 +62,9 @@ async function extractProductDetails(page, productUrl) {
     try {
         await page.goto(`https://amazon.fr${productUrl}`, { waitUntil: 'networkidle2' });
         await delay(2000);
-        const content = await page.content();
-        const $ = cheerio.load(content);
+        
+        let content = await page.content();
+        let $ = cheerio.load(content);
 
         const description = $('#feature-bullets').text().trim().replace(/› Voir plus de détails|À propos de cet article|›/g, '').replace(/ +/g, ' ').replace(/:/g, ':<br>').replace(/\./g, '.<br>');
         const productImage2 = $('span#a-autoid-3-announce img').attr('src')?.trim();
@@ -67,7 +72,61 @@ async function extractProductDetails(page, productUrl) {
         const productImage4 = $('span#a-autoid-5-announce img').attr('src')?.trim();
         const productImage5 = $('span#a-autoid-6-announce img').attr('src')?.trim();
 
-        return { description, productImage2, productImage3, productImage4, productImage5 };
+        //Scroller vers les avis
+        await page.evaluate(() => {window.scrollBy(0, 5400);});
+
+
+        // Extraire les avis images
+        await delay(500);
+        let reviewImages = [];
+        $('div#cm_cr_carousel_images_section img').each((_, element) => {
+            let reviewImage = $(element).attr('src')?.trim();
+            reviewImage = reviewImage.split('.').slice(0, -2).join('.') + '.' + reviewImage.split('.').slice(-1)
+                        
+            if (reviewImage) {
+            reviewImages.push(reviewImage);
+            }
+        });
+
+        await page.evaluate(() => {window.scrollBy(0, 400);});
+        await delay(500);
+
+        //Extraire les avis écrits
+        let reviews = [];
+        $('span.cr-widget-FocalReviews .a-section.celwidget').each((_, element) => {
+            let review = $(element).html().trim();
+            if (review) {
+                // Nettoyer les balises HTML
+                let reviewText = $(element).find('span.review-text span').html().trim();
+                let reviewerName = $(element).find('span.a-profile-name').text().trim();
+                let reviewDate = $(element).find('span.review-date').text().trim();
+                let reviewTitle = $(element).find('a.review-title span').text().trim();
+                let reviewRating = $(element).find('i.review-rating span').text().trim();
+                let reviewerAvatar = $(element).find('img').attr('src')?.trim() || 'https://m.media-amazon.com/images/S/amazon-avatars-global/default.png';
+
+                //enlève "5,0 sur 5 étoiles" de reviewTitle
+                reviewTitle = reviewTitle.replace(/5,0 sur 5 étoiles/g, '').replace(/4,0 sur 5 étoiles/g, '').replace(/3,0 sur 5 étoiles/g, '').replace(/2,0 sur 5 étoiles/g, '').replace(/1,0 sur 5 étoiles/g, '')
+                reviewTitle = reviewTitle.replace(/5,0 sur 5/g, '').replace(/4,0 sur 5/g, '').replace(/3,0 sur 5/g, '').replace(/2,0 sur 5/g, '').replace(/1,0 sur 5/g, '')
+                reviewDate = reviewDate.replace(/en France/g, '')
+
+                let cleanedReview = `
+                <article>
+                    <img src="${reviewerAvatar}" alt="Avatar">
+                    <span>${reviewerName}</span>
+                    <li>${reviewRating}</li>
+                </article>
+                <div>
+                    <h5>${reviewTitle}</h5>
+                    <strong>${reviewDate}</strong>
+                    <span>Achat vérifié</span>
+                    <p>${reviewText}</p>
+                </div>
+                `;
+                reviews.push(cleanedReview);
+            }
+        });
+
+        return { description, productImage2, productImage3, productImage4, productImage5, reviewImages, reviews };
     } catch (error) {
         console.error(`Error extracting product details from ${productUrl}:`, error.message);
         return { description: null, images: [] };
@@ -127,7 +186,7 @@ async function main() {
         for (const [index, product] of products.entries()) {
             console.log(`${site.keyword} - ${index + 1}/${products.length} `);
 
-            let { description, productImage2, productImage3, productImage4, productImage5 } = await extractProductDetails(page, product.productSource);
+            let { description, productImage2, productImage3, productImage4, productImage5, reviewImages, reviews } = await extractProductDetails(page, product.productSource);
              
             product.productTitle = await generateContent(`
                 Simplifie le titre suivant en respectant les critères :\n
@@ -151,8 +210,8 @@ async function main() {
             `);
 
             description = await generateContent(`
-                Pour le titre suivant : ${product.productTitle}, \n
-                et sa description Amazon : ${description} \n \n
+                à partir du titre suivant : ${product.productTitle}, \n
+                et da sa description Amazon : ${description} \n \n
                 Rédige au au format HTML la section détails du produit. \n
                 - N'intègre pas le titre du produit au début de la description \n
                 - N'intègre pas de balises <head> ou <body> \n
@@ -161,7 +220,7 @@ async function main() {
                 - Utilise des sous-titres via les balises h2 et h3 pour structurer le texte \n
                 - Explicite les caractéristiques principales du produit\n
                 - Si tu n'as pas assez d'informations, invente des caractéristiques réalistes\n
-                - Soit précis et informatif pour aider le client à comprendre le produit\n
+                - Ne laisse jamais "XX" ou "à compléter" dans le texte \n
                 Suis la structure suivante : \n
                 - Paragraphe d'introduction \n
                 - Liste à puces des avantages principaux du produit \n
@@ -185,8 +244,9 @@ async function main() {
                         productImage2: productImage2 ? productImage2.split('.').slice(0, -2).join('.') + '.' + productImage2.split('.').slice(-1) : null,
                         productImage3: productImage3 ? productImage3.split('.').slice(0, -2).join('.') + '.' + productImage3.split('.').slice(-1) : null,
                         productImage4: productImage4 ? productImage4.split('.').slice(0, -2).join('.') + '.' + productImage4.split('.').slice(-1) : null,
-                        productImage5: productImage5 ? productImage5.split('.').slice(0, -2).join('.') + '.' + productImage5.split('.').slice(-1) : null
-                   
+                        productImage5: productImage5 ? productImage5.split('.').slice(0, -2).join('.') + '.' + productImage5.split('.').slice(-1) : null,
+                        reviewImages: reviewImages,
+                        reviews: reviews
                     });
                 } else {
                     console.warn(`${site.keyword} - ${index + 1}/Extraction error.`);

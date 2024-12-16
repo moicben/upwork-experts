@@ -136,14 +136,14 @@ async function main() {
 
             // Rechercher les images sur Pexels
             site.heroImageUrl = await searchImage(site.keyword);
-            site.aboutImageUrl = await searchImage(site.aboutImageKeywords);
+            //site.aboutImageUrl = await searchImage(site.aboutImageKeywords);
 
             // Vérifier si les URLs des images sont identiques et régénérer si nécessaire
-            while (site.heroImageUrl === site.aboutImageUrl) {
-                console.log('Les URLs des images sont identiques, régénération des mots clés...');
-                site.aboutImageKeywords = await regenerateKeywords('About Section');
-                site.aboutImageUrl = await searchImage(site.aboutImageKeywords);
-            }
+            // while (site.heroImageUrl === site.aboutImageUrl) {
+            //     console.log('Les URLs des images sont identiques, régénération des mots clés...');
+            //     site.aboutImageKeywords = await regenerateKeywords('About Section');
+            //     site.aboutImageUrl = await searchImage(site.aboutImageKeywords);
+            // }
         }
 
         // Écrire les modifications dans content.json

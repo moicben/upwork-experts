@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaShoppingCart } from 'react-icons/fa';
 
 import Header from '../components/Header';
@@ -12,6 +12,13 @@ import content from '../content.json';
 import productsData from '../products.json';
 
 const Home = ({ site, products }) => {
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+    setCartCount(storedCart.length);
+  }, []);
+
   return (
     <div key={site.id} className="container">
       <Head>
@@ -21,7 +28,7 @@ const Home = ({ site, products }) => {
       </Head>
       
       <main>
-        <Header shopName={site.shopName} />
+        <Header shopName={site.shopName} cartCount={cartCount} keywordPlurial={site.keywordPlurial}/>
         
         <section className="hero">
             <h1>{site.heroTitle}</h1>

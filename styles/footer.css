@@ -68,6 +68,7 @@ footer article{
   footer > div > article > div:nth-child(1){
     flex: 1.25 1;
     margin-right: 2.5rem;
+    position: relative;
   }
 
   footer > div > article > div:nth-child(2){
@@ -142,8 +143,32 @@ footer article{
 
 
 
+.legal-container{
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    left: 0;
+    width: 400px;
+    bottom: -.25rem;
+  }
+
+.legal-container *{
+  font-size: .75rem;
+    color: #555768;
+}
+
+.legal-container *:hover{
+  color: #787989;
+}
+
+
+
+
+
+
+
   .sub-footer{
-    border-top:solid 1px #292c41;
+    border-top:solid 1px #46495b;
     padding: 2rem 0 .5rem 0;
     display: flex;
     justify-content: space-between;
@@ -153,7 +178,7 @@ footer article{
 
   .sub-footer *{
     font-size: .9rem;
-    color: #292c41;
+    color: #555768;
     margin: 0;
   }
   

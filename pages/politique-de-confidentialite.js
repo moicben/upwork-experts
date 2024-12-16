@@ -17,12 +17,12 @@ const PolitiqueDeConfidentialite = () => {
 
     <div key={site.id} className="container">
       <Head>
-        <title>Tous les produits : {site.sourceCategory} - {site.shopName}</title>
+        <title>{`Politique de Confidentialité - ${site.shopName}`}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       
       <main >
-        <Header shopName={site.shopName} />
+        <Header shopName={site.shopName} keywordPlurial={site.keywordPlurial} />
 
     
       <section  className='legal'> 

@@ -51,26 +51,30 @@ export default function ProductDetail({ product, site, products }) {
       </Head>
       
       <main>
-        <Header shopName={site.shopName} cartCount={cartCount} />
+        <Header shopName={site.shopName} cartCount={cartCount} keywordPlurial={site.keywordPlurial}/>
         
         <section className="product-hero">
             <div className="product-columns">
               <div className="product-image">
                 <div className="thumbnail-container">
                   {images.map((image, index) => (
-                    <img
-                      key={index}
-                      src={image}
-                      alt={`${product.productTitle} ${index + 1}`}
-                      onClick={() => handleImageClick(index)}
-                      className={`thumbnail ${selectedImageIndex === index ? 'selected' : ''}`}
-                    />
+                    image && (
+                      <img
+                        key={index}
+                        src={image}
+                        alt={`${product.productTitle} ${index + 1}`}
+                        onClick={() => handleImageClick(index)}
+                        className={`thumbnail ${selectedImageIndex === index ? 'selected' : ''}`}
+                      />
+                    )
                   ))}
                   <button onClick={handleNextClick} className="arrow next">
                     <i className="fas fa-chevron-down"></i>
                   </button>
                 </div>
-                <img src={images[selectedImageIndex]} alt={product.productTitle} className="large-image" />
+                {images[selectedImageIndex] && (
+                  <img src={images[selectedImageIndex]} alt={product.productTitle} className="large-image" />
+                )}
               </div>
               <div className="product-info">
                 <h1>{product.productTitle}</h1>
@@ -94,7 +98,36 @@ export default function ProductDetail({ product, site, products }) {
                     <span><i className="fas fa-truck"></i>Livraison Suivie OFFERTE</span>
                   </li>
                 </ul>
+                <div className='gift-container'>
+                  <div className='cover'></div>
+                    <h4>JOYEUSE ANNÉE 2025 !</h4>
+                    <h5>AVEC {site.shopName.toUpperCase()}</h5>
+                    <p>- 15% de réduction avec le code "<strong>YEAR15</strong>"</p>
+                    <p>- Livraison gratuite sans minimum d'achat</p>
+                    <p>- Retours étendus jusqu'au 14/03/2025 </p>
+                </div>
               </div>
+          </div>
+        </section>
+
+        
+        <section className='product-reviews'>
+          <div className='wrapper'>
+            {product.reviews && product.reviews.length > 0 ? (
+              <div className='slider'>
+                {product.reviews.map((review, index) => (
+                  <div key={index} className="slide">
+                    {product.reviewImages && product.reviewImages[index] && (
+                      <img src={product.reviewImages[index]} alt={`Review ${index + 1}`} className="review-image" />
+                    )}
+                    <div dangerouslySetInnerHTML={{ __html: review }} />
+                    
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p>Aucun avis pour ce produit.</p>
+            )}
           </div>
         </section>
   
