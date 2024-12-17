@@ -149,6 +149,7 @@
 
 
 
+
 .checkout-form {
   display: flex;
   flex-direction: column;
@@ -332,6 +333,14 @@
         height: auto;
     }
 
+    .cart-summary li{
+        justify-content: space-between;
+    }
+
+    .cart-item{
+        margin-right: 0;
+    }
+
     .left-column, .right-column {
         width: 100%;
         padding: 2rem;
@@ -342,11 +351,12 @@
     }
 
     .left-column h4{
-        width: 70%;
+        width: 75%;
     }
 
     .right-column {
         padding-bottom: 2rem;
+        padding-top: 1.25rem;
     }
 
     .shop-info{
@@ -379,7 +389,7 @@
     }
 
     .cart-item p {
-        margin-top: 0.5rem;
+        margin-top: 0rem;
     }
 
     .discount, .total-price {
@@ -392,7 +402,7 @@
     }
 
     .discount h4{
-      font-weight: 600;
+      font-weight: 400;
     }
 
     .total-price {
@@ -407,14 +417,13 @@
         width: 48.5%;
         margin-bottom: 1rem;
     }
+
+    .paiement-container h3{
+        margin-top: 1rem;
+    }
+
+    .checkout-form button{}
 }
 
 
-.cart-item .quantity input {
-    width: 50px;
-    text-align: center;
-    margin: 0 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 0.5rem;
-}
+

@@ -161,7 +161,7 @@
   }
   
   .cart-drawer h3{
-    margin-bottom: 0rem;
+    margin-bottom: 1rem;
     font-size: 1rem;
     font-weight: 400;
     max-height: 70px;
@@ -174,7 +174,7 @@
     cursor: pointer;
   }
   
-  .cart-drawer p {
+  .cart-drawer li p {
     font-weight: 600;
     margin-top: 0rem;
     position: relative;
@@ -242,7 +242,7 @@
     }
     
     .header{
-        padding: 0.25rem 2rem;
+        padding: 0.25rem 1.5rem;
     }
 
     .header .nav ul{
@@ -280,7 +280,17 @@
     }
 
     .cart-drawer{
-        width: 90%;
+        width: 85%;
+    }
+
+    .cart-drawer h3{
+      margin-bottom: 1rem;
+      font-size: .9rem;
+    }
+
+    .cart-drawer img{
+      margin-top: 1.25rem;
+      margin-right: 1rem;
     }
 
     .cart-icon{
@@ -291,6 +301,11 @@
 
     .cart-count{
         top: 0;
+    }
+
+    .cart-drawer li p{
+      font-size: .85rem;
+      top: 5px;
     }
     
 }

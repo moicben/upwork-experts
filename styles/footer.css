@@ -185,3 +185,100 @@ footer article{
   .sub-footer img{
     width: 300px;
   }
+
+
+
+  @media (max-width: 1024px) {
+    .features .wrapper{
+        flex-direction: column;
+        padding: 2rem 1.5rem 2rem 1.5rem;
+    }
+
+    .feature-item p{
+        margin-right: 0;
+    }
+
+    footer{
+
+    }
+
+
+    footer article{
+        flex-direction: column;
+    }
+
+    footer > div > article > div:nth-child(1){
+        margin-right: 0;
+    }
+
+    footer > div > article > div:nth-child(2){
+        margin-top: 4rem;
+    }
+
+    footer > div > article > div:nth-child(3){
+        margin-top: 2rem;
+    }
+
+    footer > div > article > div:nth-child(4){
+        margin-top: 2rem;
+    }
+
+    .footer-column h4 {
+        font-size: .9rem;
+        margin-bottom: 1rem;
+    }
+    
+    .footer-column p {
+        font-size: .9rem;
+    }
+    
+    .footer-column ul li {
+        margin-bottom: 0.25rem;
+    }
+    
+    .footer-column ul li a {
+        font-size: .9rem;
+    }
+    
+    .footer-column form label {
+        font-size: .9rem;
+    }
+    
+    .footer-column form input {
+        padding: 0.5rem;
+        font-size: .9rem;
+    }
+    
+    .footer-column form button {
+        padding: 0.5rem 1rem;
+        font-size: .9rem;
+    }
+
+    .sub-footer{
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .sub-footer p{
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .sub-footer img{
+        width: 200px;
+    }
+
+    .legal-container{
+        width: 100%;
+        flex-wrap: wrap;
+        bottom: -2.5rem;
+        justify-content: start;
+    }
+
+    .legal-container a{
+        margin-right: 1rem;
+    }
+
+
+
+  }

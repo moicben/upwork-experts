@@ -25,6 +25,7 @@ const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI, GOOGLE_REFR
 //     // Ajoutez autant de sous-domaines que nécessaire
 // ];
 const subdomains = content.sites.map(site => site.slug);
+//console.log('Subdomains:', subdomains);
 
 const api = new NetlifyAPI(NETLIFY_API_TOKEN);
 
@@ -192,13 +193,14 @@ async function updateSite(subdomain, siteUrl) {
 
 async function createOrUpdateSite(subdomain) {
   try {
-
+    //console.log(`Creating or updating site for: ${subdomain}`);
     const siteUrl = `https://${subdomain}.${DOMAIN}`;
     let site;
 
-    // Vérifier si le fichier de produits existe sinon passer
-    const productsFilePath = path.join(__dirname, 'products', `${subdomain}.json`);
-    if (!fs.existsSync(productsFilePath)) {
+    // Vérifier si le fichier de produits contient au moins 3 produits
+    const productsData = JSON.parse(fs.readFileSync('./products.json', 'utf8'));
+    if (!productsData.products || productsData.products.length < 3) {
+      //console.error(`Products file must contain at least 3 products!`);
       return;
     }
 

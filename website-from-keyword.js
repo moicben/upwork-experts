@@ -103,15 +103,15 @@ async function main() {
     for (const site of content.sites) {
         if (site.keyword) {
 
-            console.log('Processing website:', site);
+            //console.log('Processing website:', site);
 
             // Générer le contenu de la page d'accueil
             const homepageContent = await generateHomepageContent(site.keyword);
 
             // Parser le contenu généré et mettre à jour content.json
             const lines = homepageContent.split('\n').map(line => line.trim()).filter(line => line);
-            site.keywordPlurial = site.keyword.replace(/ /g, 's ') + 's';
-            site.slug = site.keyword.toLowerCase().replace(/ de/,'').replace(/ la/,'').replace(/ le/,'').replace(/l /,'').replace(/ /g, '-').replace(/é/g, 'e').replace(/ /g, '-').replace(/é/g, 'e').replace(/è/g, 'e').replace(/ê/g, 'e').replace(/à/g, '').replace(/[^\w-]+/g, '').replace(/---+/g, '-').replace(/--+/g, '-');
+            site.keywordPlurial = site.keyword.replace(/ /, 's ');
+            site.slug = site.keyword.toLowerCase().replace(/de /,' ').replace(/la /,' ').replace(/le /,' ').replace(/l /,' ').replace(/ /g, '-').replace(/é/g, 'e').replace(/è/g, 'e').replace(/ê/g, 'e').replace(/à/g, '').replace(/[^\w-]+/g, '').replace(/---+/g, '-').replace(/--+/g, '-');
             site.source = `https://www.amazon.fr/s?k=${(site.slug).replace(/-/g, '+')}&__mk_fr_FR=ÅMÅŽÕÑ` 
             site.shopName = lines[0];
             site.heroTitle = lines[1];

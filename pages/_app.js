@@ -7,6 +7,7 @@ import '../styles/header.css'; // Importer le fichier CSS
 import '../styles/footer.css'
 import '../styles/faq.css'; // Importer le fichier CSS
 import '../styles/suivre-mon-colis.css'; // Importer le fichier CSS
+import '../styles/reviews.css'; // Importer le fichier CSS	
 
 function Application({ Component, pageProps }) {
   return <Component {...pageProps} />

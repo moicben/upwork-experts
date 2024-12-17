@@ -2,6 +2,7 @@
     
     .hero{
         padding: 0 2rem;
+        height: 66vh;
     }
 
     .hero h1,
@@ -94,6 +95,10 @@
 
     .about-content{
         padding: 0;
+    }
+
+    .about-image img{
+        height: 380px;
     }
 
     .about p{

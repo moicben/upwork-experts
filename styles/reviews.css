@@ -1,0 +1,109 @@
+
+
+.product-reviews {
+    background-color: #fff;
+    border-radius: 8px;
+    width: 100%;
+    padding: 2rem 0rem 6rem 4rem;
+  }
+  
+  .product-reviews .wrapper {
+    margin: 0 auto;
+    position: relative;
+    min-width: 100%;
+  }
+  
+  .product-reviews .slider {
+    width: 100%;
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth; /* Add this line for smooth scrolling */
+  }
+  
+  .product-reviews .slide {
+    flex: 0 0 calc(33%);
+    scroll-snap-align: start;
+    box-sizing: border-box;
+    margin: 0 1rem;
+    padding: 2rem;
+    border:#ccc 1px solid;
+    border-radius: 16px;
+  }
+  
+  .product-reviews .review {
+    border-bottom: 1px solid #ccc;
+    padding: 1rem 0;
+  }
+  
+  .product-reviews .review:last-child {
+    border-bottom: none;
+  }
+  
+  .product-reviews .review-image {
+    height: 160px;
+    width: 160px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+  }
+  
+  .product-reviews .slide span,
+  .product-reviews .slide strong,
+  .product-reviews .slide li,
+  .product-reviews .slide h3{
+    display: block;
+    max-height: 27px;
+    overflow: hidden;
+  }
+  
+  .product-reviews .slide h3{
+    font-size: 1.25rem;
+    margin: .5rem 0 .75rem 0;
+  }
+  
+  .product-reviews .slide strong{
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    font-weight: 400;
+  }
+  
+  .product-reviews .slide span{
+    height: 22px;
+    overflow: hidden;
+    color: #aaa;
+    font-weight: 500;
+  }
+  
+  .product-reviews .slide li{
+    margin-top:.5rem;
+  }
+  
+  .product-reviews .slide p{
+    height: 120px;
+    overflow-y: auto;
+    margin-bottom: 0;
+    font-size: .9rem;
+  }
+
+
+
+
+
+@media (max-width:1024px){
+.product-reviews {
+    padding: 1rem 2rem 3rem 1.5rem;
+    }
+  
+  
+    .product-reviews .slide {
+    flex: 0 0 calc(80%);
+    margin: 0 0.5rem;
+    padding: 1rem;
+    }
+  
+    .product-reviews .slide p{
+      font-size: .85rem;
+      margin-top: .5rems;
+    }
+}

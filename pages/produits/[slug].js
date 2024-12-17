@@ -1,21 +1,23 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Head from 'next/head';
 import content from '../../content.json';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Products from '../../components/Products';
 import productsData from '../../products.json';
+import Reviews from '../../components/Reviews';
 
 export default function ProductDetail({ product, site, products }) {
   const [cartCount, setCartCount] = useState(0);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
-  const images = [product.productImage, product.productImage2, product.productImage3, product.productImage4, product.productImage5];
+  const sliderRef = useRef(null);
 
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
     setCartCount(storedCart.length);
   }, []);
+
 
   if (!product || !site) {
     return <div>Produit ou site non trouvé</div>;
@@ -35,9 +37,8 @@ export default function ProductDetail({ product, site, products }) {
     setSelectedImageIndex(index);
   };
 
-  const handleNextClick = () => {
-    setSelectedImageIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
-  };
+
+  const images = [product.productImage, product.productImage2, product.productImage3, product.productImage4, product.productImage5];
 
   return (
     <div className="container">
@@ -68,9 +69,6 @@ export default function ProductDetail({ product, site, products }) {
                       />
                     )
                   ))}
-                  <button onClick={handleNextClick} className="arrow next">
-                    <i className="fas fa-chevron-down"></i>
-                  </button>
                 </div>
                 {images[selectedImageIndex] && (
                   <img src={images[selectedImageIndex]} alt={product.productTitle} className="large-image" />
@@ -110,26 +108,7 @@ export default function ProductDetail({ product, site, products }) {
           </div>
         </section>
 
-        
-        <section className='product-reviews'>
-          <div className='wrapper'>
-            {product.reviews && product.reviews.length > 0 ? (
-              <div className='slider'>
-                {product.reviews.map((review, index) => (
-                  <div key={index} className="slide">
-                    {product.reviewImages && product.reviewImages[index] && (
-                      <img src={product.reviewImages[index]} alt={`Review ${index + 1}`} className="review-image" />
-                    )}
-                    <div dangerouslySetInnerHTML={{ __html: review }} />
-                    
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p>Aucun avis pour ce produit.</p>
-            )}
-          </div>
-        </section>
+        <Reviews product={product} />
   
         <section className="product-description">
           <div className="wrapper">

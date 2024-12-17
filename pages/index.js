@@ -7,9 +7,11 @@ import Footer from '../components/Footer';
 import Products from '../components/Products'; 
 import Testimonials from '../components/Testimonials';
 import About from '../components/About';
+import Reviews from '../components/Reviews';
 
 import content from '../content.json';
 import productsData from '../products.json';
+
 
 const Home = ({ site, products }) => {
   const [cartCount, setCartCount] = useState(0);
@@ -33,7 +35,7 @@ const Home = ({ site, products }) => {
         <section className="hero">
             <h1>{site.heroTitle}</h1>
             <p>{site.heroDescription}</p>
-            <a href="/boutique"><button>{site.keywordPlurial}</button></a>
+            <a href="/boutique"><button>Découvrir nos {site.keywordPlurial}</button></a>
             <div className='filter'></div>
             <img src={site.heroImageUrl} alt={site.sourceCategory} />
         </section>
@@ -45,13 +47,13 @@ const Home = ({ site, products }) => {
           </div>
         </section>
 
-        <Products title={`Tous les ${site.keywordPlurial} `} products={products} />
+        <Products title={`Notre sélecton de ${site.keywordPlurial}`} products={products} />
         
         <About site={site}/>
         
-        <Testimonials site={site}/>
+        <Reviews site={site} product={products[0]}/>
         
-        <section className="contact" id='contact'>
+        {/* <section className="contact" id='contact'>
           <div className='wrapper'>
             <div className="contact-content">
               <h2>{site.contactTitle}</h2>
@@ -72,7 +74,7 @@ const Home = ({ site, products }) => {
               </form>
             </div>
           </div>
-        </section>
+        </section> */}
       </main>
       <Footer shopName={site.shopName} footerText={site.footerText} />
     </div>

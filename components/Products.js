@@ -20,7 +20,7 @@ const Products = ({ title, products, description }) => {
   return (
     <section className="products">
       <div className='wrapper'>
-        <h1>{title}</h1>
+        <h2>{title}</h2>
         <h4>{description}</h4>
         <div className="product-list">
           {currentProducts.map(product => (
