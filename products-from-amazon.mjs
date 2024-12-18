@@ -20,11 +20,14 @@ async function createBrowser() {
     console.log('Creating browser...');
     const executablePath = "/app/.chrome-for-testing/chrome-linux64/chrome"; 
     return await puppeteer.launch({
-        headless: true,
-        executablePath: executablePath,
-        args: chromium.args,
-        defaultViewport: chromium.defaultViewport,
-        ignoreHTTPSErrors: true,
+        args: [
+        '--headless',
+        '--no-sandbox',
+        '--disable-gpu',
+        '--disable-dev-shm-usage',
+        '--remote-debugging-port=9222',
+    ],
+    dumpio: true, // Permet d’afficher les logs de Chrome dans la console
     });
 }
 
