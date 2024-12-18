@@ -1,4 +1,3 @@
-// filepath: /C:/Users/bendo/Desktop/Documents/Clapier-Lapin/Tech/ecom/server.js
 const express = require('express');
 const Stripe = require('stripe');
 const dotenv = require('dotenv');
@@ -9,11 +8,13 @@ dotenv.config();
 const app = express();
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
-app.use(cors({ origin: 'https://expert-francais.netlify.app' })); // Ajoutez cette ligne pour utiliser le middleware CORS
+app.use(cors({
+    origin: '*'
+})); // Ajoutez cette ligne pour utiliser le middleware CORS avec toutes les origines
 app.use(express.json());
 
 // Gérer les requêtes préliminaires (OPTIONS)
-//app.options('*', cors());
+app.options('*', cors());
 
 app.post('/create-payment-intent', async (req, res) => {
     const { amount } = req.body;
