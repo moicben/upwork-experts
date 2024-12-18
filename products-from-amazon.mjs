@@ -19,7 +19,7 @@ async function createBrowser() {
     console.log('Creating browser...');
     return await puppeteer.launch({
         headless: true,
-        executablePath: process.env.CHROME_BIN || '/usr/bin/google-chrome',
+        executablePath: process.env.CHROME_BIN || '/app/.apt/usr/bin/google-chrome',
         args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
 }

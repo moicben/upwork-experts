@@ -1,3 +1,7 @@
+// heroku ps:scale web=1
+// heroku ps:scale web=0
+// heroku buildpacks:add heroku/nodejs
+
 const { exec } = require('child_process');
 const path = require('path');
 const fs = require('fs');
@@ -13,7 +17,7 @@ app.get('/health', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
+// voir la liste des buildsbacks heroku : 
 const scripts = [
   path.resolve(__dirname, 'website-from-keyword.js'),
   path.resolve(__dirname, 'products-from-amazon.mjs'),
