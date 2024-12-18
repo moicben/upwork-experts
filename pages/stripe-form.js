@@ -59,6 +59,8 @@ const CheckoutForm = () => {
     }
   };
 
+  
+
   return (
     <form style={{ height: '5rem', width: '500px', margin: '0 auto' }} id="payment-form" onSubmit={handleSubmit}>
       <div style={{ marginBottom: '20px' }}>
