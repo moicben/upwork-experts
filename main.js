@@ -60,17 +60,17 @@ function runScriptsSequentially() {
 }
 
 function processKeywords(keywords) {
-    if (keywords.length === 0) {
-        console.log('All keywords processed successfully.');
-        return;
-    }
+    let promise = Promise.resolve();
 
-    const [firstKeyword, ...remainingKeywords] = keywords;
-    updateContentJson(firstKeyword)
-        .then(() => runScriptsSequentially())
-        .then(() => processKeywords(remainingKeywords))
-        .catch(err => console.error('Error processing keywords:', err));
+    keywords.forEach(keyword => {
+        promise = promise
+            .then(() => updateContentJson(keyword))
+            .then(() => runScriptsSequentially())
+            .catch(err => console.error('Error processing keyword:', keyword, err));
+    });
+
+    promise.then(() => console.log('All keywords processed successfully.'));
 }
 
-const keywords = fs.readFileSync('./keywords.txt', 'utf8').split('\n');
+const keywords = fs.readFileSync('./keywords.txt', 'utf8').split('\n').filter(Boolean);
 processKeywords(keywords);

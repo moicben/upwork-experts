@@ -2,11 +2,12 @@ import React, { useRef } from 'react';
 
 const Reviews = ({ product }) => {
     const sliderRef = useRef(null);
+    const hasReviews = product.reviews && product.reviews.length > 0;
 
     return (
-        <section className='product-reviews'>
+        <section className={`product-reviews ${!hasReviews ? 'hidden' : ''}`}>
             <div className='wrapper' ref={sliderRef}>
-                {product.reviews && product.reviews.length > 0 ? (
+                {hasReviews ? (
                     <>
                         <div className='slider'>
                             {product.reviews.map((review, index) => (

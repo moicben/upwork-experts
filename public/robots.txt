@@ -1,3 +1,3 @@
 User-agent: *
     Allow: /
-    Sitemap: https://panier-lapin.expert-francais.shop/sitemap.xml
+    Sitemap: https://bton-marche-pliable.expert-francais.shop/sitemap.xml

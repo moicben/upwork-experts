@@ -22,7 +22,7 @@ const Boutique = ({ site, products }) => {
   return (
     <div key={site.id} className="container">
       <Head>
-        <title>{"Tous nos " + site.keywordPlurial + " - " +  site.shopName}</title>
+        <title>{"Boutique spécialisée : " + site.keywordPlurial + " - " +  site.shopName}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       

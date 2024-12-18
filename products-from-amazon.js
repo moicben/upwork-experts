@@ -64,14 +64,24 @@ async function extractProductDetails(productUrl) {
     const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
 
+    // Désactiver le chargement des styles
+    await page.setRequestInterception(true);
+    page.on('request', (request) => {
+        if (request.resourceType() === 'stylesheet') {
+            request.abort();
+        } else {
+            request.continue();
+        }
+    });
+
     try {
         await page.goto(`https://amazon.fr${productUrl}`, { waitUntil: 'networkidle2' });
-        await delay(2000);
+        await delay(4000);
 
         let content = await page.content();
         let $ = cheerio.load(content);
 
-        let description = $('#feature-bullets').text().trim()
+        let description = $('#feature-bullets').text().trim();
         let productImage2 = $('span#a-autoid-3-announce img').attr('src')?.trim();
         let productImage3 = $('span#a-autoid-4-announce img').attr('src')?.trim();
         let productImage4 = $('span#a-autoid-5-announce img').attr('src')?.trim();
@@ -105,7 +115,6 @@ async function extractProductDetails(productUrl) {
                 let reviewRating = $(element).find('i.review-rating span').text().trim();
                 reviewerName = reviewerName.replace(/d'Amazon/g, 'anonyme').replace(/Amazon/g, '').replace(/Client anonymeClient anonyme/, 'Anonyme');
                 reviewTitle = reviewTitle.replace(/5,0 sur 5 étoiles/g, '').replace(/4,0 sur 5 étoiles/g, '').replace(/3,0 sur 5 étoiles/g, '').replace(/2,0 sur 5 étoiles/g, '').replace(/1,0 sur 5 étoiles/g, '');
-                reviewTitle = reviewTitle.replace(/5,0 sur 5/g, '').replace(/4,0 sur 5/g, '').replace(/3,0 sur 5/g, '').replace(/2,0 sur 5/g, '').replace(/1,0 sur 5/g, '').replace(/ étoiles/g, '').replace(/étoiles/g, '');
 
                 reviewDate = reviewDate.replace(/en France/g, '').replace(/Avis laissé  le /g, '');
                 reviewDate = reviewDate.split('2024')[0] + '2024';
