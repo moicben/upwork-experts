@@ -1,11 +1,11 @@
-import axios from 'axios'
-import * as cheerio from 'cheerio'
-import puppeteer from'puppeteer'
-import fs from'fs' 
-import path from'path' 
-import OpenAI from'openai' 
-import pLimit from'p-limit'  // Correction de l'importation de p-limit
-import dotenv from 'dotenv'
+import axios from 'axios';
+import * as cheerio from 'cheerio';
+import puppeteer from 'puppeteer';
+import fs from 'fs';
+import path from 'path';
+import OpenAI from 'openai';
+import pLimit from 'p-limit';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -16,16 +16,13 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 // Démarrage unique de Puppeteer
 async function createBrowser() {
-     console.log('Creating browser...');
-     return await puppeteer.launch({
-       headless: true,
-       defaultViewport: { width: 1920, height: 1080 },
-
-       //VARIABLE GOOGLE CHROME POUR HEROKU:
-       executablePath: process.env.CHROME_BIN || null,
-       args: ['--no-sandbox', '--disable-setuid-sandbox']
-     });
-   }
+    console.log('Creating browser...');
+    return await puppeteer.launch({
+        headless: true,
+        executablePath: process.env.CHROME_BIN || null,
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
+}
 
 async function delay(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -158,7 +155,7 @@ async function extractProductDetails(productUrl) {
         return { description, productImage2, productImage3, productImage4, productImage5, reviewImages, reviews };
     } catch (error) {
         console.error(`Error extracting product details from ${productUrl}:`, error.message);
-        return { description: null, images: [] };
+        return { description: null, images: [], reviews: [] }; // Ajoutez une valeur par défaut pour reviews
     } finally {
         await browser.close();
     }
@@ -219,7 +216,6 @@ async function main() {
 
                 let { description, productImage2, productImage3, productImage4, productImage5, reviewImages, reviews } = await extractProductDetails(product.productSource);
 
-
                 //Formate des données extraites
                 product.productTitle = await generateContent(`
                     Simplifie le titre suivant en respectant les critères :\n
@@ -266,7 +262,6 @@ async function main() {
 
                 description = description.replace(/```html/,'').replace(/```/,'')
 
-
                 // Push les données dans le fichier JSON
                 const existingProductIndex = productsData.products.findIndex(p => p.slug === productSlug);
                 if (existingProductIndex === -1) {
@@ -282,7 +277,7 @@ async function main() {
                             productImage4: productImage4 ? productImage4.split('.').slice(0, -2).join('.') + '.' + productImage4.split('.').slice(-1) : null,
                             productImage5: productImage5 ? productImage5.split('.').slice(0, -2).join('.') + '.' + productImage5.split('.').slice(-1) : null,
                             reviewImages: reviewImages,
-                            reviews: reviews
+                            reviews: reviews || [] // Ajoutez une valeur par défaut pour reviews
                         });
                     } else {
                         console.warn(`${site.keyword} - ${index + 1}/Extraction error.`);
