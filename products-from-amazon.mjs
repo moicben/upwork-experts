@@ -18,7 +18,7 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 // Démarrage unique de Puppeteer
 async function createBrowser() {
     console.log('Creating browser...');
-    const executablePath = await chromium.executablePath;
+    const executablePath = '/usr/bin/chromium-browser'; 
     return await puppeteer.launch({
         headless: true,
         executablePath: executablePath,
