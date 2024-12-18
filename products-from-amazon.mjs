@@ -18,16 +18,15 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 // Démarrage unique de Puppeteer
 async function createBrowser() {
     console.log('Creating browser...');
-    const executablePath = "/app/.chrome-for-testing/chrome-linux64/chrome"; 
     return await puppeteer.launch({
+        executablePath: '/app/.chrome-for-testing/chrome-linux64/chrome', // Chemin absolu de Chrome
         args: [
-        '--headless',
-        '--no-sandbox',
-        '--disable-gpu',
-        '--disable-dev-shm-usage',
-        '--remote-debugging-port=9222',
-    ],
-    dumpio: true, // Permet d’afficher les logs de Chrome dans la console
+            '--headless',
+            '--no-sandbox',
+            '--disable-gpu',
+            '--disable-dev-shm-usage', // Utilise le système de fichier pour les partages de mémoire
+            '--remote-debugging-port=9222',
+        ],
     });
 }
 
