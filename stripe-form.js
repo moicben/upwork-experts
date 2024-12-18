@@ -59,18 +59,60 @@ const CheckoutForm = () => {
     }
   };
 
-  
-
   return (
-    <form style={{ height: '5rem', width: '500px', margin: '0 auto' }} id="payment-form" onSubmit={handleSubmit}>
-      <div style={{ marginBottom: '20px' }}>
+    <form style={formStyle} id="payment-form" onSubmit={handleSubmit}>
+      <h2 style={headerStyle}>Payment Information</h2>
+      <div style={inputContainerStyle}>
         <CardElement options={{ style: { base: { fontSize: '18px' } } }} />
       </div>
-      <button type="submit" disabled={!stripe} style={{ padding: '10px 20px', fontSize: '18px' }}>Pay</button>
-      {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
-      {success && <div style={{ color: 'green', marginTop: '10px' }}>Payment successful!</div>}
+      <button type="submit" disabled={!stripe} style={buttonStyle}>Pay</button>
+      {error && <div style={errorStyle}>{error}</div>}
+      {success && <div style={successStyle}>Payment successful!</div>}
     </form>
   );
+};
+
+const formStyle = {
+  height: '25rem',
+  width: '500px',
+  margin: '0 auto',
+  padding: '20px',
+  border: '1px solid #ccc',
+  borderRadius: '10px',
+  boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+  backgroundColor: '#fff',
+};
+
+const headerStyle = {
+  textAlign: 'center',
+  marginBottom: '20px',
+};
+
+const inputContainerStyle = {
+  marginBottom: '20px',
+};
+
+const buttonStyle = {
+  padding: '10px 20px',
+  fontSize: '18px',
+  backgroundColor: '#0070f3',
+  color: '#fff',
+  border: 'none',
+  borderRadius: '5px',
+  cursor: 'pointer',
+  width: '100%',
+};
+
+const errorStyle = {
+  color: 'red',
+  marginTop: '10px',
+  textAlign: 'center',
+};
+
+const successStyle = {
+  color: 'green',
+  marginTop: '10px',
+  textAlign: 'center',
 };
 
 const StripeTest = ({ site }) => (
