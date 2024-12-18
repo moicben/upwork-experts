@@ -16,14 +16,6 @@ app.use(express.json());
 // Gérer les requêtes préliminaires (OPTIONS)
 app.options('*', cors());
 
-/*app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", '*');
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-  res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
-  next();
-});*/
-
 app.post('/create-payment-intent', async (req, res) => {
     const { amount } = req.body;
     try {
@@ -39,4 +31,5 @@ app.post('/create-payment-intent', async (req, res) => {
     }
 });
 
-app.listen(3001, () => console.log('Server running on port 3001'));
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
