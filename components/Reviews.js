@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 
 const Reviews = ({ product }) => {
     const sliderRef = useRef(null);
-    const hasReviews = product.reviews && product.reviews.length > 0;
+    const hasReviews = product && product.reviews && product.reviews.length > 0;
 
     return (
         <section className={`product-reviews ${!hasReviews ? 'hidden' : ''}`}>

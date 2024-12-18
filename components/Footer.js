@@ -44,9 +44,9 @@ const Footer = ({ shopName, footerText}) => {
               <h4>Navigation</h4>
               <ul>
                 <li><a href="/">Accueil</a></li>
-                <li><a href="/shop">Boutique</a></li>
-                <li><a href="/about">A propos</a></li>
-                <li><a href="/contact">Contact</a></li>
+                <li><a href="/boutiqe">Boutique</a></li>
+                <li><a href="/#a-propos">A propos</a></li>
+                <li><a href="/#contact">Contact</a></li>
               </ul>
             </div>
             <div className="footer-column">

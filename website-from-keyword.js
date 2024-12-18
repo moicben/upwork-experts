@@ -35,8 +35,8 @@ async function generateHomepageContent(keyword) {
     - Testimonial Content 2 : Commentaire long de 3 phrases d'un client \n
     - Testimonial Autor 3 : Prénom et nom de famille français singulier  \n
     - Testimonial Content 3 : Commentaire long de 3 phrases d'un client \n
-    - Contact Title : Titre accrocheur d'une phrase très courte \n
-    - Contact Description : Paragraphe de 2 phrases pour la section Contact \n
+    - Contact Section : Titre accrocheur d'une phrase très courte \n
+    - Contact Section : Paragraphe de 2 phrases pour la section Contact \n
     - Footer Text : Texte de 2 phrases pour le footer \n
     - Couleur de fond foncé pour les boutons : Code héxadécimal \n
     - Description des produits : Court paragraphe SEO pour introduire les produits \n

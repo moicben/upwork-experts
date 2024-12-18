@@ -53,7 +53,7 @@ const Home = ({ site, products }) => {
         
         <Reviews site={site} product={products[0]}/>
         
-        {/* <section className="contact" id='contact'>
+        <section className="contact" id='contact'>
           <div className='wrapper'>
             <div className="contact-content">
               <h2>{site.contactTitle}</h2>
@@ -74,7 +74,7 @@ const Home = ({ site, products }) => {
               </form>
             </div>
           </div>
-        </section> */}
+        </section>
       </main>
       <Footer shopName={site.shopName} footerText={site.footerText} />
     </div>
