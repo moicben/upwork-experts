@@ -1,7 +1,6 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-import puppeteer from 'puppeteer-core';
-import { executablePath } from 'puppeteer-core';
+import puppeteer from 'puppeteer';
 import fs from 'fs';
 import path from 'path';
 import OpenAI from 'openai';
@@ -20,8 +19,8 @@ async function createBrowser() {
     console.log('Creating browser...');
     return await puppeteer.launch({
         headless: true,
-        executablePath: executablePath(),
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        executablePath: process.env.CHROME_BIN || '/usr/bin/google-chrome',
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
 }
 
@@ -68,7 +67,7 @@ async function extractProducts(page, url) {
 
 // Extraction de la description et des images supplémentaires
 async function extractProductDetails(productUrl) {
-    const browser = await createBrowser();
+    const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
 
     // Désactiver le chargement des styles
@@ -261,7 +260,7 @@ async function main() {
                     \n\n
                 `);
 
-                description = description.replace(/```html/,'').replace(/```/,'');
+                description = description.replace(/```html/,'').replace(/```/,'')
 
                 // Push les données dans le fichier JSON
                 const existingProductIndex = productsData.products.findIndex(p => p.slug === productSlug);
