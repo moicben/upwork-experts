@@ -16,9 +16,16 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 // Démarrage unique de Puppeteer
 async function createBrowser() {
-    console.log('Creating browser...');
-    return await puppeteer.launch({ headless: true, defaultViewport: { width: 1920, height: 1080 } });
-}
+     console.log('Creating browser...');
+     return await puppeteer.launch({
+       headless: true,
+       defaultViewport: { width: 1920, height: 1080 },
+
+       //VARIABLE GOOGLE CHROME POUR HEROKU:
+       executablePath: process.env.CHROME_BIN || null,
+       args: ['--no-sandbox', '--disable-setuid-sandbox']
+     });
+   }
 
 async function delay(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));

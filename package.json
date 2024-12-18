@@ -9,7 +9,8 @@
     "export": "next build && next export",
     "generate-sitemap": "node generate-sitemap.mjs",
     "generate-robots": "node generate-robots.mjs",
-    "heroku-postbuild": "next build"
+    "heroku-postbuild": "next build",
+    "postinstall": "npx puppeteer install"
   },
   "dependencies": {
     "@netlify/plugin-nextjs": "^5.9.0",

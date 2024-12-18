@@ -3,7 +3,6 @@ import { execSync } from 'child_process';
 import path from 'path';
 import { resolve, join } from 'path';
 import dotenv from 'dotenv';
-import content from './content.json' assert { type: 'json' };
 import { google } from 'googleapis';
 import fs from 'fs';
 import { createWriteStream, writeFileSync } from 'fs';
@@ -18,6 +17,8 @@ const __dirname = path.dirname(__filename);
 const NETLIFY_API_TOKEN = process.env.NETLIFY_API_TOKEN;
 const DOMAIN = process.env.DOMAIN;
 const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI, GOOGLE_REFRESH_TOKEN_WEBMASTER, GOOGLE_REFRESH_TOKEN_VERIFICATION, GOOGLE_SCOPE } = process.env;
+
+const content = JSON.parse(fs.readFileSync('./content.json', 'utf8'));
 
 // const subdomains = [
 //   content.sites[1].slug,

@@ -1,6 +1,20 @@
 const { exec } = require('child_process');
 const path = require('path');
 const fs = require('fs');
+const express = require('express');
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+
+//SERVEUR POUR HEROKU
+app.get('/', (req, res) => {
+  res.send('App is running');
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
 
 const scripts = [
     path.resolve(__dirname, 'website-from-keyword.js'),
