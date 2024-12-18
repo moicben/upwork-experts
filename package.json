@@ -9,7 +9,7 @@
     "export": "next build && next export",
     "generate-sitemap": "node generate-sitemap.mjs",
     "generate-robots": "node generate-robots.mjs",
-    "heroku-postbuild": "npm install --legacy-peer-deps && rm -rf ./.cache && mkdir ./.cache"
+    "heroku-postbuild": "npx puppeteer browsers install chrome"
   },
   "dependencies": {
     "@netlify/plugin-nextjs": "^5.9.0",
