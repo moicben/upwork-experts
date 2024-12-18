@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import puppeteer from 'puppeteer-core';
-import chromium from 'chrome-aws-lambda';
+import { executablePath } from 'puppeteer-core';
 import fs from 'fs';
 import path from 'path';
 import OpenAI from 'openai';
@@ -18,12 +18,10 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 // Démarrage unique de Puppeteer
 async function createBrowser() {
     console.log('Creating browser...');
-    const executablePath = await chromium.executablePath;
     return await puppeteer.launch({
         headless: true,
-        executablePath,
-        args: chromium.args,
-        defaultViewport: chromium.defaultViewport,
+        executablePath: executablePath(),
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
 }
 
@@ -263,7 +261,7 @@ async function main() {
                     \n\n
                 `);
 
-                description = description.replace(/```html/,'').replace(/```/,'')
+                description = description.replace(/```html/,'').replace(/```/,'');
 
                 // Push les données dans le fichier JSON
                 const existingProductIndex = productsData.products.findIndex(p => p.slug === productSlug);

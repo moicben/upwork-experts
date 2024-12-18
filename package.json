@@ -9,7 +9,7 @@
     "export": "next build && next export",
     "generate-sitemap": "node generate-sitemap.mjs",
     "generate-robots": "node generate-robots.mjs",
-    "heroku-postbuild": "npm install --force && rm -rf ./.cache && mkdir ./.cache && mv /app/.cache/puppeteer ./.cache"
+    "heroku-postbuild": "npm install --force && rm -rf ./.cache && mkdir ./.cache"
   },
   "dependencies": {
     "@netlify/plugin-nextjs": "^5.9.0",
