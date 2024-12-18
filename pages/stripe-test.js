@@ -31,22 +31,31 @@ const CheckoutForm = () => {
     if (error) {
       setError(error.message);
     } else {
-      const response = await fetch('https://infinite-springs-01063-e2caff8bf525.herokuapp.com/create-payment-intent', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: 1000 }), // Amount in cents
-      });
+      try {
+        //const response = await fetch('https://infinite-springs-01063-e2caff8bf525.herokuapp.com/create-payment-intent', {
+        const response = await fetch('https://infinite-springs-01063-e2caff8bf525.herokuapp.com/create-payment-intent', { 
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ amount: 1000 }), // Amount in cents
+        });
 
-      const { clientSecret } = await response.json();
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
 
-      const { error: confirmError } = await stripe.confirmCardPayment(clientSecret, {
-        payment_method: paymentMethod.id,
-      });
+        const { clientSecret } = await response.json();
 
-      if (confirmError) {
-        setError(confirmError.message);
-      } else {
-        setSuccess(true);
+        const { error: confirmError } = await stripe.confirmCardPayment(clientSecret, {
+          payment_method: paymentMethod.id,
+        });
+
+        if (confirmError) {
+          setError(confirmError.message);
+        } else {
+          setSuccess(true);
+        }
+      } catch (err) {
+        setError(err.message);
       }
     }
   };

@@ -9,11 +9,11 @@ dotenv.config();
 const app = express();
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
-app.use(cors()); // Ajoutez cette ligne pour utiliser le middleware CORS
+app.use(cors({ origin: 'https://expert-francais.netlify.app' })); // Ajoutez cette ligne pour utiliser le middleware CORS
 app.use(express.json());
 
 // Gérer les requêtes préliminaires (OPTIONS)
-app.options('*', cors());
+//app.options('*', cors());
 
 app.post('/create-payment-intent', async (req, res) => {
     const { amount } = req.body;
