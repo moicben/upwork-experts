@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-core';
+import chromium from 'chrome-aws-lambda';
 import fs from 'fs';
 import path from 'path';
 import OpenAI from 'openai';
@@ -17,10 +18,12 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 // Démarrage unique de Puppeteer
 async function createBrowser() {
     console.log('Creating browser...');
+    const executablePath = await chromium.executablePath;
     return await puppeteer.launch({
         headless: true,
-        executablePath: process.env.CHROME_BIN || '/app/.apt/usr/bin/google-chrome',
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
+        executablePath,
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
     });
 }
 
@@ -67,7 +70,7 @@ async function extractProducts(page, url) {
 
 // Extraction de la description et des images supplémentaires
 async function extractProductDetails(productUrl) {
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await createBrowser();
     const page = await browser.newPage();
 
     // Désactiver le chargement des styles
