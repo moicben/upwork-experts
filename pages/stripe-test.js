@@ -34,7 +34,7 @@ const CheckoutForm = () => {
     if (error) {
       setError(error.message);
     } else {
-      const response = await fetch('http://localhost:3001/create-payment-intent', {
+      const response = await fetch('https://infinite-springs-01063-e2caff8bf525.herokuapp.com/create-payment-intent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount: 1000 }), // Amount in cents
