@@ -9,8 +9,7 @@
     "export": "next build && next export",
     "generate-sitemap": "node generate-sitemap.mjs",
     "generate-robots": "node generate-robots.mjs",
-    "heroku-postbuild": "next build",
-    "postinstall": "echo $CHROME_BIN && ls -al $CHROME_BIN"
+    "heroku-postbuild": "mkdir ./.cache && mv /app/.cache/puppeteer ./.cache"
   },
   "dependencies": {
     "@netlify/plugin-nextjs": "^5.9.0",
