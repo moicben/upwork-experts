@@ -6,7 +6,7 @@ import { Elements, CardElement, useStripe, useElements } from '@stripe/react-str
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
-const stripePromise = loadStripe('pk_test_51QWhAHBtMJnr4ZcdLcrmGdi0YSSjnPLWid4V6nZEkxGKvjYIF2hqr6U7Vuyk0ucJqAqL5xUK94tokoZ7u4pmm3Cy00lFj5lKKI');
+const stripePromise = loadStripe(process.env.STRIPE_PUBLIC_KEY);
 
 const CheckoutForm = () => {
   const stripe = useStripe();
