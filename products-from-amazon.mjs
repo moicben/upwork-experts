@@ -1,11 +1,13 @@
-const axios = require('axios');
-const cheerio = require('cheerio');
-const puppeteer = require('puppeteer');
-const fs = require('fs');
-const path = require('path');
-const OpenAI = require('openai');
-const pLimit = require('p-limit');
-require('dotenv').config();
+import axios from 'axios'
+import * as cheerio from 'cheerio'
+import puppeteer from'puppeteer'
+import fs from'fs' 
+import path from'path' 
+import OpenAI from'openai' 
+import pLimit from'p-limit'  // Correction de l'importation de p-limit
+import dotenv from 'dotenv'
+
+dotenv.config();
 
 const limit = pLimit(10); // Limite à 10 instances simultanées
 
