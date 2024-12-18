@@ -9,7 +9,7 @@
     "export": "next build && next export",
     "generate-sitemap": "node generate-sitemap.mjs",
     "generate-robots": "node generate-robots.mjs",
-    "heroku-postbuild": "npm install chrome-aws-lambda puppeteer-core --legacy-peer-deps && rm -rf ./.cache && mkdir ./.cache"
+    "heroku-postbuild": "npm install --legacy-peer-deps && rm -rf ./.cache && mkdir ./.cache"
   },
   "dependencies": {
     "@netlify/plugin-nextjs": "^5.9.0",
@@ -33,7 +33,7 @@
     "p-limit": "^6.1.0",
     "path": "^0.12.7",
     "pexels": "^1.4.0",
-    "puppeteer-core": "^23.11.0",
+    "puppeteer-core": "^10.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.4.0",
