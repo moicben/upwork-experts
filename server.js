@@ -14,7 +14,7 @@ app.use(cors({
 app.use(express.json());
 
 // Gérer les requêtes préliminaires (OPTIONS)
-// app.options('*', cors());
+app.options('*', cors());
 
 /*app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", '*');
