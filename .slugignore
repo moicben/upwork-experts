@@ -1,6 +1,4 @@
 node_modules
 *.log
-*.md
-*.json
 *.png
 *.jpg
