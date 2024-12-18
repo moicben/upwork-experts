@@ -2,12 +2,9 @@ import Head from 'next/head';
 import React, { useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import dotenv from 'dotenv';
 
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-
-dotenv.config();
 
 const stripePromise = loadStripe('pk_test_51QWhAHBtMJnr4ZcdLcrmGdi0YSSjnPLWid4V6nZEkxGKvjYIF2hqr6U7Vuyk0ucJqAqL5xUK94tokoZ7u4pmm3Cy00lFj5lKKI');
 
