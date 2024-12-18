@@ -131,7 +131,7 @@ export default function Paiement () {
             <label className={`unvalaible payment-method ${selectedPaymentMethod === 'paypal' ? 'selected' : ''}`}>
               <input type="radio" name="paymentMethod" value="paypal" checked={selectedPaymentMethod === 'paypal'} onChange={() => setSelectedPaymentMethod('paypal')}  />
               <img src='/paypal-simple.png' alt='cartes bancaires'/>
-              <span>Momentanément indisponible</span>
+              <span>Indisponible</span>
             </label>
             <h3>Informations de la carte</h3>
             <input type="text" name="cardNumber" placeholder="1234 1234 1234 1234"  />
