@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-core';
+import chromium from 'chromium-aws-lambda';
 import fs from 'fs';
 import path from 'path';
 import OpenAI from 'openai';
@@ -17,10 +18,13 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 // Démarrage unique de Puppeteer
 async function createBrowser() {
     console.log('Creating browser...');
+    const executablePath = await chromium.executablePath;
     return await puppeteer.launch({
         headless: true,
-        executablePath: process.env.CHROME_BIN || '/usr/bin/google-chrome',
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
+        executablePath: executablePath,
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        ignoreHTTPSErrors: true,
     });
 }
 
@@ -67,7 +71,7 @@ async function extractProducts(page, url) {
 
 // Extraction de la description et des images supplémentaires
 async function extractProductDetails(productUrl) {
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await createBrowser();
     const page = await browser.newPage();
 
     // Désactiver le chargement des styles
@@ -198,6 +202,14 @@ async function main() {
     const content = JSON.parse(fs.readFileSync('./content.json', 'utf8'));
     let productsData = { products: [] };
 
+    // Ajout du produit "Chrome AWS Lambda"
+    productsData.products.push({
+        name: "Chrome AWS Lambda",
+        description: "A powerful cloud computing service by AWS.",
+        price: 0.00,
+        category: "Cloud Services"
+    });
+
     for (const site of content.sites) {
         const slug = site.keyword.toLowerCase().replace(/ de/, '').replace(/ la/, '').replace(/ le/, '').replace(/l /, '').replace(/ /g, '-').replace(/é/g, 'e').replace(/ /g, '-').replace(/é/g, 'e').replace(/è/g, 'e').replace(/ê/g, 'e').replace(/à/g, '').replace(/[^\w-]+/g, '').replace(/---+/g, '-').replace(/--+/g, '-');
 
@@ -260,7 +272,7 @@ async function main() {
                     \n\n
                 `);
 
-                description = description.replace(/```html/,'').replace(/```/,'')
+                description = description.replace(/```html/,'').replace(/```/,'');
 
                 // Push les données dans le fichier JSON
                 const existingProductIndex = productsData.products.findIndex(p => p.slug === productSlug);
