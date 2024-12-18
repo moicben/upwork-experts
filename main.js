@@ -4,7 +4,7 @@ const fs = require('fs');
 
 const scripts = [
     path.resolve(__dirname, 'website-from-keyword.js'),
-    path.resolve(__dirname, 'products-from-amazon.js'),
+    path.resolve(__dirname, 'products-from-amazon.mjs'),
     path.resolve(__dirname, 'deploy-site.mjs')
 ];
 
