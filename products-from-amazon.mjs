@@ -18,7 +18,8 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 async function createBrowser() {
     console.log('Creating browser...');
     return await puppeteer.launch({
-        executablePath: '/app/.chrome-for-testing/chrome-linux64/chrome', // Chemin absolu de Chrome
+        //executablePath: '/app/.chrome-for-testing/chrome-linux64/chrome', // Chemin absolu de Chrome
+        executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe', // Chemin absolu de Chrome
         args: [
             '--headless',
             '--no-sandbox',
@@ -26,6 +27,7 @@ async function createBrowser() {
             '--disable-dev-shm-usage', // Utilise le système de fichier pour les partages de mémoire
             '--remote-debugging-port=9222',
         ],
+        defaultViewport: { width: 1920, height: 1080 }
     });
 }
 
@@ -46,7 +48,7 @@ async function extractProducts(page, url) {
 
     const products = [];
     await page.evaluate(() => { window.scrollBy(0, 14000); });
-    await delay(2000);
+    await delay(4000);
 
     const content = await page.content();
     const $ = cheerio.load(content);
