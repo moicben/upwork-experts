@@ -1,25 +1,3 @@
 {
-  "products": [
-    {
-      "name": "Chrome AWS Lambda",
-      "description": "A powerful cloud computing service by AWS.",
-      "price": 0,
-      "category": "Cloud Services"
-    },
-    {
-      "id": 2,
-      "productSource": "/DB-OUTDOOR-B%C3%A2tons-marche-sifflet-survie/dp/B0D4WHLKJT/ref=sr_1_2?__mk_fr_FR=%C3%85M%C3%85%C5%BD%C3%95%C3%91&dib=eyJ2IjoiMSJ9.muiVmFRg_n_TwNpKK_HlthzUoNR3e5TVilt7rv2A1HUiXlg3PxOWMGFS6upOpWk5Z3kPJPwBOXmwPp2v46UgoB2RZN486GcwSP4nGs9-FAGTHsp0PF8kjha2fWndeOfTzXkQeYjuRpEU48GNODkuv8u6KfXWBHXzixF_7m3qnEV49379LyI81sdAPQbFDOds3qsNqbsdErT1ADuBWvp0y2B9sYkutwJHqCesT9EvNgwYVdbB3AsAa3-PpvbjWb2lBRCXL_u2FVzLa3IFdPO4bEFUdrVGZaSWNMUDc9hE43C_ekc0mVNQI03ok4jaxPFTV4PZ_9MV0oo2lCYOcjPNxYDOlXSl6XrvrB9QTJIwSLafZ1CmlqHetht0QfaxBeafQzmzYHrrKUoRVaPJfV9Zz-NJVNE7ECVD2cw_XnjLhJpUBQD11Qy4Fk6U9phF-jby.aIOpuo9HOTpS1Dd_WSTZg7buAOYsVNMTBv875ZEpicg&dib_tag=se&keywords=baton+marche+pliable&nsdOptOutParam=true&qid=1734591766&sr=8-2",
-      "productImage": "https://m.media-amazon.com/images/I/81OILV1hALL.jpg",
-      "productTitle": "Bâtons de marche légers et pliables avec sifflet de survie",
-      "productPrice": "49,98 €",
-      "slug": "batons-marche-legers-pliables-sifflet-survie",
-      "description": "\n<h2>Détails du produit</h2>\n\n<p>Découvrez nos bâtons de marche légers et pliables, parfaits pour tous les aventuriers. Conçus pour durer et s'adapter à divers terrains, ces bâtons vous offriront un soutien fiable lors de vos randonnées.</p>\n\n<h3>Avantages principaux</h3>\n<ul>\n    <li>Fabriqués en alliage d'aluminium durable et léger.</li>\n    <li>Système de verrouillage à rabat pour un réglage facile de la hauteur.</li>\n    <li>Confort optimal avec des poignées en liège naturel.</li>\n    <li>Équipés d'un sifflet de survie intégré.</li>\n    <li>Accessoires inclus : embouts en caoutchouc et paniers de boue.</li>\n    <li>Poids léger facilitant le transport en toute situation.</li>\n    <li>Absorption des chocs pour réduire la tension sur les articulations.</li>\n    <li>Résistants à la corrosion et conçus pour les conditions difficiles.</li>\n</ul>\n\n<h3>Caractéristiques du produit</h3>\n<table>\n    <tr>\n        <th>Caractéristique</th>\n        <th>Détails</th>\n    </tr>\n    <tr>\n        <td>Matériau</td>\n        <td>Aluminium 7075 de qualité aérospatiale</td>\n    </tr>\n    <tr>\n        <td>Hauteur réglable</td>\n        <td>De 62,5 cm à 135 cm</td>\n    </tr>\n    <tr>\n        <td>Poignée</td>\n        <td>Liège naturel avec absorption d'humidité</td>\n    </tr>\n    <tr>\n        <td>Poids</td>\n        <td>250 g par bâton</td>\n    </tr>\n    <tr>\n        <td>Accessoires inclus</td>\n        <td>Embouts en caoutchouc, paniers de boue, sac de transport</td>\n    </tr>\n    <tr>\n        <td>Fonctionnalité d'urgence</td>\n        <td>Sifflet de survie et paracorde intégrés</td>\n    </tr>\n    <tr>\n        <td>Capacité d'absorption des chocs</td>\n        <td>Oui</td>\n    </tr>\n    <tr>\n        <td>Couleurs disponibles</td>\n        <td>Noir, vert, bleu</td>\n    </tr>\n</table>\n\n<h3>Questions fréquentes</h3>\n\n<h4>Ces bâtons conviennent-ils aux personnes de toutes tailles ?</h4>\n<p>Oui, grâce à leur réglage de hauteur, ils s'adaptent aux utilisateurs de toutes tailles.</p>\n\n<h4>Sont-ils adaptés à tous les types de terrain ?</h4>\n<p>Oui, ces bâtons sont conçus pour offrir stabilité sur divers terrains, que ce soit pour des montées ou des sentiers accidentés.</p>\n\n<h4>Le sifflet intégré est-il efficace ?</h4>\n<p>Absolument, il est conçu pour être clairement audible en cas d'urgence.</p>\n\n<h4>Comment entretenir les bâtons ?</h4>\n<p>Il suffit de les nettoyer avec de l'eau et du savon doux. Évitez les produits abrasifs qui pourraient endommager la surface. </p>\n",
-      "productImage2": null,
-      "productImage3": "https://m.media-amazon.com/images/I/51eVvD8SkPL.jpg",
-      "productImage4": "https://m.media-amazon.com/images/I/51Eo89fl0rL.jpg",
-      "productImage5": "https://m.media-amazon.com/images/I/51Bx6fp-MTL.jpg",
-      "reviewImages": [],
-      "reviews": []
-    }
-  ]
+  "products": []
 }

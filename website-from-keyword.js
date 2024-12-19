@@ -146,6 +146,8 @@ async function main() {
             // }
         }
 
+        console.log('Content' + JSON.stringify(content.sites.shopName, null, 2));
+
         // Écrire les modifications dans content.json
         fs.writeFileSync('./content.json', JSON.stringify(content, null, 2), 'utf8');
     }
