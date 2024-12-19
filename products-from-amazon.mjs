@@ -18,8 +18,8 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 async function createBrowser() {
     console.log('Creating browser...');
     return await puppeteer.launch({
-        //executablePath: '/app/.chrome-for-testing/chrome-linux64/chrome', // Chemin absolu de Chrome
-        executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe', // Chemin absolu de Chrome
+        executablePath: '/app/.chrome-for-testing/chrome-linux64/chrome', // Chemin absolu de Chrome
+        //executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe', // Chemin absolu de Chrome
         args: [
             '--headless',
             '--no-sandbox',
