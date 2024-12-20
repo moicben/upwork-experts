@@ -9,8 +9,14 @@ import '../styles/faq.css'; // Importer le fichier CSS
 import '../styles/suivre-mon-colis.css'; // Importer le fichier CSS
 import '../styles/reviews.css'; // Importer le fichier CSS	
 
-function Application({ Component, pageProps }) {
-  return <Component {...pageProps} />
+import { CartProvider } from '../context/CartContext';
+
+function MyApp({ Component, pageProps }) {
+  return (
+    <CartProvider>
+      <Component {...pageProps} />
+    </CartProvider>
+  );
 }
 
-export default Application
+export default MyApp;

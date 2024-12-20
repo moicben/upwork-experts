@@ -72,7 +72,7 @@
   
   .cart-drawer {
     position: fixed;
-    right: 0;
+    right: -360px;
     top: 0;
     width: 360px;
     height: 100%;
@@ -83,6 +83,11 @@
     z-index: 1000;
     overflow-y: auto;
     padding: 1.5rem 2rem;
+    transition: right 0.3s ease;
+  }
+  
+  .cart-drawer.open {
+    right: 0;
   }
   
   .cart-drawer h2 {

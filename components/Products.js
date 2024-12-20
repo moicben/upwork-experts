@@ -25,7 +25,7 @@ const Products = ({ title, products, description }) => {
         <div className="product-list">
           {currentProducts.map(product => (
             <a href={`/produits/${product.slug}`} key={product.id} className="product-item">
-              <img src={product.productImage} alt={product.productTitle} />
+              <img src={product.productImages[0]} alt={product.productTitle} />
               <h3>{product.productTitle}</h3>
               <p>{product.productPrice}</p>
             </a>

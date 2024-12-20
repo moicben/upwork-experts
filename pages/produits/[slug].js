@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import Head from 'next/head';
 import content from '../../content.json';
 import Header from '../../components/Header';
@@ -6,39 +6,59 @@ import Footer from '../../components/Footer';
 import Products from '../../components/Products';
 import productsData from '../../products.json';
 import Reviews from '../../components/Reviews';
+import { CartContext } from '../../context/CartContext';
 
 export default function ProductDetail({ product, site, products }) {
-  const [cartCount, setCartCount] = useState(0);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
+  const [visibleImageIndex, setVisibleImageIndex] = useState(0);
+  const [buttonText, setButtonText] = useState('Ajouter au panier');
   const sliderRef = useRef(null);
+  const { addToCart } = useContext(CartContext);
 
   useEffect(() => {
-    const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
-    setCartCount(storedCart.length);
-  }, []);
+    const handleClickOutside = (event) => {
+      const cartDrawer = document.querySelector('.cart-drawer');
+      if (cartDrawer && cartDrawer.contains(event.target)) {
+        cartDrawer.classList.add('open');
+      } else {
+        cartDrawer.classList.remove('open');
+      }
+    };
 
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   if (!product || !site) {
     return <div>Produit ou site non trouvé</div>;
   }
 
   const handleAddToCart = () => {
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const productWithQuantity = { ...product, quantity };
-    cart.push(productWithQuantity);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    setCartCount(cart.length);
+    addToCart({ ...product, quantity, id: product.slug });
+    setButtonText('Ajouté !');
+    setTimeout(() => setButtonText('Ajouter au panier'), 3000);
     // Ouvrir le drawer du panier
-    document.querySelector('.cart-container').click();
+    document.querySelector('.cart-drawer').classList.add('open');
   };
 
   const handleImageClick = (index) => {
     setSelectedImageIndex(index);
   };
 
+  const handleNextImages = () => {
+    if (visibleImageIndex + 4 < images.length) {
+      setVisibleImageIndex(visibleImageIndex + 4);
+    } else {
+      setVisibleImageIndex(0); // Reset to the beginning
+    }
+  };
 
-  const images = [product.productImage, product.productImage2, product.productImage3, product.productImage4, product.productImage5];
+  const images = product.productImages || [];
+  const visibleImages = images.slice(visibleImageIndex, visibleImageIndex + 4);
 
   return (
     <div className="container">
@@ -52,23 +72,28 @@ export default function ProductDetail({ product, site, products }) {
       </Head>
       
       <main>
-        <Header shopName={site.shopName} cartCount={cartCount} keywordPlurial={site.keywordPlurial}/>
+        <Header shopName={site.shopName} keywordPlurial={site.keywordPlurial} />
         
         <section className="product-hero">
             <div className="product-columns">
               <div className="product-image">
                 <div className="thumbnail-container">
-                  {images.map((image, index) => (
+                  {visibleImages.map((image, index) => (
                     image && (
                       <img
-                        key={index}
+                        key={index + visibleImageIndex}
                         src={image}
                         alt={`${product.productTitle} ${index + 1}`}
-                        onClick={() => handleImageClick(index)}
-                        className={`thumbnail ${selectedImageIndex === index ? 'selected' : ''}`}
+                        onClick={() => handleImageClick(index + visibleImageIndex)}
+                        className={`thumbnail ${selectedImageIndex === index + visibleImageIndex ? 'selected' : ''}`}
                       />
                     )
                   ))}
+                  {images.length > 3 && (
+                    <button className="next-button" onClick={handleNextImages}>
+                      <i className="fas fa-chevron-down"></i>
+                    </button>
+                  )}
                 </div>
                 {images[selectedImageIndex] && (
                   <img src={images[selectedImageIndex]} alt={product.productTitle} className="large-image" />
@@ -83,7 +108,7 @@ export default function ProductDetail({ product, site, products }) {
                     <span>{quantity}</span>
                     <button onClick={() => setQuantity(quantity + 1)}>+</button>
                   </div>
-                  <button onClick={handleAddToCart}>Ajouter au panier</button>
+                  <button onClick={handleAddToCart}>{buttonText}</button>
                 </article>
                 <ul className='product-features'>
                   <li>
@@ -112,7 +137,7 @@ export default function ProductDetail({ product, site, products }) {
   
         <section className="product-description">
           <div className="wrapper">
-            <div className="product-content" dangerouslySetInnerHTML={{ __html: product.description }} />
+            <div className="product-content" dangerouslySetInnerHTML={{ __html: product.productDescription }} />
           </div>
         </section>
   
