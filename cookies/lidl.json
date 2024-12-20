@@ -1,0 +1,70 @@
+[
+    {
+        "domain": ".lidl.fr",
+        "expirationDate": 1764506806,
+        "hostOnly": false,
+        "httpOnly": false,
+        "name": "OptanonAlertBoxClosed",
+        "path": "/",
+        "sameSite": "lax",
+        "secure": false,
+        "session": false,
+        "storeId": "0",
+        "value": "2024-11-30T12:46:46.673Z",
+        "id": 1
+    },
+    {
+        "domain": ".lidl.fr",
+        "expirationDate": 1766162605,
+        "hostOnly": false,
+        "httpOnly": false,
+        "name": "OptanonConsent",
+        "path": "/",
+        "sameSite": "lax",
+        "secure": false,
+        "session": false,
+        "storeId": "0",
+        "value": "isGpcEnabled=0&datestamp=Thu+Dec+19+2024+23%3A43%3A25+GMT%2B0700+(Indochina+Time)&version=202409.2.0&browserGpcFlag=0&isIABGlobal=false&hosts=&consentId=ef569f28-2b8e-4dd4-96b8-b1174237fad1&interactionCount=1&isAnonUser=1&landingPath=NotLandingPage&groups=C0001%3A1%2CC0002%3A0%2CC0003%3A0%2CC0004%3A0&intType=2&geolocation=VN%3BDN&AwaitingReconsent=false",
+        "id": 2
+    },
+    {
+        "domain": "www.lidl.fr",
+        "hostOnly": true,
+        "httpOnly": false,
+        "name": "lidl_locale",
+        "path": "/",
+        "sameSite": "unspecified",
+        "secure": false,
+        "session": true,
+        "storeId": "0",
+        "value": "fr-FR",
+        "id": 3
+    },
+    {
+        "domain": "www.lidl.fr",
+        "expirationDate": 1764530805.609679,
+        "hostOnly": true,
+        "httpOnly": false,
+        "name": "LidlID",
+        "path": "/",
+        "sameSite": "strict",
+        "secure": true,
+        "session": false,
+        "storeId": "0",
+        "value": "25acdac1-1e33-455e-bf3a-a2b4d564647d",
+        "id": 4
+    },
+    {
+        "domain": "www.lidl.fr",
+        "hostOnly": true,
+        "httpOnly": false,
+        "name": "XSRF-TOKEN",
+        "path": "/",
+        "sameSite": "unspecified",
+        "secure": true,
+        "session": true,
+        "storeId": "0",
+        "value": "26b13ef0-935f-4756-863c-a2ad63398f02",
+        "id": 5
+    }
+    ]

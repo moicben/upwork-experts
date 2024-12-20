@@ -1,0 +1,33 @@
+{
+  "products": [
+    {
+      "title": "TRONIC\u00ae Batterie externe, 10000 mAh",
+      "price": "14.99\u20ac",
+      "description": "TRONIC\u00ae Batterie externe, 10000 mAhCaract\u00e9ristiquesBatterie Li-Ion puissante de 10000 mAh pour le chargement mobile de smartphones, tablettes et lecteurs de livres \u00e9lectroniques, etc.Possibilit\u00e9 de charger jusqu'\u00e0 deux appareils en parall\u00e8leSortie USB-C avec fonction Power Delivery (PD) 3.0I et sortie USB-A avec technologie Qualcomm\u00ae Quick Charge\u2122 3.0II pour un chargement tr\u00e8s rapideCharge compl\u00e8te en environ 6,5 heuresRecharge les appareils compatibles PDI jusqu'\u00e0 70 % plus rapidementPorts : 1x USB-A et 1x USB-CIndicateur LED de l'\u00e9tat de la batterieAvec m\u00e9canisme de protection contre la surchauffe et les courts-circuitsC\u00e2ble de charge de 15 cm inclus (USB-A vers USB-C)Appareils compatibles :Tablettes : iPad Pro 12.9\u00ab \u00a0/ iPad Pro 10.5 \u00bb / iPad Pro 11 \u00bb.Smartphones : iPhone 15 series, 14 series, 13 series, 12 series, 11 series, SE, X series, 8 series, Samsung Galaxy S23 series, S22 series, S21 series, S20 series, S10 series, S9 series, S8 series, S7 series, Note 20 series, Note 10 series, Note 9, Note 8Caract\u00e9ristiques du produitType de produit : PowerbankCapacit\u00e9 : 10000 mAhInterface : USB-A et USB-CCaract\u00e9ristiques : avec Qualcomm\u00ae Quick Charge 3.0, Power Delivery et Dual-Device-ChargingDomaine d'utilisation : compatibilit\u00e9 universellePoids : environ 216 gCouleurs :bleu ou\u00a0roseRemarquesI Power Delivery (PD) est une technologie de pointe qui offre une exp\u00e9rience de charge extr\u00eamement rapide pour tous les appareils compatibles PD, y compris l'iPhone d'Apple, les appareils Android de Samsung et l'iPad Pro.II Temps de charge jusqu'\u00e0 4x plus rapide que les char",
+      "images": [
+        "https://www.lidl.fr/assets/gcpaf7f9b490ea2491896b88f50c6399abe.jpeg",
+        "https://www.lidl.fr/assets/gcp11d93fa3f7e94719bf22429a7e87c01f.jpeg",
+        "https://www.lidl.fr/assets/gcp9e84e3dd75fa4f2786c2eec0203ea259.jpeg",
+        "https://www.lidl.fr/assets/gcpb01bd2dc430248359c856f285f931e0c.jpeg",
+        "https://www.lidl.fr/assets/gcp93c351b641534ee4a00d4e5dec2605be.jpeg",
+        "https://www.lidl.fr/assets/gcp8170e2bbc0234192ac16d1975b9b609d.jpeg",
+        "https://www.lidl.fr/assets/gcp85e4b6ca087d4fa091286ee4dafff535.jpeg",
+        "https://www.lidl.fr/assets/gcp3cd0c0ea3542428f8cb1c23370c1775f.jpeg",
+        "https://www.lidl.fr/assets/gcp7115ba8452cf460b96015e25a8f2a060.jpeg"
+      ]
+    },
+    {
+      "title": "Anker Batterie externe",
+      "price": "29.99\u20ac",
+      "description": "Anker Batterie externeCaract\u00e9ristiquesAlimentation pour plusieurs appareils:Un chargeur portable l\u00e9ger de 20\u00a0000\u00a0mAh PD sur le march\u00e9. Son design fin tient confortablement dans la paume de la main ou dans une poche, \u00e0 c\u00f4t\u00e9 des smartphonesLarge compatibilit\u00e9\u00a0: Prend en charge la technologie de charge PD QC SCP. La puissance de charge maximale atteint 30\u00a0WTriple mode de charge:Le port USB-C Power Delivery 30\u00a0W ainsi que les ports USB-A et USB-C avec prise en charge SCP sont int\u00e9gr\u00e9s. Il existe \u00e9galement une charge d\u2019entretien intelligente pour les appareils \u00e0 faible consommation d\u2019\u00e9nergie. Utilisez les ports USB bidirectionnels pour charger simultan\u00e9ment trois appareilsDesign finGrande puissance\u00a0: La powerbank compacte de 20\u00a0000\u00a0mAh offre suffisamment de puissance pour les voyages et la vie quotidienneCaract\u00e9ristiques du produitType de produit\u00a0:PowerbankCapacit\u00e9\u00a0:20000 mAhInterface\u00a0:USB-C, USB-A\u00c9quipement\u00a0:C\u00e2ble USB-C vers USB-CPoids\u00a0:environ 460\u00a0gCouleur\u00a0:noir",
+      "images": [
+        "https://www.lidl.fr/assets/gcp81d9ed5ddfbe42d0b5df9a8a5c14a0ad.jpg",
+        "https://www.lidl.fr/assets/gcpcbebf3fea4ca49fbbdb5a5338754e4fb.jpg",
+        "https://www.lidl.fr/assets/gcpa90eed0df7b44920bbb92196271a40da.jpg",
+        "https://www.lidl.fr/assets/gcpc4f869309a46454eb57f6e1e26fdecc3.jpg",
+        "https://www.lidl.fr/assets/gcp661f69cad16a4905b6072ff847fa8a78.jpg",
+        "https://www.lidl.fr/assets/gcp1f59741b8bbc41faba301999e6cd0545.jpg"
+      ]
+    }
+  ]
+}

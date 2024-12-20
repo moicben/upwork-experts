@@ -47,7 +47,7 @@ const Home = ({ site, products }) => {
           </div>
         </section>
 
-        <Products title={`Notre sélecton de ${site.keywordPlurial}`} products={products} />
+        <Products title={`Notre sélection ${site.keywordPlurial}`} products={products} />
         
         <About site={site}/>
         
@@ -56,7 +56,7 @@ const Home = ({ site, products }) => {
         <section className="contact" id='contact'>
           <div className='wrapper'>
             <div className="contact-content">
-              <h2>{site.contactTitle}</h2>
+              <h2>Contactez-nous</h2>
               <p>{site.contactDescription}</p>
             </div>
             <div className="contact-form">

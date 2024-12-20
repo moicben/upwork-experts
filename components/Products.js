@@ -31,15 +31,17 @@ const Products = ({ title, products, description }) => {
             </a>
           ))}
         </div>
-        <div className="pagination">
-          <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
-            Précédent
-          </button>
-          <span>{currentPage} sur {totalPages}</span>
-          <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
-            Suivant
-          </button>
-        </div>
+        {products.length > 12 && (
+          <div className="pagination">
+            <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+              Précédent
+            </button>
+            <span>{currentPage} sur {totalPages}</span>
+            <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+              Suivant
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

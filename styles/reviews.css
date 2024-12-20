@@ -6,6 +6,10 @@
     width: 100%;
     padding: 2rem 0rem 6rem 4rem;
   }
+
+  .product-reviews.hidden {
+    display: none;
+  }
   
   .product-reviews .wrapper {
     margin: 0 auto;

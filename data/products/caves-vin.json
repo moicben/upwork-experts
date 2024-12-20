@@ -1,0 +1,28 @@
+{
+  "products": [
+    {
+      "title": "Cecotec Cave \u00e0 vin",
+      "price": "219.00\u20ac",
+      "description": "Cecotec Cave \u00e0 vinCaract\u00e9ristiquesLe compresseur int\u00e9gr\u00e9 garantit un faible bruit et des performances \u00e9lev\u00e9es.Tr\u00e8s silencieux et sans vibrations. Seulement 42 dB.Temp\u00e9rature id\u00e9ale du vin : 5-18 \u00baCPanneau de commande tactile. Il r\u00e9gule la temp\u00e9rature, allume ou \u00e9teint la lumi\u00e8re, s\u00e9lectionne \u00baF ou \u00baC et se d\u00e9verrouille.Caract\u00e9ristiques du produitCouleur:noirEcran :OuiD\u00e9veloppement du bruit\u00a0:42dBArr\u00eat de porte\u00a0:droiteDimensions :43x45x74,5 cmPoids:21,3 kgContenu du colis :Cave \u00e0 vin Cecotec",
+      "images": [
+        "https://www.lidl.fr/assets/gcp3f44505516c447219b9f1c120d4c8fd3.jpg",
+        "https://www.lidl.fr/assets/gcp86ffc21d277f4ec2977846e7a556c9cd.jpg",
+        "https://www.lidl.fr/assets/gcp0b06e521956c4808871fce77d237c768.jpg",
+        "https://www.lidl.fr/assets/gcp959a4bcffe8f4468886b41ce81506ee4.jpg"
+      ]
+    },
+    {
+      "title": "vacu vin Seau \u00e0 vin",
+      "price": "19.99\u20ac",
+      "description": "vacu vin Seau \u00e0 vinLe refroidisseur de vin flexible Artico est un refroidisseur actif pour le vin et le champagne. Gr\u00e2ce au refroidissement actif, le rafra\u00eechisseur \u00e0 vin Artico refroidit votre vinrapidement et le garde au frais jusqu'\u00e0 la derni\u00e8re gorg\u00e9e.\u00a0Avec housse en n\u00e9opr\u00e8ne et bracelet en cuir.Caract\u00e9ristiques du produitConvient aussi bien pour le vin que pour le champagnePermet au vin de se refroidir rapidementGarde ton vin au frais plus longtempsConserver au cong\u00e9lateurDimensionsenviron 15,8 x 23,5 x 5,5 cmPoidsenviron 470 g",
+      "images": [
+        "https://www.lidl.fr/assets/gcp5bbe68414a8e418aa917ad67e54a6a98.jpeg",
+        "https://www.lidl.fr/assets/gcpa7b59253c952436db656019550a2026c.jpeg",
+        "https://www.lidl.fr/assets/gcpa28227a68e6244769528d83877d72577.jpeg",
+        "https://www.lidl.fr/assets/gcp85c05c56362241c59a65d85b545fdd95.jpeg",
+        "https://www.lidl.fr/assets/gcpf239fc4170484acdbf6a8ceecec4a414.jpeg",
+        "https://www.lidl.fr/assets/gcp92af458234d544d2b4e934d20ec2d50f.jpeg"
+      ]
+    }
+  ]
+}

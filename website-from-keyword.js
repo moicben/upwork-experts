@@ -54,7 +54,7 @@ async function generateHomepageContent(keyword) {
             { role: 'system', content: 'Tu es un assistant français specialisé en rédaction de site e-commerce singulier et attrayant. ' },
             { role: 'user', content: prompt }
         ],
-        max_tokens: 1000
+        max_tokens: 2000
     });
 
     return response.choices[0].message.content.trim();
@@ -110,7 +110,7 @@ async function main() {
 
             // Parser le contenu généré et mettre à jour content.json
             const lines = homepageContent.split('\n').map(line => line.trim()).filter(line => line);
-            site.keywordPlurial = site.keyword.replace(/ /, 's ');
+            site.keywordPlurial = site.keyword.replace(/ /, 's ').replace(/ss/, 's');
             site.slug = site.keyword.toLowerCase().replace(/de /,' ').replace(/la /,' ').replace(/le /,' ').replace(/l /,' ').replace(/ /g, '-').replace(/é/g, 'e').replace(/è/g, 'e').replace(/ê/g, 'e').replace(/à/g, '').replace(/[^\w-]+/g, '').replace(/---+/g, '-').replace(/--+/g, '-').replace(/'/g, '').replace(/â/,'a');
             site.source = `https://www.amazon.fr/s?k=${(site.slug).replace(/-/g, '+')}&__mk_fr_FR=ÅMÅŽÕÑ` 
             site.shopName = lines[0];
@@ -135,7 +135,7 @@ async function main() {
             site.productsDescription = lines[19];
 
             // Rechercher les images sur Pexels
-            site.heroImageUrl = await searchImage(site.keyword);
+            site.heroImageUrl = await searchImage(site.heroImageKeywords);
             //site.aboutImageUrl = await searchImage(site.aboutImageKeywords);
 
             // Vérifier si les URLs des images sont identiques et régénérer si nécessaire
@@ -146,7 +146,7 @@ async function main() {
             // }
         }
 
-        console.log('Content' + JSON.stringify(content.sites.shopName, null, 2));
+        //console.log('Content' + JSON.stringify(content.sites.shopName, null, 2));
 
         // Écrire les modifications dans content.json
         fs.writeFileSync('./content.json', JSON.stringify(content, null, 2), 'utf8');

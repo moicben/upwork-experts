@@ -21,7 +21,7 @@ async function getCrawlStats(siteUrl) {
       siteUrl,
       requestBody: {
         startDate: '2024-12-13', // Remplacez par la date de début souhaitée
-        endDate: '2024-12-14',   // Remplacez par la date de fin souhaitée
+        endDate: '2024-12-19',   // Remplacez par la date de fin souhaitée
         dimensions: ['page'],
         searchType: 'web',
       },
@@ -33,4 +33,4 @@ async function getCrawlStats(siteUrl) {
   }
 }
 
-getCrawlStats('https://test.expert-francais.shop/');
+getCrawlStats('https://plaid-polaire-xxl.expert-francais.shop/');

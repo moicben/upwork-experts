@@ -29,7 +29,7 @@
     },
     {
         "domain": ".amazon.fr",
-        "expirationDate": 1768662630.938727,
+        "expirationDate": 1769047894.733294,
         "hostOnly": false,
         "httpOnly": false,
         "name": "lc-acbfr",
@@ -71,7 +71,7 @@
     },
     {
         "domain": ".amazon.fr",
-        "expirationDate": 1768737011.998331,
+        "expirationDate": 1769047894.733396,
         "hostOnly": false,
         "httpOnly": false,
         "name": "session-id",
@@ -85,7 +85,7 @@
     },
     {
         "domain": ".amazon.fr",
-        "expirationDate": 1768737011.998441,
+        "expirationDate": 1769047894.733432,
         "hostOnly": false,
         "httpOnly": false,
         "name": "session-id-time",
@@ -99,7 +99,7 @@
     },
     {
         "domain": ".amazon.fr",
-        "expirationDate": 1765725506.300586,
+        "expirationDate": 1766144911.456033,
         "hostOnly": false,
         "httpOnly": false,
         "name": "session-token",
@@ -108,7 +108,7 @@
         "secure": true,
         "session": false,
         "storeId": "0",
-        "value": "/CjLaBU22uWvK+2aVQVzqHwV0sVQRPN+uUcYG7PjKlX7nr5jm1gr+pfBw6wIpcmqo0DNIPd4c0RJvVakf2W9laQfYauie1IMD0Eo9D2u8xYDwqPob13U36bUydm/79d6uiybwgyzSPV7/4qr+E+OfW5u06VppDe7SltvR7En0woqpQ4j/h0KMXtHTQzBjmDpMKXHi04524uTYcMBwXtQQMBQUilDS7EfAcMhSo0e06M7Zk2xlGShL12VrP0LBPDACtTqPPHCcYyJtt/Iqx28AgD7M+SuVxByBpjboFquUxZaBOKyagzhpHtt6VF3K7UGfgmg0pztsfU7noF+sBHxeuSTmcErRGZFlXSkS0Q+Wmoeo72PIcnXnb+bgHP1eB8D",
+        "value": "0fDYyNrFSyTf0imxJ6RtX/W7VFU/vC73NdFWq0O3rU7IVYadgHif//atfFjJl6mmZKRY3hfANtg0m2aw1S84mvsNAnwLhaSf6QMOK07ASiCQP7hlV4cq5NQGu8pp3GZm+jP8lhX99cOyFBXXGUUCrZQdw+yiOOjq8FEpgyCty5+TYjUihXvSOhlqDZ6cxnZnYhkfAjthK/pbKjv1tYT8xfIgH4SnB8ByuGJpxwA8nrIIYRv4aO1Iuo2vPZTPUtCkx1WwQWcv52YmOQvoHeAuSZyTc0L1fyLRHWBFCcUMTP6dBF1btBN3jDr7SUXJeLcJwsH28h54HdtLUX+uMLxRXfxNYZJAfB7zxn/DtPmQswg4UftC6Z2x/vTum77QVbtf",
         "id": 8
     },
     {
@@ -155,7 +155,7 @@
     },
     {
         "domain": "www.amazon.fr",
-        "expirationDate": 1764429736,
+        "expirationDate": 1764848912,
         "hostOnly": true,
         "httpOnly": false,
         "name": "csm-hit",
@@ -164,7 +164,7 @@
         "secure": false,
         "session": false,
         "storeId": "0",
-        "value": "adb:adblk_yes&t:1734189736565&tb:Q3Q05ZXVG746KCBJNXRF+s-Q3Q05ZXVG746KCBJNXRF|1734189736565",
+        "value": "adb:adblk_yes&t:1734608912353&tb:s-JQ69XN1775V8J0MT8X6N|1734608911700",
         "id": 12
     }
     ]

@@ -1,34 +1,37 @@
-import axios from 'axios';
-import * as cheerio from 'cheerio';
-import puppeteer from 'puppeteer-core';
-import fs from 'fs';
-import path from 'path';
-import OpenAI from 'openai';
-import pLimit from 'p-limit';
-import dotenv from 'dotenv';
+import axios from 'axios'
+import * as cheerio from 'cheerio'
+import puppeteer from 'puppeteer-extra';
+import StealthPlugin from 'puppeteer-extra-plugin-stealth';
+import fs from'fs' 
+import path from'path' 
+import OpenAI from'openai' 
+import pLimit from'p-limit'  // Correction de l'importation de p-limit
+import dotenv from 'dotenv'
 
 dotenv.config();
+puppeteer.use(StealthPlugin());
 
-const limit = pLimit(10); // Limite à 10 instances simultanées
+const limit = pLimit(1); // Limite à 10 instances simultanées
 
 // Configure OpenAI
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-// Démarrage unique de Puppeteer
+// Démarrage unique de Puppeteer avec des paramètres pour se faire passer pour un vrai navigateur
 async function createBrowser() {
     console.log('Creating browser...');
     return await puppeteer.launch({
-        //executablePath: '/app/.chrome-for-testing/chrome-linux64/chrome', // Chemin absolu de Chrome
-        executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe', // Chemin absolu de Chrome
-        //headless: false,
+        headless: true,
+        defaultViewport: { width: 1920, height: 1080 },
         args: [
-            '--no-headless',
             '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-accelerated-2d-canvas',
             '--disable-gpu',
-            '--disable-dev-shm-usage', // Utilise le système de fichier pour les partages de mémoire
-            '--remote-debugging-port=9222',
+            '--window-size=1920x1080',
+            '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36'
         ],
-        defaultViewport: { width: 1920, height: 1080 }
+        ignoreDefaultArgs: ['--disable-extensions']
     });
 }
 
@@ -49,7 +52,7 @@ async function extractProducts(page, url) {
 
     const products = [];
     await page.evaluate(() => { window.scrollBy(0, 14000); });
-    await delay(4000);
+    await delay(2000);
 
     const content = await page.content();
     const $ = cheerio.load(content);
@@ -59,6 +62,14 @@ async function extractProducts(page, url) {
         let productImage = $(element).find('a.a-link-normal.s-no-outline img').attr('src')?.trim();
         let productTitle = $(element).find('a.a-link-normal.s-line-clamp-4.s-link-style.a-text-normal h2').text()?.trim();
         let productPrice = $(element).find('.a-row.a-size-base.a-color-secondary span.a-color-base').text()?.trim();
+
+        //enlever toutes les lettres dans productPrice
+        productPrice = productPrice.replace(/[a-zA-Z]/g, '');
+
+        //si le prix n'a pas de virgule, ajouter une virgule et aléatoirement 2 chiffres après la virgule :
+        if (!productPrice.includes(',')) {
+            productPrice = productPrice.replace(/€/,'')
+        }
 
         if (productSource && productTitle) {
             products.push({
@@ -75,7 +86,7 @@ async function extractProducts(page, url) {
 
 // Extraction de la description et des images supplémentaires
 async function extractProductDetails(productUrl) {
-    const browser = await createBrowser();
+    const browser = await puppeteer.launch({ headless: false });
     const page = await browser.newPage();
 
     // Désactiver le chargement des styles
@@ -163,7 +174,7 @@ async function extractProductDetails(productUrl) {
         return { description, productImage2, productImage3, productImage4, productImage5, reviewImages, reviews };
     } catch (error) {
         console.error(`Error extracting product details from ${productUrl}:`, error.message);
-        return { description: null, images: [], reviews: [] }; // Ajoutez une valeur par défaut pour reviews
+        return { description: null, images: [] };
     } finally {
         await browser.close();
     }
@@ -206,14 +217,6 @@ async function main() {
     const content = JSON.parse(fs.readFileSync('./content.json', 'utf8'));
     let productsData = { products: [] };
 
-    // Ajout du produit "Chrome AWS Lambda"
-    productsData.products.push({
-        name: "Chrome AWS Lambda",
-        description: "A powerful cloud computing service by AWS.",
-        price: 0.00,
-        category: "Cloud Services"
-    });
-
     for (const site of content.sites) {
         const slug = site.keyword.toLowerCase().replace(/ de/, '').replace(/ la/, '').replace(/ le/, '').replace(/l /, '').replace(/ /g, '-').replace(/é/g, 'e').replace(/ /g, '-').replace(/é/g, 'e').replace(/è/g, 'e').replace(/ê/g, 'e').replace(/à/g, '').replace(/[^\w-]+/g, '').replace(/---+/g, '-').replace(/--+/g, '-');
 
@@ -231,6 +234,7 @@ async function main() {
                 console.log(`${site.keyword} - ${index + 1}/${products.length} `);
 
                 let { description, productImage2, productImage3, productImage4, productImage5, reviewImages, reviews } = await extractProductDetails(product.productSource);
+
 
                 //Formate des données extraites
                 product.productTitle = await generateContent(`
@@ -276,7 +280,8 @@ async function main() {
                     \n\n
                 `);
 
-                description = description.replace(/```html/,'').replace(/```/,'');
+                description = description.replace(/```html/,'').replace(/```/,'')
+
 
                 // Push les données dans le fichier JSON
                 const existingProductIndex = productsData.products.findIndex(p => p.slug === productSlug);
@@ -293,7 +298,7 @@ async function main() {
                             productImage4: productImage4 ? productImage4.split('.').slice(0, -2).join('.') + '.' + productImage4.split('.').slice(-1) : null,
                             productImage5: productImage5 ? productImage5.split('.').slice(0, -2).join('.') + '.' + productImage5.split('.').slice(-1) : null,
                             reviewImages: reviewImages,
-                            reviews: reviews || [] // Ajoutez une valeur par défaut pour reviews
+                            reviews: reviews
                         });
                     } else {
                         console.warn(`${site.keyword} - ${index + 1}/Extraction error.`);
