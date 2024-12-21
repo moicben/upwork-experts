@@ -21,26 +21,27 @@ section.product-hero {
 
 .product-image {
   flex: 1;
-  display: flex;
-  flex-direction: row;
   align-items: start;
   position: relative;
+  overflow: hidden;
 }
 
-div.product-image > div > img:nth-child(1){
-  
-}
 
 .large-image {
-  width: 500px;
+  width: 100%;
   height: 500px;
+  max-height: 500px;
   object-fit: contain;
-  margin-left: 20px;
+  transition: transform 0.5s ease; /* Ajout de la transition pour le zoom */
+}
+
+.large-image:hover{
+  transform: scale(1.5);
 }
 
 .thumbnail-container {
+  background-color: white;
   display: flex;
-  flex-direction: column;
   align-items: center;
   gap: 10px;
   position: relative;
@@ -62,14 +63,15 @@ div.product-image > div > img:nth-child(1){
 }
 
 .thumbnail.selected {
-  border: 2px solid #333;
+  border: 1px solid #333;
   border-radius: 8px;
   padding: .5rem;
 }
 
 .next-button {
   position: absolute;
-  bottom: -4rem;
+  bottom: 2rem;
+  right: 1rem;
   background-color: white;
   color: white;
   padding: 12px 10px 10px 10px;
@@ -276,7 +278,8 @@ div.product-image > div > img:nth-child(1){
 .product-content ul,
 .product-content ol {
   display: block;
-  list-style: decimal;
+  margin-left: 1.25rem;
+  list-style-type:square
 }
 
 .product-content table{
@@ -284,8 +287,9 @@ div.product-image > div > img:nth-child(1){
 }
 
 .product-content li {
-  display: flex;
+  display: list-item;
   justify-content: space-between;
+  padding: .25rem;
 }
 
 .product-content td {
@@ -319,6 +323,14 @@ div.product-image > div > img:nth-child(1){
   margin-bottom: 1rem;
 }
 
+.product-content hr{
+  margin: 1.5rem 0;
+}
+
+.product-content img{
+  max-width: 100%;
+}
+
 /* Mobile Styles */
 @media (max-width: 1024px) {
   .product-hero .wrapper,
@@ -327,12 +339,7 @@ div.product-image > div > img:nth-child(1){
   }
 
   section.product-hero {
-  padding: 2rem 1.5rem;
-  }
-
-  .product-columns {
-  flex-direction: column;
-  gap: 2rem;
+  padding: 2rem 1rem;
   }
 
   .product-image{
@@ -343,8 +350,14 @@ div.product-image > div > img:nth-child(1){
   width: 100%;
   height: 300px;
   margin-left: 0;
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.5rem;
   }
+
+  .next-button{
+    right: 0;
+    transform: scale(.8);
+  }
+  
 
   .thumbnail-container {
   flex-direction: row;
@@ -353,8 +366,7 @@ div.product-image > div > img:nth-child(1){
   }
 
   .thumbnail {
-  width: 47.5%;
-  height: 125px;
+  height: 100px;
   }
 
   .product-info {
@@ -364,7 +376,9 @@ div.product-image > div > img:nth-child(1){
 
 
 
-
+  .gift-container h4{
+    font-size: 1.25rem;
+  }
 
   .product-reviews .slide p
   .product-info h1 {
@@ -422,5 +436,9 @@ div.product-image > div > img:nth-child(1){
   .product-content li,
   .product-content td {
   font-size: .9rem;
+  }
+
+  .product-content hr{
+    margin: 1rem 0;
   }
 }

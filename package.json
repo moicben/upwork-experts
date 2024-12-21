@@ -33,6 +33,7 @@
     "p-limit": "^6.1.0",
     "path": "^0.12.7",
     "pexels": "^1.4.0",
+    "progress": "^2.0.3",
     "puppeteer": "^23.11.0",
     "puppeteer-core": "^23.11.0",
     "puppeteer-extra": "^3.3.6",

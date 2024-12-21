@@ -6,24 +6,23 @@ import Footer from '../../components/Footer';
 import Products from '../../components/Products';
 import productsData from '../../products.json';
 import Reviews from '../../components/Reviews';
-import { CartContext } from '../../context/CartContext';
 
 export default function ProductDetail({ product, site, products }) {
+  const [cartCount, setCartCount] = useState(0);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [visibleImageIndex, setVisibleImageIndex] = useState(0);
   const [buttonText, setButtonText] = useState('Ajouter au panier');
   const sliderRef = useRef(null);
-  const { addToCart } = useContext(CartContext);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       const cartDrawer = document.querySelector('.cart-drawer');
-      if (cartDrawer && cartDrawer.contains(event.target)) {
-        cartDrawer.classList.add('open');
-      } else {
-        cartDrawer.classList.remove('open');
-      }
+      // if (cartDrawer && cartDrawer.contains(event.target)) {
+      //   cartDrawer.classList.add('open');
+      // } else {
+      //   cartDrawer.classList.remove('open');
+      // }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
@@ -38,11 +37,16 @@ export default function ProductDetail({ product, site, products }) {
   }
 
   const handleAddToCart = () => {
-    addToCart({ ...product, quantity, id: product.slug });
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const productWithQuantity = { ...product, quantity };
+    cart.push(productWithQuantity);
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+    // Changer le texte du bouton
     setButtonText('Ajouté !');
     setTimeout(() => setButtonText('Ajouter au panier'), 3000);
     // Ouvrir le drawer du panier
-    document.querySelector('.cart-drawer').classList.add('open');
+    document.querySelector('.cart-container').click();
   };
 
   const handleImageClick = (index) => {
@@ -51,9 +55,11 @@ export default function ProductDetail({ product, site, products }) {
 
   const handleNextImages = () => {
     if (visibleImageIndex + 4 < images.length) {
-      setVisibleImageIndex(visibleImageIndex + 4);
+      setVisibleImageIndex(visibleImageIndex + 1);
+      setSelectedImageIndex(visibleImageIndex + 1); // Update the large image
     } else {
       setVisibleImageIndex(0); // Reset to the beginning
+      setSelectedImageIndex(0); // Reset the large image
     }
   };
 
@@ -75,63 +81,63 @@ export default function ProductDetail({ product, site, products }) {
         <Header shopName={site.shopName} keywordPlurial={site.keywordPlurial} />
         
         <section className="product-hero">
-            <div className="product-columns">
-              <div className="product-image">
-                <div className="thumbnail-container">
-                  {visibleImages.map((image, index) => (
-                    image && (
-                      <img
-                        key={index + visibleImageIndex}
-                        src={image}
-                        alt={`${product.productTitle} ${index + 1}`}
-                        onClick={() => handleImageClick(index + visibleImageIndex)}
-                        className={`thumbnail ${selectedImageIndex === index + visibleImageIndex ? 'selected' : ''}`}
-                      />
-                    )
-                  ))}
-                  {images.length > 3 && (
-                    <button className="next-button" onClick={handleNextImages}>
-                      <i className="fas fa-chevron-down"></i>
-                    </button>
-                  )}
-                </div>
-                {images[selectedImageIndex] && (
-                  <img src={images[selectedImageIndex]} alt={product.productTitle} className="large-image" />
-                )}
-              </div>
-              <div className="product-info">
-                <h1>{product.productTitle}</h1>
-                <p className="product-price">{product.productPrice}</p>
-                <article className="purchase-row">
-                  <div className="quantity-selector">
-                    <button onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}>-</button>
-                    <span>{quantity}</span>
-                    <button onClick={() => setQuantity(quantity + 1)}>+</button>
-                  </div>
-                  <button onClick={handleAddToCart}>{buttonText}</button>
-                </article>
-                <ul className='product-features'>
-                  <li>
-                    <span><i className="fas fa-lock"></i>Paiement Sécurisé</span><img src='/card-badges.png' alt={"paiement " + site.keyword} />
-                  </li>
-                  <li>
-                    <span><i className="fas fa-check"></i>En stock, expédié sous 24/48h</span>
-                  </li>
-                  <li>
-                    <span><i className="fas fa-truck"></i>Livraison Suivie OFFERTE</span>
-                  </li>
-                </ul>
-                <div className='gift-container'>
-                  <div className='cover'></div>
-                    <h4>JOYEUSE ANNÉE 2025 !</h4>
-                    <h5>AVEC {site.shopName.toUpperCase()}</h5>
-                    <p>- 15% de réduction avec le code "<strong>YEAR15</strong>"</p>
-                    <p>- Livraison gratuite sans minimum d'achat</p>
-                    <p>- Retours étendus jusqu'au 14/03/2025 </p>
-                </div>
-              </div>
+        <div className="product-columns">
+          <div className="product-image">
+            {images[selectedImageIndex] && (
+              <img src={images[selectedImageIndex]} alt={product.productTitle} className="large-image" />
+            )}
+            <div className="thumbnail-container">
+              {visibleImages.map((image, index) => (
+                image && (
+                  <img
+                    key={index + visibleImageIndex}
+                    src={image}
+                    alt={`${product.productTitle} ${index + 1}`}
+                    onClick={() => handleImageClick(index + visibleImageIndex)}
+                    className={`thumbnail ${selectedImageIndex === index + visibleImageIndex ? 'selected' : ''}`}
+                  />
+                )
+              ))}
+              {images.length > 4 && (
+                <button className="next-button" onClick={handleNextImages}>
+                  <i className="fas fa-chevron-right"></i>
+                </button>
+              )}
+            </div>
           </div>
-        </section>
+          <div className="product-info">
+            <h1>{product.productTitle}</h1>
+            <p className="product-price">{product.productPrice}</p>
+            <article className="purchase-row">
+              <div className="quantity-selector">
+                <button onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}>-</button>
+                <span>{quantity}</span>
+                <button onClick={() => setQuantity(quantity + 1)}>+</button>
+              </div>
+              <button onClick={handleAddToCart}>{buttonText}</button>
+            </article>
+            <ul className='product-features'>
+              <li>
+                <span><i className="fas fa-lock"></i>Paiement Sécurisé</span><img src='/card-badges.png' alt={"paiement " + site.keyword} />
+              </li>
+              <li>
+                <span><i className="fas fa-check"></i>En stock, expédié sous 24/48h</span>
+              </li>
+              <li>
+                <span><i className="fas fa-truck"></i>Livraison Suivie OFFERTE</span>
+              </li>
+            </ul>
+            <div className='gift-container'>
+              <div className='cover'></div>
+                <h4>JOYEUSE ANNÉE 2025 !</h4>
+                <h5>AVEC {site.shopName.toUpperCase()}</h5>
+                <p>- 15% de réduction avec le code "<strong>YEAR15</strong>"</p>
+                <p>- Livraison gratuite sans minimum d'achat</p>
+                <p>- Retours étendus jusqu'au 14/03/2025 </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
         <Reviews product={product} />
   
@@ -162,7 +168,7 @@ export async function getStaticProps({ params }) {
   const products = productsData.products.filter(p => p.siteId === site.id);
 
   return {
-    props: {
+    props: {  
       product: product || null,
       site: site || null,
       products,

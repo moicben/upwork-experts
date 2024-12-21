@@ -48,7 +48,7 @@ const PolitiqueDesRetours = () => {
             Pour initier un retour, veuillez suivre les étapes suivantes :
           </p>
           <ul>
-            <li>Contactez notre service client à l'adresse suivante : contact@rabbits-world.com.</li>
+            <li>Contactez notre service client à l'adresse suivante : contact@expert-francais.shop.</li>
             <li>Indiquez votre numéro de commande et la raison du retour.</li>
             <li>Suivez les instructions fournies par notre service client pour retourner l'article.</li>
           </ul>

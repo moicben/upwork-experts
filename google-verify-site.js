@@ -51,3 +51,4 @@ module.exports = { verifySite };
   const siteUrl = 'https://radiateur-electrique.expert-francais.shop/';
   await verifySite(siteUrl);
 })();
+

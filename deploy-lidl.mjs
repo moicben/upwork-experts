@@ -23,7 +23,6 @@ const content = JSON.parse(fs.readFileSync('./categories.json', 'utf8'));
 const buildDirPath = './data/builds';
 const subdomains = fs.readdirSync(buildDirPath).filter(file => fs.statSync(path.join(buildDirPath, file)).isDirectory()).sort();
 
-
 const api = new NetlifyAPI(NETLIFY_API_TOKEN);
 
 //console.log('Initializing OAuth2 client...');
@@ -59,7 +58,7 @@ async function delay(ms) {
 
 async function askVerifyToken(siteUrl) {
   try {
-    console.log(`Requesting site verification token for: ${siteUrl}`);
+    //console.log(`Requesting site verification token for: ${siteUrl}`);
     const res = await siteVerification.webResource.getToken({
       requestBody: {
         site: {
@@ -71,12 +70,12 @@ async function askVerifyToken(siteUrl) {
     });
 
     const token = res.data.token;
-    console.log(`Verification token received: ${token}`);
+    //console.log(`Verification token received: ${token}`);
 
     // Save the token file to the public directory of your site
     const tokenFilePath = path.join(__dirname, 'public', token);
     fs.writeFileSync(tokenFilePath, 'google-site-verification: ' + token);
-    console.log(`Verification token file saved to: ${tokenFilePath}`);
+    //console.log(`Verification token file saved to: ${tokenFilePath}`);
 
   } catch (error) {
     console.error('Error asking site token:', error.message);
@@ -112,25 +111,25 @@ async function verifySite(siteUrl) {
     }
 }
 
-async function submitSitemap(siteUrl) {
-    try {
-        console.log(`Submitting sitemap: ${siteUrl}`);
-        // Envoyer le sitemap à Google Search Console
-        await webmasters.sitemaps.submit({
-          siteUrl,
-          feedpath: `${siteUrl}/sitemap.xml` 
-        });
-        console.log(`Sitemap submitted: ${siteUrl}`);
-    }
-    catch (error) {
-        console.error('Error submitting sitemap:', error.message);
-        console.error(error);
-    }
-}
+// async function submitSitemap(siteUrl) {
+//     try {
+//         console.log(`Submitting sitemap: ${siteUrl}`);
+//         // Envoyer le sitemap à Google Search Console
+//         await webmasters.sitemaps.submit({
+//           siteUrl,
+//           feedpath: `${siteUrl}/sitemap.xml` 
+//         });
+//         console.log(`Sitemap submitted: ${siteUrl}`);
+//     }
+//     catch (error) {
+//         console.error('Error submitting sitemap:', error.message);
+//         console.error(error);
+//     }
+// }
 
 async function addSite(subdomain, siteUrl) {
   try {
-    console.log(`Adding site to Google Search Console: ${siteUrl}`);
+    //console.log(`Adding site to Google Search Console: ${siteUrl}`);
     // Ajouter le site à Google Search Console
     await webmasters.sites.add({ siteUrl });
     console.log(`Site added to Google Search Console: ${siteUrl}`);
@@ -150,7 +149,7 @@ async function addSite(subdomain, siteUrl) {
     await verifySite(siteUrl);
 
     // Envoyer le sitemap à Google Search Console
-    await submitSitemap(siteUrl);
+    //await submitSitemap(siteUrl);
 
   } catch (error) {
     console.error('Error adding site ', error.message);
@@ -164,11 +163,13 @@ async function updateSite(subdomain, siteUrl) {
     //await switchBuild(subdomain);
 
     // Déployer le répertoire actuel sur le site créé ou déjà existant
-    await deploySite(subdomain);
+    //await deploySite(subdomain);
 
-    console.log(`Sending sitemap to Google Search Console: ${siteUrl}`);
+    console.log(`Already exists`)
+
+    //console.log(`Sending sitemap to Google Search Console: ${siteUrl}`);
     // Envoyer le sitemap à Google Search Console
-    await submitSitemap(siteUrl);
+    //await submitSitemap(siteUrl);
 
   } catch (error) {
     console.error('Error updating site ', error.message);
@@ -178,7 +179,8 @@ async function updateSite(subdomain, siteUrl) {
 
 async function createOrUpdateSite(subdomain) {
   try {
-    //console.log(`Creating or updating site for: ${subdomain}`);
+    console.log(`${subdomains.indexOf(subdomain) + 1}/${subdomains.length} - ${subdomain}`);
+
     const siteUrl = `https://${subdomain}.${DOMAIN}`;
     let site;
 
@@ -186,7 +188,7 @@ async function createOrUpdateSite(subdomain) {
     // const productsData = JSON.parse(fs.readFileSync('./products.json', 'utf8'));
     // if (!productsData.products || productsData.products.length < 3) {
     //   //console.error(`Products file must contain at least 3 products!`);
-    //   return;
+    //   return;s
     // }
 
     // Vérifier si le site existe déjà
@@ -194,7 +196,7 @@ async function createOrUpdateSite(subdomain) {
     site = sites.find(s => s.ssl_url === siteUrl || s.url === siteUrl);
 
     if (site) {
-      console.log(`Site already exists: ${site.ssl_url || site.url}`);
+      //console.log(`Site exists: ${site.ssl_url || site.url}`);
       await updateSite(subdomain, siteUrl);
     } else {
       // Créer le nouveau site sur Netlify
@@ -204,7 +206,7 @@ async function createOrUpdateSite(subdomain) {
           custom_domain: `${subdomain}.${DOMAIN}`
         }
       });
-      console.log(`Site created: ${site.ssl_url || site.url}`);
+      //console.log(`Site created: ${site.ssl_url || site.url}`);
 
       // Lancer la création du site
       await addSite(subdomain, siteUrl);
@@ -215,89 +217,15 @@ async function createOrUpdateSite(subdomain) {
   }
 }
 
-async function generateSitemap(subdomain) {
+// Mettre à jour le JSON des partenaires
+async function updatePartnersData() {
   try {
-    const sitemap = new SitemapStream({ hostname: `https://${subdomain}.${DOMAIN}` });
-    const productsData = JSON.parse(fs.readFileSync(`./products/${subdomain}.json`, 'utf8'));
-
-
-    // Add static pages
-    sitemap.write({ url: '/', changefreq: 'daily', priority: 1.0 });
-    sitemap.write({ url: '/boutique', changefreq: 'weekly', priority: 0.8 });
-    sitemap.write({ url: '/mentions-legales', changefreq: 'monthly', priority: 0.5 });
-    sitemap.write({ url: '/politique-de-confidentialite', changefreq: 'monthly', priority: 0.5 });
-    sitemap.write({ url: '/conditions-generales', changefreq: 'monthly', priority: 0.5 });
-
-
-    // Vérification et conversion de l'objet en tableau
-    const products = Array.isArray(productsData.products)
-     ? productsData.products
-     : Object.values(productsData.products);
-
-      if (!Array.isArray(products)) {
-          console.error("Erreur : 'products' n'est pas convertible en tableau.");
-          return;
-      }
-
-    //console.log(`Products for site ${subdomain}:`, products);
-
-    // Add dynamic product pages
-    products.forEach(product => {
-      sitemap.write({ url: `/produits/${product.slug}`, changefreq: 'weekly', priority: 0.7 });
-    });
-
-    sitemap.end();
-
-    const sitemapPath = resolve('public/sitemap.xml');
-    const writeStream = createWriteStream(sitemapPath);
-
-    sitemap.pipe(writeStream).on('finish', () => {
-      console.log('Sitemap generated at', sitemapPath);
-    }).on('error', (err) => {
-      console.error('Error generating sitemap:', err);
-    });
-  }
-  catch (error) {
-    console.error('Error generating sitemap:', error.message);
-  }
-  
-}
-
-async function generateRobotsTxt(subdomain) {
-  try {
-    const robotsTxt = `User-agent: *
-    Allow: /
-    Sitemap: https://${subdomain}.expert-francais.shop/sitemap.xml`;
-    
-    const robotsPath = resolve('public/robots.txt');
-    writeFileSync(robotsPath, robotsTxt);
-    console.log('Robots.txt generated at', robotsPath);
-
+    //console.log('Updating partners data...');
+    execSync('node C:/Users/bendo/Desktop/Documents/Clapier-Lapin/Tech/ecom/partners-from-netlify.js', { stdio: 'inherit' });
+    //console.log('Partners data updated.');
   } catch (error) {
-    console.error('Error generating robots.txt:', error.message);
-  }
-}
-
-async function switchBuild(subdomain) {
-  try {
-    const buildDir = resolve(`./data/builds/${subdomain}`);
-    const tempBuildDir = resolve(`./out`); // Répertoire de construction par défaut de Next.js
-
-    // Vérifiez si le répertoire de construction existe
-    if (fs.existsSync(buildDir)) {
-      // Supprimez d'abord le répertoire de sortie s'il existe déjà pour éviter les conflits
-      if (fs.existsSync(tempBuildDir)) {
-        await fs.remove(tempBuildDir);
-      }
-
-      // Copiez le contenu du répertoire de construction vers le répertoire de sortie
-      await fs.copy(buildDir, tempBuildDir);
-      console.log('Build copied to:', tempBuildDir);
-    } else {
-      console.error(`Build directory not found: ${buildDir}`);
-    }
-  } catch (error) {
-    console.error('Error switching build:', error.message);
+    console.error('Error updating partners data:', error.message);
+    process.exit(1);
   }
 }
 
@@ -305,26 +233,25 @@ async function deploySite(subdomain) {
   try {
     const outDir = path.resolve(`./data/builds/${subdomain}`); // Répertoire de sortie après la construction
     // Utiliser netlify-cli pour déployer le répertoire de sortie
-    execSync(`netlify deploy --prod --dir=${outDir} --site=${subdomain}.${DOMAIN}`, { stdio: 'inherit' });
-    console.log(`Site deployed: https://${subdomain}.netlify.app`);
+    execSync(`netlify deploy --prod --dir=${outDir} --site=${subdomain}.${DOMAIN} > NUL 2>&1`);
+    console.log(`Deployed: https://${subdomain}.${DOMAIN}`);
+    
+    // Mettre à jour les données des partenaires après le déploiement
+    await updatePartnersData();
   } catch (error) {
     console.error(`Error deploying site:`, error.message);
   }
 }
 
-
 async function createOrUpdateSites() {
-  const promises = subdomains.map(async subdomain => {
+  for (const subdomain of subdomains) {
     try {
       await createOrUpdateSite(subdomain);
       await delay(5000); // Attendez 5 secondes entre les sites
     } catch (error) {
       console.error(`Failed to process site ${subdomain}:`, error.message);
     }
-  });
-
-  await Promise.all(promises);
+  }
 }
-
 
 createOrUpdateSites();

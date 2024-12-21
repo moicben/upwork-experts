@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './Footer.module.css';
 
-const Footer = ({ shopName, footerText}) => {
+const Footer = ({ shopName, footerText }) => {
+  const [email, setEmail] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Simulate form submission
+    setSubmitted(true);
+  };
+
   return (
     <>
       <section className="features">
@@ -36,17 +45,17 @@ const Footer = ({ shopName, footerText}) => {
               <p>{footerText}</p>
               <div className="legal-container">
                 <a href="/conditions-generales">Conditions Générales</a>
-                <a href="/politique-de-confidentialite">Politique des données</a>
                 <a href="/mentions-legales">Mentions Légales</a>
+                <a href="/politique-de-confidentialite">Politique des données</a>
               </div>
             </div>
             <div className="footer-column">
               <h4>Navigation</h4>
               <ul>
-                <li><a href="/">Accueil</a></li>
                 <li><a href="/boutiqe">Boutique</a></li>
                 <li><a href="/#a-propos">A propos</a></li>
                 <li><a href="/#contact">Contact</a></li>
+                <li><a href="/faq">FAQs</a></li>
               </ul>
             </div>
             <div className="footer-column">
@@ -54,20 +63,32 @@ const Footer = ({ shopName, footerText}) => {
               <ul>
                 <li><a href="/politique-des-retours">Politique des retours</a></li>
                 <li><a href="/suivre-mon-colis">Suivre mon colis</a></li>
-                <li><a href="/faq">FAQs</a></li>
+                <li><a href="/partenaires">Partenaires</a></li>
                 <li><a target='_blank' href="/sitemap.xml">Sitemap</a></li>
               </ul>
             </div>
             <div className="footer-column">
               <h4>Newsletter</h4>
-              <form action="mailto:benedikt.strokin@gmail.com"> 
-                <label htmlFor="email">Inscrivez-vous pour des nouvelles et des offres exclusives :</label>
-                <input type="email" id="email" name="email" placeholder="Votre email" required />
-                <button type="submit">S'inscrire</button>
-              </form>
+              {submitted ? (
+                <p>Merci pour votre inscription !</p>
+              ) : (
+                <form onSubmit={handleSubmit}> 
+                  <label htmlFor="email">Inscrivez-vous pour des nouvelles et des offres exclusives :</label>
+                  <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    placeholder="Votre email" 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required 
+                  />
+                  <button type="submit">S'inscrire</button>
+                </form>
+              )}
             </div>
-            </article>
-            <div className="sub-footer">
+          </article>
+          <div className="sub-footer">
             <p>© 2024 - Tous droits réservés - {shopName}</p>
             <div className={styles.paymentIcons}>
               <img src="/card-logo.png" alt={"acheter" + shopName} />

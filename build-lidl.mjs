@@ -5,6 +5,7 @@ import fs from 'fs-extra'; // Utilisation de fs-extra pour des opérations de r�
 import { createWriteStream } from 'fs';
 import { SitemapStream } from 'sitemap';
 import pLimit from 'p-limit';
+import os from 'os';
 
 dotenv.config();
 
@@ -18,7 +19,7 @@ async function generateRobotsTxt(subdomain) {
     Allow: /
     Sitemap: https://${subdomain}.${DOMAIN}/sitemap.xml`;
 
-    const robotsDir = resolve(`./data/builds/${subdomain}/public`);
+    const robotsDir = resolve(`./data/builds/${subdomain}`);
     if (!fs.existsSync(robotsDir)) {
       fs.mkdirSync(robotsDir, { recursive: true });
     }
@@ -33,6 +34,14 @@ async function generateRobotsTxt(subdomain) {
 // Génération du sitemap
 async function generateSitemap(subdomain) {
   try {
+    const sitemapDir = resolve(`./data/builds/${subdomain}`);
+    const sitemapPath = resolve(sitemapDir, 'sitemap.xml');
+
+    // Supprimer le sitemap existant s'il existe
+    if (fs.existsSync(sitemapPath)) {
+      fs.unlinkSync(sitemapPath);
+    }
+
     const sitemap = new SitemapStream({ hostname: `https://${subdomain}.${DOMAIN}` });
     const productsData = JSON.parse(fs.readFileSync(`./data/products/${subdomain}.json`, 'utf8'));
     const products = Array.isArray(productsData.products) ? productsData.products : Object.values(productsData.products);
@@ -43,13 +52,8 @@ async function generateSitemap(subdomain) {
     });
 
     sitemap.end();
-    const sitemapDir = resolve(`./data/builds/${subdomain}/public`);
-    if (!fs.existsSync(sitemapDir)) {
-      fs.mkdirSync(sitemapDir, { recursive: true });
-    }
-    const sitemapPath = resolve(sitemapDir, 'sitemap.xml');
-    const writeStream = createWriteStream(sitemapPath);
 
+    const writeStream = createWriteStream(sitemapPath);
     sitemap.pipe(writeStream).on('finish', () => {
       //console.log(`Sitemap generated for ${subdomain}`);
     });
@@ -71,7 +75,7 @@ async function switchData(subdomain) {
     const productsData = fs.readFileSync(productsSourcePath, 'utf8');
     fs.writeFileSync(productsDestinationPath, productsData);
 
-    console.log(`Content switched for ${subdomain}`);
+    //console.log(`Content switched for ${subdomain}`);
   } catch (error) {
     console.error(`Error switching content for ${subdomain}:`, error.message);
   }
@@ -98,35 +102,33 @@ async function buildProject(subdomain, index, total) {
     await switchData(subdomain);
 
     // Exécutez la commande de construction
-    execSync(`npm run build`, { stdio: 'inherit' });
+    const stdoutFile = path.join(os.tmpdir(), `build-${subdomain}-stdout.log`);
+    const stderrFile = path.join(os.tmpdir(), `build-${subdomain}-stderr.log`);
+    execSync(`npm run build > ${stdoutFile} 2> ${stderrFile}`);
 
     // Déplacez les fichiers construits vers le répertoire souhaité
     fs.copySync(tempBuildDir, buildDir);
-    console.log(`${index + 1}/${total} - ${subdomain}`);
-  } catch (error) {
-    console.error(`${index + 1}/${total} - Error: ${subdomain}:`, error.message);
-    process.exit(1);
-  }
-}
 
-// Processus principal pour chaque sous-domaine
-async function processSite(subdomain, index, total) {
-  try {
-    await buildProject(subdomain, index, total);
+    // Attendre 5 secondes pour s'assurer que les fichiers sont copiés
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    // Génération de robots.txt et sitemap.xml
     await generateRobotsTxt(subdomain);
     await generateSitemap(subdomain);
+
+    console.log(`${index + 1}/${total} - ${subdomain}`);
   } catch (error) {
-    console.error(`${index + 1}/${total} - Error processing: ${subdomain}:`, error.message);
+    console.error(`${index + 1}/${total} - Error Building: ${subdomain}:`, error.message);
   }
 }
 
 // Orchestration parallèle avec limite de concurrence
 async function buildAllSites() {
   const limit = pLimit(CONCURRENCY_LIMIT);
-  const websiteFiles = fs.readdirSync('./data/websites');
-  const subdomains = websiteFiles.map(file => path.basename(file, '.json'));
+  const productFiles = fs.readdirSync('./data/products');
+  const subdomains = productFiles.map(file => path.basename(file, '.json'));
   const total = subdomains.length;
-  const tasks = subdomains.map((subdomain, index) => limit(() => processSite(subdomain, index, total)));
+  const tasks = subdomains.map((subdomain, index) => limit(() => buildProject(subdomain, index, total)));
   await Promise.all(tasks);
   console.log('All sites built.');
 }

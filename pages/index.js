@@ -12,14 +12,20 @@ import Reviews from '../components/Reviews';
 import content from '../content.json';
 import productsData from '../products.json';
 
-
 const Home = ({ site, products }) => {
   const [cartCount, setCartCount] = useState(0);
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
     setCartCount(storedCart.length);
   }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Simulate form submission
+    setFormSubmitted(true);
+  };
 
   return (
     <div key={site.id} className="container">
@@ -60,18 +66,22 @@ const Home = ({ site, products }) => {
               <p>{site.contactDescription}</p>
             </div>
             <div className="contact-form">
-              <form>
-                <label htmlFor="name">Nom complet</label>
-                <input placeholder="Paul Dupont" type="text" id="name" name="name" required />
-                
-                <label htmlFor="email">Email</label>
-                <input placeholder='exemple@gmail.com' type="email" id="email" name="email" required />
-                
-                <label htmlFor="message">Votre demande</label>
-                <textarea placeholder="Écrivez votre demande ici..." id="message" name="message" required></textarea>
-                
-                <button type="submit">Envoyer</button>
-              </form>
+              {formSubmitted ? (
+                <p>Merci pour votre message ! Nous vous répondrons dans les plus brefs délais.</p>
+              ) : (
+                <form onSubmit={handleSubmit}>
+                  <label htmlFor="name">Nom complet</label>
+                  <input placeholder="Paul Dupont" type="text" id="name" name="name" required />
+                  
+                  <label htmlFor="email">Email</label>
+                  <input placeholder='exemple@gmail.com' type="email" id="email" name="email" required />
+                  
+                  <label htmlFor="message">Votre demande</label>
+                  <textarea placeholder="Écrivez votre demande ici..." id="message" name="message" required></textarea>
+                  
+                  <button type="submit">Envoyer</button>
+                </form>
+              )}
             </div>
           </div>
         </section>

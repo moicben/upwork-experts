@@ -5,6 +5,7 @@
     background-color: #f8f9fa;
     font-size: 0.85rem;
     color: #333;
+    z-index: 11;
   }
   
   .header {
@@ -17,6 +18,7 @@
     background-color: #fff;
     border-bottom: 1px solid #dee2e6;
     position: relative;
+    z-index: 11;
   }
 
   .logo-header{
@@ -26,6 +28,11 @@
 
   .logo-header img{
     margin-right: .75rem;
+    width: 2rem;
+  }
+
+  .logo-header h2{
+    font-weight: 7  00;
   }
   
   .nav{
@@ -72,7 +79,7 @@
   
   .cart-drawer {
     position: fixed;
-    right: -360px;
+    right: -100%;
     top: 0;
     width: 360px;
     height: 100%;
@@ -83,7 +90,7 @@
     z-index: 1000;
     overflow-y: auto;
     padding: 1.5rem 2rem;
-    transition: right 0.3s ease;
+    transition: right 0.5s ease;
   }
   
   .cart-drawer.open {
@@ -251,14 +258,27 @@
     }
 
     .header .nav ul{
-        display: none;
         width: 100%;
         position: absolute;
-        left: 0;
+        right: -100%;
         top: 80px;
         background-color: white;
-        z-index: 100;
+        z-index: 10;
         flex-direction: column;
+        transition: 0.5s ease-in-out;
+        height: calc(100vh - 166px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-top: solid 1px #dee2e6;
+    }
+
+    .header .nav ul.open {
+      right: 0px;
+    }
+
+    .header ul li:nth-child(1){
+      margin-top: -5vh;
     }
 
     .nav ul li {

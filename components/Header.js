@@ -1,12 +1,17 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { FaShoppingCart, FaBars, FaTimes, FaRegTrashAlt } from 'react-icons/fa';
-import { CartContext } from '../context/CartContext';
+
 
 const Header = ({ shopName, keywordPlurial }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [cart, setCart] = useState([]);
   const cartDrawerRef = useRef(null);
-  const { cart, removeFromCart, updateQuantity } = useContext(CartContext);
+
+  useEffect(() => {
+    const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+    setCart(storedCart);
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -26,36 +31,53 @@ const Header = ({ shopName, keywordPlurial }) => {
     };
   }, [isCartOpen]);
 
+  const handleRemoveFromCart = (index) => {
+    const updatedCart = [...cart];
+    updatedCart.splice(index, 1);
+    setCart(updatedCart);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+  };
+
+  const handleQuantityChange = (index, quantity) => {
+    const updatedCart = [...cart];
+    updatedCart[index].quantity = quantity;
+    setCart(updatedCart);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+  };
+
   useEffect(() => {
     const cartDrawer = document.querySelector('.cart-drawer');
     if (isCartOpen) {
-      cartDrawer.classList.add('open');
+      // Attendre que le composant soit monté pour ajouter la classe
+      setTimeout(() => cartDrawer.classList.add('open'), 25);
     } else {
-      cartDrawer.classList.remove('open');
+      //cartDrawer.classList.remove('open');
     }
   }, [isCartOpen]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
     const nav = document.querySelector('.header .nav ul');
-    if (nav.style.display === 'none' || nav.style.display === '') {
-      nav.style.display = 'block';
+    if (!isMenuOpen) {
+      nav.classList.add('open');
     } else {
-      nav.style.display = 'none';
+      nav.classList.remove('open');
     }
   };
 
   const toggleCart = () => {
     setIsCartOpen(!isCartOpen);
+    const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+    setCart(storedCart);
   };
 
   return (
     <>
       <section className="sub">
-        Commencez 2025 en beauté : -15% sur tous nos {keywordPlurial} avec le code : "YEAR15" !
+        Commencez 2025 en beauté : -15% sur tous nos produits avec le code : "<span style={{ fontWeight: 600 }}>YEAR15</span>" !
       </section>
       <header className="header">
-          <a className="logo-header" href="/"><img src='/favicon.ico'/><h2>{shopName}</h2></a>
+          <a className="logo-header" href="/"><img src='/favicon-french.png' alt="Logo"/><h2>{shopName}</h2></a>
           <nav className="nav">
             <ul>
               <li><a href="/">Accueil</a></li>
@@ -70,11 +92,12 @@ const Header = ({ shopName, keywordPlurial }) => {
           </div>
           <span className="burger-icon" onClick={toggleMenu}>{isMenuOpen ? <FaTimes /> : <FaBars />} </span>
       </header>
-      <div className={`cart-drawer ${isCartOpen ? 'open' : ''}`} ref={cartDrawerRef}>
-        <h2>Panier</h2>
-        {cart.length === 0 ? (
-          <p>Votre panier est vide</p>
-        ) : (
+      {isCartOpen && (
+        <div className="cart-drawer" ref={cartDrawerRef}>
+          <h2>Panier</h2>
+          {cart.length === 0 ? (
+            <p>Votre panier est vide</p>
+          ) : (
           <ul>
             {cart.map((item, index) => (
               <li key={index}>
@@ -83,11 +106,11 @@ const Header = ({ shopName, keywordPlurial }) => {
                   <h3>{item.productTitle}</h3>
                   <p>{item.productPrice}</p>
                   <div className="quantity-selector">
-                    <button onClick={() => updateQuantity(index, item.quantity > 1 ? item.quantity - 1 : 1)}>-</button>
+                    <button onClick={() => handleQuantityChange(index, item.quantity > 1 ? item.quantity - 1 : 1)}>-</button>
                     <span>{item.quantity}</span>
-                    <button onClick={() => updateQuantity(index, item.quantity + 1)}>+</button>
+                    <button onClick={() => handleQuantityChange(index, item.quantity + 1)}>+</button>
                   </div>
-                  <button className="delete" onClick={() => removeFromCart(index)}>
+                  <button className="delete" onClick={() => handleRemoveFromCart(index)}>
                     <FaRegTrashAlt />
                   </button>
                 </div>
@@ -102,6 +125,7 @@ const Header = ({ shopName, keywordPlurial }) => {
         <button className="close" onClick={toggleCart}>+</button>
         <a href='/paiement'><button className="checkout">Passer à la caisse</button></a>
       </div>
+        )}
     </>
   );
 };

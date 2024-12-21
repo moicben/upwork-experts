@@ -255,6 +255,10 @@ td {
   color: #666;
 }
 
+.contact {
+  width: 100%;
+}
+
 .contact .wrapper {
   display: flex;
   justify-content: space-between;

@@ -8,14 +8,14 @@ import '../styles/footer.css'
 import '../styles/faq.css'; // Importer le fichier CSS
 import '../styles/suivre-mon-colis.css'; // Importer le fichier CSS
 import '../styles/reviews.css'; // Importer le fichier CSS	
+import '../styles/partners.css'; // Importer le fichier CSS
 
 import { CartProvider } from '../context/CartContext';
 
 function MyApp({ Component, pageProps }) {
   return (
-    <CartProvider>
       <Component {...pageProps} />
-    </CartProvider>
+
   );
 }
 
