@@ -6,3 +6,13 @@
   from = "https://fitness.radiateur-electrique.blog/*"
   to = "/data/builds/accessoires-de-fitness-pas/:splat"
   status = 200
+
+[[redirects]]
+  from = "https://coco.radiateur-electrique.blog/*"
+  to = "/data/builds/accessoires-de-fitness-pas/:splat"
+  status = 200
+
+[[redirects]]
+  from = "http://coco.radiateur-electrique.blog/*"
+  to = "/data/builds/accessoires-de-fitness-pas/:splat"
+  status = 200
