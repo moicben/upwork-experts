@@ -266,7 +266,7 @@
         z-index: 10;
         flex-direction: column;
         transition: 0.5s ease-in-out;
-        height: calc(100vh - 166px);
+        height: calc(100vh - 146px);
         display: flex;
         align-items: center;
         justify-content: center;

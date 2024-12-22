@@ -116,6 +116,11 @@
     font-weight: 500;
 }
 
+.cart-item p.quantity{
+    color: #9c9c9c;
+    font-weight: 400;
+}
+
 
 .discount {
   display: flex;

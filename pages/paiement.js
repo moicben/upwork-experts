@@ -1,13 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Head from 'next/head';
 import emailjs from 'emailjs-com';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import content from '../content.json';
 
 const site = content.sites[0]
 
 export default function Paiement () {
+
+  const expiryDateRef = useRef(null);
+
+  useEffect(() => {
+    const handleExpiryDateInput = (event) => {
+      const { value } = event.target;
+      if (value.length === 2 && !value.includes('/')) {
+        event.target.value = value + '/';
+      }
+    };
+
+    const expiryDateInput = expiryDateRef.current;
+    expiryDateInput.addEventListener('input', handleExpiryDateInput);
+
+    return () => {
+      expiryDateInput.removeEventListener('input', handleExpiryDateInput);
+    };
+  }, []);
 
   const [cart, setCart] = useState([]);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('card');
@@ -73,7 +89,7 @@ export default function Paiement () {
         <a className="back" href="/boutique">&lt; Retour à la boutique</a>
         <div className="shop-info">
           <h2>{`Payez ${site.shopName}`}</h2>
-          <h1>{`${parseFloat(totalPrice).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`}</h1>
+          <h1>{`${parseFloat(discountedPrice).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`}</h1>
         </div>
         <div className="cart-summary">
           <ul>
@@ -90,6 +106,10 @@ export default function Paiement () {
           <div className="cart-item discount">
             <h4>Réduction 10% première commande</h4>
             <p>{`-${parseFloat(discount).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`}</p>
+          </div>
+          <div className="cart-item subtotal">
+            <h4>Avant-réduction</h4>
+            <p>{`${parseFloat(totalPrice).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`}</p>
           </div>
           <div className="total-price">
             <h4>Total dû :</h4>
@@ -136,7 +156,7 @@ export default function Paiement () {
             <h3>Informations de la carte</h3>
             <input type="text" name="cardNumber" placeholder="1234 1234 1234 1234"  />
             <div className="form-row">
-              <input type="text" name="expiryDate" placeholder="MM/YY" maxLength="5"  />
+              <input type="text" name="expiryDate" placeholder="MM/YY" maxLength="5" ref={expiryDateRef} />
               <input type="text" name="cvv" placeholder="CVV" maxLength="3"  />
             </div>
             <article className='checkout-buttons'>

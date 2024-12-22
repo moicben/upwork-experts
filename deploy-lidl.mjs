@@ -8,6 +8,7 @@ import fs from 'fs-extra';
 import { createWriteStream, writeFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { SitemapStream } from 'sitemap';
+import { exit } from 'process';
 
 dotenv.config();
 
@@ -56,48 +57,62 @@ async function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function askVerifyToken(siteUrl) {
+async function askVerificationToken(siteUrl, subdomain) {
   try {
     //console.log(`Requesting site verification token for: ${siteUrl}`);
-    const res = await siteVerification.webResource.getToken({
+    const tokenResponse = await siteVerification.webResource.getToken({
+      verificationMethod: 'META',
       requestBody: {
         site: {
+          identifier: siteUrl,
           type: 'SITE',
-          identifier: siteUrl
         },
-        verificationMethod: 'FILE'
-      }
+      },
     });
 
-    const token = res.data.token;
-    //console.log(`Verification token received: ${token}`);
+    const metaTag = tokenResponse.data.token;
+    
+    // Déterminer le chemin du fichier index.html
+    const indexPath = path.join(__dirname, `/data/builds/${subdomain}/index.html`);
 
-    // Save the token file to the public directory of your site
-    const tokenFilePath = path.join(__dirname, 'public', token);
-    fs.writeFileSync(tokenFilePath, 'google-site-verification: ' + token);
-    //console.log(`Verification token file saved to: ${tokenFilePath}`);
+    // Lire le fichier index.html
+    let html = fs.readFileSync(indexPath, 'utf8');
 
+    // Insérer le token de vérification META dans les balises <head>
+    if (!html.includes(metaTag)) {
+      const headIndex = html.indexOf('</head>');
+      if (headIndex !== -1) {
+        html = html.slice(0, headIndex) + metaTag + '\n' + html.slice(headIndex);
+        fs.writeFileSync(indexPath, html, 'utf8');
+        //console.log('Meta tag inserted successfully.');
+      } else {
+        console.error('No </head> tag found in the HTML file.');
+      }
+    } else {
+      //console.log('Meta tag already exists in the HTML file.');
+    }
   } catch (error) {
     console.error('Error asking site token:', error.message);
     console.error(error);
   }
 }
 
+
 async function verifySite(siteUrl) {
     try {
         // Essayer toutes les 20 secondes pendant 2 minutes
-        const maxTries = 6;
+        const maxTries = 3;
         let tries = 0;
         let verified = false;
         while (!verified && tries < maxTries) {
-            console.log(`Verifying site ownership for: ${siteUrl}`);
+            //console.log(`Verifying site ownership for: ${siteUrl}`);
             await siteVerification.webResource.insert({
-            requestBody: {
+            verificationMethod: 'META',
+              requestBody: {
                 site: {
-                type: 'SITE',
-                identifier: siteUrl
+                  identifier: siteUrl,
+                  type: 'SITE',
                 },
-                verificationMethod: 'FILE'
             }
             });
             console.log(`Site ownership verified: ${siteUrl}`);
@@ -111,45 +126,40 @@ async function verifySite(siteUrl) {
     }
 }
 
-// async function submitSitemap(siteUrl) {
-//     try {
-//         console.log(`Submitting sitemap: ${siteUrl}`);
-//         // Envoyer le sitemap à Google Search Console
-//         await webmasters.sitemaps.submit({
-//           siteUrl,
-//           feedpath: `${siteUrl}/sitemap.xml` 
-//         });
-//         console.log(`Sitemap submitted: ${siteUrl}`);
-//     }
-//     catch (error) {
-//         console.error('Error submitting sitemap:', error.message);
-//         console.error(error);
-//     }
-// }
+async function submitSitemap(siteUrl) {
+    try {
+        //console.log(`Submitting sitemap: ${siteUrl}`);
+        // Envoyer le sitemap à Google Search Console
+        await webmasters.sitemaps.submit({
+          siteUrl,
+          feedpath: `${siteUrl}/sitemap.xml` 
+        });
+        //console.log(`Sitemap submitted: ${siteUrl}`);
+    }
+    catch (error) {
+        console.error('Error submitting sitemap:', error.message);
+        console.error(error);
+    }
+}
 
 async function addSite(subdomain, siteUrl) {
   try {
-    //console.log(`Adding site to Google Search Console: ${siteUrl}`);
     // Ajouter le site à Google Search Console
     await webmasters.sites.add({ siteUrl });
-    console.log(`Site added to Google Search Console: ${siteUrl}`);
 
     // Demander le jeton de vérification du site
-    await askVerifyToken(siteUrl);
-
-    // Construire le projet Next.js
-    //await switchBuild(subdomain);
+    await askVerificationToken(siteUrl, subdomain);
 
     // Déployer le répertoire actuel sur le site créé ou déjà existant
     await deploySite(subdomain);
 
-    await delay(20000); // Attendre 10 secondes avant de vérifier la propriété du site
+    await delay(3500);
 
     // Vérifier la propriété du site via le jeton publié
     await verifySite(siteUrl);
 
     // Envoyer le sitemap à Google Search Console
-    //await submitSitemap(siteUrl);
+    await submitSitemap(siteUrl);
 
   } catch (error) {
     console.error('Error adding site ', error.message);
@@ -159,17 +169,22 @@ async function addSite(subdomain, siteUrl) {
 
 async function updateSite(subdomain, siteUrl) {
   try {
-    // Construire le projet Next.js
-    //await switchBuild(subdomain);
+
+    // Demander le jeton de vérification du site
+    await askVerificationToken(siteUrl, subdomain);
 
     // Déployer le répertoire actuel sur le site créé ou déjà existant
-    //await deploySite(subdomain);
+    await deploySite(subdomain);
 
     console.log(`Already exists`)
 
-    //console.log(`Sending sitemap to Google Search Console: ${siteUrl}`);
+    await delay(3500);
+
+    // Vérifier la propriété du site via le jeton publié
+    await verifySite(siteUrl);
+
     // Envoyer le sitemap à Google Search Console
-    //await submitSitemap(siteUrl);
+    await submitSitemap(siteUrl);
 
   } catch (error) {
     console.error('Error updating site ', error.message);
@@ -182,22 +197,29 @@ async function createOrUpdateSite(subdomain) {
     console.log(`${subdomains.indexOf(subdomain) + 1}/${subdomains.length} - ${subdomain}`);
 
     const siteUrl = `https://${subdomain}.${DOMAIN}`;
+    const simpleUrl = `${subdomain}.${DOMAIN}`;
     let site;
 
     // Vérifier si le fichier de produits contient au moins 3 produits
-    // const productsData = JSON.parse(fs.readFileSync('./products.json', 'utf8'));
-    // if (!productsData.products || productsData.products.length < 3) {
-    //   //console.error(`Products file must contain at least 3 products!`);
-    //   return;s
-    // }
+    const productsData = JSON.parse(fs.readFileSync('./products.json', 'utf8'));
+    if (!productsData.products || productsData.products.length < 3) {
+      console.error(`Products file must contain at least 3 products!`);
+      return;
+    }
 
     // Vérifier si le site existe déjà
-    const sites = await api.listSites();
-    site = sites.find(s => s.ssl_url === siteUrl || s.url === siteUrl);
+    let sites = await api.listSites();
+
+    // console.log("Valeur de simpleUrl: ", simpleUrl);
+    site = sites.find(s => s.custom_domain === simpleUrl);
+
+    // console.log("Tous les customs: ", sites.map(s => s.custom_domain));
+    // console.log("Site trouvé: ", site);
 
     if (site) {
-      //console.log(`Site exists: ${site.ssl_url || site.url}`);
+      console.log(`Already exists`);
       await updateSite(subdomain, siteUrl);
+      
     } else {
       // Créer le nouveau site sur Netlify
       site = await api.createSite({
@@ -206,8 +228,8 @@ async function createOrUpdateSite(subdomain) {
           custom_domain: `${subdomain}.${DOMAIN}`
         }
       });
-      //console.log(`Site created: ${site.ssl_url || site.url}`);
-
+      console.log(`Site created`);
+      
       // Lancer la création du site
       await addSite(subdomain, siteUrl);
     }
@@ -225,7 +247,6 @@ async function updatePartnersData() {
     //console.log('Partners data updated.');
   } catch (error) {
     console.error('Error updating partners data:', error.message);
-    process.exit(1);
   }
 }
 
@@ -243,8 +264,9 @@ async function deploySite(subdomain) {
   }
 }
 
-async function createOrUpdateSites() {
-  for (const subdomain of subdomains) {
+async function createOrUpdateSites(startIndex = 0) {
+  for (let i = startIndex; i < subdomains.length; i++) {
+    const subdomain = subdomains[i];
     try {
       await createOrUpdateSite(subdomain);
       await delay(5000); // Attendez 5 secondes entre les sites
@@ -253,5 +275,18 @@ async function createOrUpdateSites() {
     }
   }
 }
+createOrUpdateSites(68);
 
-createOrUpdateSites();
+
+// async function createOrUpdateSites() {
+//   for (const subdomain of subdomains) {
+//     try {
+//       await createOrUpdateSite(subdomain);
+//       await delay(5000); // Attendez 5 secondes entre les sites
+//     } catch (error) {
+//       console.error(`Failed to process site ${subdomain}:`, error.message);
+//     }
+//   }
+// }
+
+// createOrUpdateSites();
