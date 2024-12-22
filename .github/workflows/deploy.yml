@@ -1,4 +1,4 @@
-name: Deploy Subdomains
+name: Deploy Static HTML Subdomains
 
 on:
   push:
@@ -14,19 +14,19 @@ jobs:
     - name: Checkout branch
       uses: actions/checkout@v3
 
-    - name: Build Project (if required)
-      run: |
-        npm install # Change this if you don't use npm
-        npm run build # Remove if no build process is needed
-
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./build # Change to your output directory
+        publish_dir: ./ # Assurez-vous que les fichiers HTML sont à la racine
         cname: ${{ steps.set-cname.outputs.cname }}
 
     - name: Set CNAME dynamically
       id: set-cname
       run: |
-        echo "::set-output name=cname::$(echo $GITHUB_REF | sed 's/refs\\/heads\\///').radiateur-electrique.blog"
+        BRANCH=$(echo $GITHUB_REF | sed 's/refs\\/heads\\///')
+        if [ "$BRANCH" == "accessoires-de-fitness-pas" ]; then
+          echo "::set-output name=cname::accessoires-de-fitness-pas.radiateur-electrique.blog"
+        elif [ "$BRANCH" == "abattants-et-lunettes-pour" ]; then
+          echo "::set-output name=cname::abattants-et-lunettes-pour.radiateur-electrique.blog"
+        fi
