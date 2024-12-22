@@ -3,8 +3,7 @@ name: Deploy Static HTML Subdomains
 on:
   push:
     branches:
-      - accessoires-de-fitness-pas
-      - abattants-et-lunettes-pour
+      - main
 
 jobs:
   deploy:
