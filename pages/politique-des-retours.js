@@ -3,9 +3,6 @@ import Head from 'next/head';
 
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import Products from '../components/Products'; // Importer le composant Products
-import About from '@components/About';
-import Testimonials from '@components/Testimonials';
 
 import content from '../content.json';
 

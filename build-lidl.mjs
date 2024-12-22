@@ -92,11 +92,12 @@ async function buildProject(subdomain, index, total) {
       console.log(`${index + 1}/${total} - ${subdomain} - already exists`);
       return;
     }
-
     // Assurez-vous que le répertoire de construction existe
     if (!fs.existsSync(buildDir)) {
       fs.mkdirSync(buildDir, { recursive: true });
     }
+    
+    console.log(`${index + 1}/${total} - ${subdomain}`);
 
     // Appel de la fonction switchData
     await switchData(subdomain);
@@ -115,8 +116,6 @@ async function buildProject(subdomain, index, total) {
     // Génération de robots.txt et sitemap.xml
     await generateRobotsTxt(subdomain);
     await generateSitemap(subdomain);
-
-    console.log(`${index + 1}/${total} - ${subdomain}`);
   } catch (error) {
     console.error(`${index + 1}/${total} - Error Building: ${subdomain}:`, error.message);
   }
