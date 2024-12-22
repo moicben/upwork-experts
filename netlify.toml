@@ -9,14 +9,8 @@
   force = true
 
 [[redirects]]
-  from = "https://coco.radiateur-electrique.blog/*"
+  from = "https://caca.radiateur-electrique.blog/*"
   to = "/data/builds/accessoires-de-fitness-pas/:splat"
   status = 200
   force = true
 
-
-[[redirects]]
-  from = "http://coco.radiateur-electrique.blog/*"
-  to = "/data/builds/accessoires-de-fitness-pas/:splat"
-  status = 200
-  force = true
