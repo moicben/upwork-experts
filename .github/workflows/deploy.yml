@@ -14,13 +14,6 @@ jobs:
     - name: Checkout branch
       uses: actions/checkout@v3
 
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./ # Assurez-vous que les fichiers HTML sont à la racine
-        cname: ${{ steps.set-cname.outputs.cname }}
-
     - name: Set CNAME dynamically
       id: set-cname
       run: |
@@ -30,3 +23,10 @@ jobs:
         elif [ "$BRANCH" == "abattants-et-lunettes-pour" ]; then
           echo "::set-output name=cname::abattants-et-lunettes-pour.radiateur-electrique.blog"
         fi
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./ # Assurez-vous que les fichiers HTML sont à la racine
+        cname: ${{ steps.set-cname.outputs.cname }}
