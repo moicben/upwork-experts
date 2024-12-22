@@ -1,3 +1,8 @@
 [build]
   command = "npm run build"
   publish = ".next"
+
+[[redirects]]
+  from = "https://test.radiateur-electrique.blog/*"
+  to = "/data/builds/accessoires-de-fitness-pas/:splat"
+  status = 200
