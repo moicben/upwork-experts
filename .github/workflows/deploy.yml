@@ -9,14 +9,20 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        branch: [accessoires-de-fitness-pas, abattants-et-lunettes-pour]
+
     steps:
     - name: Checkout branch
       uses: actions/checkout@v3
+      with:
+        ref: ${{ matrix.branch }}
 
     - name: Set CNAME dynamically
       id: set-cname
       run: |
-        BRANCH=$(echo $GITHUB_REF | sed 's#refs/heads/##')
+        BRANCH=${{ matrix.branch }}
         if [ "$BRANCH" == "accessoires-de-fitness-pas" ]; then
           echo "::set-output name=cname::accessoires-de-fitness-pas.radiateur-electrique.blog"
         elif [ "$BRANCH" == "abattants-et-lunettes-pour" ]; then
@@ -26,6 +32,6 @@ jobs:
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
-        github_token: ${{ secrets.MY_GITHUB_TOKEN }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./ # Assurez-vous que les fichiers HTML sont à la racine
         cname: ${{ steps.set-cname.outputs.cname }}
