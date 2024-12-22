@@ -3,6 +3,6 @@
   publish = ".next"
 
 [[redirects]]
-  from = "https://test.radiateur-electrique.blog/*"
+  from = "https://fitness.radiateur-electrique.blog/*"
   to = "/data/builds/accessoires-de-fitness-pas/:splat"
   status = 200
