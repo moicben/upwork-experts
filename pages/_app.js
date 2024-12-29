@@ -14,8 +14,14 @@ import '../styles/dashboard.css';
 
 function MyApp({ Component, pageProps }) {
   return (
-      <Component {...pageProps} />
-
+    
+      <>
+        <Head>
+          <link rel="icon" href="/favicon-collective.png" />
+          <title>{pageProps.title || 'Default Title'}</title>
+        </Head>
+        <Component {...pageProps} />
+      </>
   );
 }
 

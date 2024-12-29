@@ -430,7 +430,7 @@ input::placeholder{
 }
 
 .loading-wrapper h3{
-    margin-top: 1rem;
+    margin-top: .5rem;
     font-size: 1.5rem;
     font-weight: 600;
 }
