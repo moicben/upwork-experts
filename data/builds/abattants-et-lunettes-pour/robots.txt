@@ -1,3 +1,0 @@
-User-agent: *
-    Allow: /
-    Sitemap: https://abattants-et-lunettes-pour.expert-francais.shop/sitemap.xml

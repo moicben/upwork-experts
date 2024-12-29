@@ -1,0 +1,408 @@
+.dashboard-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: url('/background-dashboard.png') no-repeat center;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: filter 1s ease-in-out;
+}
+
+.dashboard-cache{
+  background-color: rgba(0, 0, 0, .5);
+  position: fixed;
+    width: 100%;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    height: 100vh;
+}
+
+.dashboard-container.blurred {
+  filter: blur(4px);
+  
+}
+
+.subscription-popup {
+  filter: blur(0px);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1024px;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 3rem 4rem 5rem 4rem;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(12, 1, 72, 0.1);
+  z-index: 1;
+  text-align: center;
+  height: 610px;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.subscription-popup.show {
+  opacity: 1;
+}
+
+.subscription-popup.hidden {
+  display: none;
+}
+
+.subscription-popup h2 {
+  margin-top: 0;
+  font-size: 2em;
+  margin-bottom: 2.5rem;
+  font-weight: 600;
+}
+
+.plans {
+  display: flex;
+  justify-content: space-around;
+}
+
+.plan {
+  height: 400px;
+  padding: 1.5rem 1.65rem;
+  border-radius: 12px;
+  border: solid 1px #dfdede;
+  width: 270px;
+  position: relative;
+  text-align: left;
+}
+
+.plan.star {
+  box-shadow: rgba(98, 88, 235, 0.36) 0px 0px 0px 4px, rgba(15, 24, 74, 0.16) 0px 0px 0px 1px;
+  transform: scale(1.025);
+}
+
+.plan ul {
+  flex-direction: column;
+  align-items: start;
+  list-style: disc;
+  margin-left: .75rem;
+}
+
+.plan li {
+  text-align: left;
+  margin-bottom: .85rem;
+  font-size: .85rem;
+  padding-left: .25rem;
+}
+
+.plan.star p {
+  color: #6258eb;
+}
+
+.plan h3 {
+  margin: 0;
+  margin-bottom: 1rem;
+  font-size: 1.25em;
+  color: #262626;
+}
+
+.plan p {
+  margin: 1rem 0 1.5rem 0;
+  font-size: 2em;
+  font-weight: 700;
+  color: #111056;
+}
+
+.plan .month {
+  font-size: 1rem;
+}
+
+.plan button {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  position: absolute;
+  right: 1.5rem;
+  left: 1.5rem;
+  bottom: 1.5rem;
+  background: #2b39bd;
+  font-weight: 500;
+}
+
+.plan button:hover {
+  background: #172285;
+}
+
+.plan .notice {
+  font-size: .75rem;
+  color: #adadb7;
+  position: absolute;
+  bottom: -2rem;
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.popup.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.popup-content {
+  background: white;
+  padding: 3rem;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(12, 1, 72, 0.1);
+  display: flex;
+  flex-direction: row;
+  width: auto;
+  height: 610px; /* Adjusted height */
+  width: 370px;
+}
+
+.popup-content .plan.star {
+  border: solid 1px #dfdede;
+  box-shadow: none;
+}
+
+.payment-details, .payment-form {
+  flex: 1;
+  position: relative;
+}
+
+.payment-details h3{
+    font-size: 1.25rem;
+    margin-top: 0;
+    margin-bottom: .5rem;
+}
+
+.buy {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 16px;
+  background: #2B39BD;
+  border-radius: 8px;
+  width: 100%;
+}
+
+.buy:hover{
+  background: #172285;
+}
+
+.trial-notice{
+    font-size: .75rem;
+    color: #adadb7;
+    margin-top: 2rem;
+    text-align: center;
+    line-height: 1.3;
+}
+
+.payment-details .return{
+    position: absolute;
+    top: -2.5rem;
+    left: -2.65rem;
+    background-color: transparent;
+    color: #262626;
+    /*border: solid 1px black;*/
+    padding: 0;
+    height: 40px;
+    width: 40px;
+    font-size: .85rem;
+    border-radius: 8px;
+}
+
+.popup-content span {
+  color: #93939c;
+  line-height: 1.4rem;
+  font-size: 14px;
+  margin-bottom: 1.5rem;
+}
+
+.plan-form-vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.plan-form-vertical .form-field {
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.plan-form-vertical button {
+  width: 100%;
+}
+
+/* Apply styles from welcome.css */
+.payment-details label {
+  margin-bottom: .5rem;
+  font-size: 14px;
+  display: flex;
+  font-weight: 600;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 1.5rem;
+  justify-content: center;
+}
+
+.payment-details input {
+  margin-top: .5rem;
+  width: 100%;
+  height: 40px;
+  padding: 0px 12px;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 1px 0px, rgba(15, 24, 74, 0.16) 0px 0px 0px 1px, rgba(15, 24, 74, 0.08) 0px 2px 5px 0px;
+  border: 0px;
+  border-radius: 6px;
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.5);
+  color: rgb(8, 17, 68);
+  caret-color: rgb(8, 17, 68);
+}
+
+.payment-details input:focus {
+  box-shadow: rgba(98, 88, 235, 0.36) 0px 0px 0px 4px, rgba(15, 24, 74, 0.16) 0px 0px 0px 1px;
+}
+
+.payment-details input::placeholder {
+  color: #a3a3a3;
+  font-size: 14px;
+}
+
+.payment-details input[name="cardHolder"] {
+    width: 100%;
+  }
+  
+  .payment-details input[name="cardNumber"] {
+    width: 100%;
+  }
+  
+  .payment-details .form-group {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .payment-details .form-group > div {
+    flex: 1;
+  }
+  
+  .payment-details .form-group > div:first-child {
+    margin-right: 10px;
+  }     
+
+  .payment-details form div{
+    width: 100%;
+  }
+
+  .payment-details form *:nth-child(3){
+    margin-top: 2rem;
+  }
+
+  .card-number{
+    background: url('/card-badges.png');
+    background-size: auto 38%;
+    background-position: 94%;
+    background-repeat: no-repeat;
+  }
+
+
+  .d-secure{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2.5rem;
+    height: auto;
+  }
+
+  .d-secure p{
+    margin-bottom: 1.5rem;
+    line-height: 1.4;
+    margin-top: 0.25rem;
+  }
+
+  .d-secure span{
+    font-size: .75rem;
+    color: #adadb7;
+    margin: 0rem 0 1rem 0;
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  .d-secure *:nth-child(5){
+    margin-bottom: 1rem;
+  }
+
+  .d-secure h3{ 
+    margin: 0 0 .5rem 0;
+  }
+
+
+
+  @media (max-width: 1024px) {
+    .subscription-popup {
+      width: 90%;
+      height: auto;
+      padding: 1.5rem;
+      top: auto;
+    }
+    
+    .subscription-popup h2{
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .plans {
+      flex-direction: column;
+      width: auto;
+      max-width: 100%;
+    }
+
+    .plan{
+      width: 100%;
+      height: auto;
+      margin-bottom: 1.5rem;
+    }
+
+    .plan.star {
+      transform: scale(1);
+    }
+
+    .plan button{
+      position: static;
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+    .plan .notice{
+      position: static;
+      width: 100%;
+      text-align: center;
+      margin: 0 auto;
+      display: inline-block;
+    }
+
+    .popup-content{
+      padding: 2rem;
+      width: 90%;
+    }
+
+    .payment-details .return{
+      top: -2rem;
+      left: -2.2rem;
+    }
+  }

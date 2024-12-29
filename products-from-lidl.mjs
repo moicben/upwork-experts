@@ -12,7 +12,7 @@ import { exec } from 'child_process';
 dotenv.config();
 puppeteer.use(StealthPlugin());
 
-const limit = pLimit(1);
+const limit = pLimit(3);
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 async function createBrowser() {
@@ -34,7 +34,7 @@ async function createBrowser() {
 }
 
 async function loadCookies(page) {
-    const cookies = JSON.parse(fs.readFileSync('./cookies/lidl.json', 'utf8'));
+    const cookies = JSON.parse(fs.readFileSync('./cookies/manomano.json', 'utf8'));
     await page.setCookie(...cookies);
 }
 
@@ -45,7 +45,7 @@ async function delay(ms) {
 async function scrollToBottom(page) {
     await page.evaluate(async () => {
         const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-        const distance = 350; // Distance to scroll in pixels
+        const distance = 400; // Distance to scroll in pixels
         let totalHeight = 0;
         const scrollHeight = document.body.scrollHeight;
 
@@ -55,7 +55,7 @@ async function scrollToBottom(page) {
             }
             window.scrollBy(0, distance);
             totalHeight += distance;
-            await delay(120); // Adjust the delay to control scrolling speed
+            await delay(150); // Adjust the delay to control scrolling speed
         }
     });
 }
@@ -70,11 +70,11 @@ async function extractProducts(page, url, category) {
     const $ = cheerio.load(content);
 
     const products = [];
-    $('.ods-tile').each((_, element) => {
-        let productSource = $(element).find('a.ods-tile__link').attr('href')?.trim();
-        let productImage = $(element).find('.ods-image-gallery__image').attr('src')?.trim();
-        let productTitle = $(element).find('.product-grid-box__title').text()?.trim();
-        let productPrice = $(element).find('.m-price__price').text()?.trim() + $(element).find('.m-price__currency').text()?.trim();
+    $('.c8g1eWS').each((_, element) => {
+        let productSource = $(element).attr('href')?.trim();
+        let productImage = $(element).find('.ZlnC-h.XawlJL').attr('src')?.trim();
+        let productTitle = $(element).find('p.WvF-eh.CTLl8W').text()?.trim();
+        let productPrice = $(element).find('span.buI4_h.UtnDcP.c_um3Rl > span').text()?.trim() + $(element).find('.m-price__currency').text()?.trim();
 
         if (productSource && productTitle) {
             products.push({
@@ -99,34 +99,35 @@ async function main() {
 
     const categories = JSON.parse(fs.readFileSync('./categories.json', 'utf8'));
 
-    for (let i = 0; i < categories.products.length; i++) {
-        const category = categories.products[i];
-        const url = category.productSource; // Assuming the URL is stored in productDescription
-        console.log(`${i + 1}/${categories.products.length}`);
+    for (let i = 0; i < categories.results.length; i++) {
+        const category = categories.results[i];
+        const url = category.categorySource; // Assuming the URL is stored in productDescription
+        console.log(`${i + 1}/${categories.results.length} - ${category.categorySlug}`);
 
-        const categoryFileName = `./data/products/${category.slug}.json`;
+        const categoryFileName = `./data/products/${category.categorySlug}.json`;
 
         // Skip if the file already exists
         if (fs.existsSync(categoryFileName)) {
-            console.log(`${category.slug} - File already exists`);
+            console.log('File already exists');
             continue;
+        }
+
+        // Ensure the directory exists
+        const categoryDir = path.dirname(categoryFileName);
+        if (!fs.existsSync(categoryDir)) {
+            fs.mkdirSync(categoryDir, { recursive: true });
         }
 
         const products = await extractProducts(page, url, category);
         let productsData = { products: [] };
 
-        const tasks = products.map(product => limit(async () => {
-            await delay(1000); // Delay between each instance
-            productsData.products.push(product);
-        }));
-
-        await Promise.all(tasks);
+        productsData.products.push(...products);
 
         // Write product URLs to a JSON file named after the category
         fs.writeFileSync(categoryFileName, JSON.stringify(productsData, null, 2));
 
         // Execute the Python script to extract product details
-        exec(`python extract-lidl-product.py ${categoryFileName}`, (error, stdout, stderr) => {
+        exec(`python extract-product-page.py ${categoryFileName}`, (error, stdout, stderr) => {
             if (error) {
                 console.error(`Error executing Python script: ${error.message}`);
                 return;
@@ -135,11 +136,12 @@ async function main() {
                 console.error(`Python script stderr: ${stderr}`);
                 return;
             }
-            //console.log(`${category.slug} - Details extracted`);
+            //console.log(`${category.categorySlug} - Details extracted`);
         });
     }
 
     await browser.close();
 }
+
 
 main().catch(console.error);
