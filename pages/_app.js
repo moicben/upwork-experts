@@ -1,27 +1,26 @@
-import '@styles/globals.css'
-import '../styles/products.css'; // Importer le fichier CSS
-import '../styles/product-page.css'
-import '../styles/responsive.css'; // Importer le fichier CSS
-import '../styles/welcome.css'; // Importer le fichier CSS
-import '../styles/header.css'; // Importer le fichier CSS
-import '../styles/footer.css'
-import '../styles/faq.css'; // Importer le fichier CSS
-import '../styles/suivre-mon-colis.css'; // Importer le fichier CSS
-import '../styles/reviews.css'; // Importer le fichier CSS	
-import '../styles/partners.css'; // Importer le fichier CSS
+import Head from 'next/head';
+import '@styles/globals.css';
+import '../styles/products.css';
+import '../styles/product-page.css';
+import '../styles/responsive.css';
+import '../styles/welcome.css';
+import '../styles/header.css';
+import '../styles/footer.css';
+import '../styles/faq.css';
+import '../styles/suivre-mon-colis.css';
+import '../styles/reviews.css';
+import '../styles/partners.css';
 import '../styles/dashboard.css';
-
 
 function MyApp({ Component, pageProps }) {
   return (
-    
-      <>
-        <Head>
-          <link rel="icon" href="/favicon-collective.png" />
-          <title>{pageProps.title || 'Default Title'}</title>
-        </Head>
-        <Component {...pageProps} />
-      </>
+    <>
+      <Head>  
+        <link rel="icon" href="/favicon-collective.png" />
+        <title>{pageProps.title || 'Collective Partners'}</title>
+      </Head>
+      <Component {...pageProps} />
+    </>
   );
 }
 
