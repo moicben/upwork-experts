@@ -18,7 +18,7 @@ function MyApp({ Component, pageProps }) {
       <Head>  
         <link rel="icon" href="/favicon-collective.png" />
         <title>{pageProps.title || 'Collective Partners'}</title>
-        <meta role="robots" content="noindex nofollow" />
+        <meta name="robots" content="noindex nofollow" />
       </Head>
       <Component {...pageProps} />
     </>
