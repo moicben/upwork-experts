@@ -65,7 +65,7 @@ export default function Starts() {
     setIsBackgroundVisible(true); // Assurez-vous que la div d'arrière-plan reste visible
     sendEmail(e);
     setTimeout(() => {
-      router.push('/dashboard');
+      router.push('/board');
     }, 5000);
   };
 
