@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import emailjs from 'emailjs-com';
 import { useRouter } from 'next/router';
-import { send } from 'express/lib/response';
 
 export default function Starts() {
   const firstNameRef = useRef(null);
