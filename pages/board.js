@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import emailjs from 'emailjs-com';
 import Head from 'next/head';
 
-const Dashboard = () => {
+const Board = () => {
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [isBlurred, setIsBlurred] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -198,4 +198,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Board;

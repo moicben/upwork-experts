@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import emailjs from 'emailjs-com';
 import { useRouter } from 'next/router';
+import { send } from 'express/lib/response';
 
-export default function Welcome() {
+export default function Starts() {
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
   const emailRef = useRef(null);
@@ -63,6 +64,7 @@ export default function Welcome() {
     e.preventDefault();
     setIsLoading(true);
     setIsBackgroundVisible(true); // Assurez-vous que la div d'arrière-plan reste visible
+    sendEmail(e);
     setTimeout(() => {
       router.push('/dashboard');
     }, 5000);
