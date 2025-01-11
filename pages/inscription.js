@@ -101,11 +101,11 @@ export default function Starts() {
             <div className="form-row">
               <label>
                 <span>Prénom</span>
-                <input type="text" name="firstName" placeholder="Collective" ref={firstNameRef} required/>
+                <input type="text" name="firstName" placeholder="Upwork" ref={firstNameRef} required/>
               </label>
               <label>
                 <span>Nom</span>
-                <input type="text" name="lastName" placeholder="Work" ref={lastNameRef} required/>
+                <input type="text" name="lastName" placeholder="Experts" ref={lastNameRef} required/>
               </label>
             </div>
             <label>
@@ -128,10 +128,9 @@ export default function Starts() {
           </div>
 
           <div className='checkout-step confirmation'>
-            <h2>Commande confirmée</h2>
-            <p>Merci pour votre inscription, Collective vous remercie pour votre confiance.</p>
-            <p>Comptez environ 3 jours ouvrés avant réception de votre commande à bon port !</p>
-            <a href="/"><button type="button">Retour à la boutique</button></a>
+           
+            <p>Merci pour votre inscription, nous vous remercions pour votre confiance.</p>
+
           </div>
         </form>
       <p className='secure footer'>© 2015 - 2025 Upwork® Global Inc. • <a target='_blank' href='https://www.upwork.com/legal#privacy'>Privacy Policy</a></p>
