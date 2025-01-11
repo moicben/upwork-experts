@@ -33,12 +33,12 @@
   width: 1024px;
   transform: translate(-50%, -50%);
   background: white;
-  padding: 3rem 4rem 5rem 4rem;
+  padding: 3.5rem 4rem 5rem 4rem;
   border-radius: 12px;
   box-shadow: 0 0 20px rgba(12, 1, 72, 0.1);
   z-index: 1;
   text-align: center;
-  height: 610px;
+  height: 646px;
   opacity: 0;
   transition: opacity 1s ease-in-out;
 }
@@ -54,35 +54,34 @@
 .subscription-popup h2 {
   margin-top: 0;
   font-size: 2em;
-  margin-bottom: 2.5rem;
-  font-weight: 600;
+  margin-bottom: 3.25rem;
+  color: #000;
 }
 
 .plans {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .plan {
   height: 400px;
-  padding: 1.5rem 1.65rem;
+  padding: 2rem 2.1rem;
   border-radius: 12px;
   border: solid 1px #dfdede;
-  width: 270px;
+  width: 48%;
   position: relative;
   text-align: left;
 }
 
 .plan.star {
-  box-shadow: rgba(98, 88, 235, 0.36) 0px 0px 0px 4px, rgba(15, 24, 74, 0.16) 0px 0px 0px 1px;
-  transform: scale(1.025);
+  border-color:#0f6c03 ;
 }
 
 .plan ul {
   flex-direction: column;
   align-items: start;
   list-style: disc;
-  margin-left: .75rem;
+  margin-left: 1rem;
 }
 
 .plan li {
@@ -93,7 +92,7 @@
 }
 
 .plan.star p {
-  color: #6258eb;
+  color: #0f6c03;
 }
 
 .plan h3 {
@@ -101,13 +100,14 @@
   margin-bottom: 1rem;
   font-size: 1.25em;
   color: #262626;
+  font-weight: 400;
 }
 
 .plan p {
   margin: 1rem 0 1.5rem 0;
   font-size: 2em;
-  font-weight: 700;
-  color: #111056;
+  font-weight: 600;
+  color: #313131;
 }
 
 .plan .month {
@@ -123,15 +123,17 @@
   font-size: 14px;
   cursor: pointer;
   position: absolute;
-  right: 1.5rem;
-  left: 1.5rem;
-  bottom: 1.5rem;
-  background: #2b39bd;
+  left: 1.95rem;
+  bottom: 2rem;
+  background: #108A00;
   font-weight: 500;
+  width: 200px;
+  letter-spacing: .25px;
+  transition: color 0.5s ease, background 0.5s ease;
 }
 
 .plan button:hover {
-  background: #172285;
+  background: #14A800;
 }
 
 .plan .notice {
@@ -196,19 +198,19 @@
   font-size: 14px;
   font-weight: 500;
   padding: 16px;
-  background: #2B39BD;
+  background: #108A00;
   border-radius: 8px;
   width: 100%;
 }
 
 .buy:hover{
-  background: #172285;
+  background: #14A800;
 }
 
 .trial-notice{
     font-size: .75rem;
     color: #adadb7;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
     text-align: center;
     line-height: 1.3;
 }
@@ -229,7 +231,7 @@
 
 .popup-content span {
   color: #93939c;
-  line-height: 1.4rem;
+  line-height: 1rem;
   font-size: 14px;
   margin-bottom: 1.5rem;
 }
@@ -254,21 +256,21 @@
   margin-bottom: .5rem;
   font-size: 14px;
   display: flex;
-  font-weight: 600;
+  font-weight: 500;
   flex-direction: column;
   width: 100%;
-  margin-top: 1.5rem;
+  margin-top: 1.75rem;
   justify-content: center;
 }
 
 .payment-details input {
-  margin-top: .5rem;
+  margin-top: .25rem;
   width: 100%;
-  height: 40px;
-  padding: 0px 12px;
+  height: 44px;
+  padding: 0px 14px;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 1px 0px, rgba(15, 24, 74, 0.16) 0px 0px 0px 1px, rgba(15, 24, 74, 0.08) 0px 2px 5px 0px;
   border: 0px;
-  border-radius: 6px;
+  border-radius: 9px;
   outline: none;
   background-color: rgba(255, 255, 255, 0.5);
   color: rgb(8, 17, 68);
@@ -276,7 +278,8 @@
 }
 
 .payment-details input:focus {
-  box-shadow: rgba(98, 88, 235, 0.36) 0px 0px 0px 4px, rgba(15, 24, 74, 0.16) 0px 0px 0px 1px;
+ box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 0px 1px,
+  rgba(15, 24, 74, 0.16) 0px 0px 0px 1px;
 }
 
 .payment-details input::placeholder {
@@ -322,13 +325,22 @@
 
 
   .d-secure{
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
     text-align: center;
     padding: 2.5rem;
     height: auto;
+    opacity: 0;
+      transform: translateY(-20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
   }
+
+    .d-secure.show {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0);
+    }
 
   .d-secure p{
     margin-bottom: 1.5rem;
@@ -350,6 +362,7 @@
 
   .d-secure h3{ 
     margin: 0 0 .5rem 0;
+    font-weight: 600;
   }
 
 
@@ -359,7 +372,7 @@
       width: 90%;
       height: auto;
       padding: 1.5rem;
-      top: auto;
+      top: 65%;
     }
     
     .subscription-popup h2{

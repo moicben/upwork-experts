@@ -5,7 +5,7 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    router.push('https://www.collective.work/');
+    router.push('https://talentsgroupe.fr/');
   }, [router]);
 
   return null;

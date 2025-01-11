@@ -6,7 +6,6 @@ const Rejoindre = () => {
     <div style={{ width: '100%', height: '100vh' }}>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-        <title>Collective Partners</title>
         <script async src="https://tally.so/widgets/embed.js"></script>
         <style type="text/css">
           {`
@@ -16,13 +15,13 @@ const Rejoindre = () => {
         </style>
       </Head>
       <iframe 
-        data-tally-src="https://tally.so/r/3lKWOB" 
+        data-tally-src="https://tally.so/r/mRvvyd" 
         width="100%" 
         height="100%" 
         frameborder="0" 
         marginheight="0" 
         marginwidth="0" 
-        title="Collective Partners">
+        title="Talents Groupe">
       </iframe>
       <span className='cache'></span>
     </div>
